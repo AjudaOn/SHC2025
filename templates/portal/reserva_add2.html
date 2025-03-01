@@ -1,0 +1,225 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="card">
+    <div class="card-body">
+        <h4>REGISTRAR HÓSPEDE</h4>
+        <hr>
+        <div id="conteudoDinamico" class="container">
+            <form method="post" action="{% if modo == 'criar' %}{% url 'fazer_reservas' %}{% else %}{% url 'editar_reservas' reserva.pk %}{% endif %}">
+                {% csrf_token %}
+                <!-- Start Input Name -->
+                <h1>INFORMAÇÕES DA RESERVA</h1>
+                <div class="form-row">
+                    <!-- Start Input Date -->
+                    <div class="form-group col-md-3">
+                        <label for="{{ form.entrada.id_for_label }}">Entrada:</label>
+                        <input type="date" id="id_entrada" name="entrada" value="{{ form.entrada.value|default:'' }}" {% if modo == 'editar' %}readonly{% endif %}>
+                        {% if form.entrada.errors %}
+                            <div class="text-danger">{{ form.entrada.errors|join:", " }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <label for="{{ form.saida.id_for_label }}">Saída:</label>
+                        <input type="date" id="id_saida" name="saida" value="{{ form.saida.value|default:'' }}" {% if modo == 'editar' %}readonly{% endif %}>
+                        {% if form.saida.errors %}
+                            <div class="text-danger">{{ form.saida.errors|join:", " }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <label for="{{ form.qtde_hosp.id_for_label }}">Qtde de Hóspedes:</label>
+                        {{ form.qtde_hosp }}
+                    </div>
+
+                    <div class="form-group col-md-2" style="display:none;">
+                        <input type="hidden" id="qtde_quartos" name="qtde_quartos" value="1">
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <label for="{{ form.motivo_viagem.id_for_label }}">Motivo da Viagem:</label>
+                        {{ form.motivo_viagem }}
+                    </div>
+                </div>
+                <hr />
+                <h1>DADOS DO HÓSPEDE PRINCIPAL</h1>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="{{ form.nome.id_for_label }}">Nome Completo:</label>
+                        {{ form.nome }}
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label for="{{ form.email.id_for_label }}">E-mail:</label>
+                        {{ form.email }}
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="{{ form.cpf.id_for_label }}">CPF:</label>
+                        {{ form.cpf }}
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label for="{{ form.telefone.id_for_label }}">Telefone:</label>
+                        {{ form.telefone }}
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="{{ form.status.id_for_label }}">Status:</label>
+                        {{ form.status }}
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="{{ form.graduacao.id_for_label }}">Graduação:</label>
+                        {{ form.graduacao }}
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="{{ form.tipo.id_for_label }}">Tipo:</label>
+                        {{ form.tipo }}
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="{{ form.sexo.id_for_label }}">Sexo:</label>
+                        {{ form.sexo }}
+                    </div>
+                </div>
+                <div id="linha" class="hidden"><hr /></div>
+                <div id="singular" class="hidden">
+                    <h1>INFORMAÇÃO DO ACOMPANHANTE</h1>
+                </div>
+                <div id="plural" class="hidden">
+                    <h1>INFORMAÇÕES DOS ACOMPANHANTES</h1>
+                </div>
+                <div id="acompanhante1" class="hidden">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="{{ form.nome_acomp1.id_for_label }}">Nome Completo:</label>
+                            {{ form.nome_acomp1 }}
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="{{ form.vinculo_acomp1.id_for_label }}">Vínculo Familiar:</label>
+                            {{ form.vinculo_acomp1 }}
+                        </div>
+                        <div class="form-group col-md-1">
+                            <label for="{{ form.idade_acomp1.id_for_label }}">Idade:</label>
+                            {{ form.idade_acomp1 }}
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="{{ form.sexo_acomp1.id_for_label }}">Sexo:</label>
+                            {{ form.sexo_acomp1 }}
+                        </div>
+                    </div>
+                </div>
+                <div id="acompanhante2" class="hidden">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="{{ form.nome_acomp2.id_for_label }}">Nome Completo:</label>
+                            {{ form.nome_acomp2 }}
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="{{ form.vinculo_acomp2.id_for_label }}">Vínculo Familiar:</label>
+                            {{ form.vinculo_acomp2 }}
+                        </div>
+                        <div class="form-group col-md-1">
+                            <label for="{{ form.idade_acomp2.id_for_label }}">Idade:</label>
+                            {{ form.idade_acomp2 }}
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="{{ form.sexo_acomp2.id_for_label }}">Sexo:</label>
+                            {{ form.sexo_acomp2 }}
+                        </div>
+                    </div>
+                </div>
+                <div id="acompanhante3" class="hidden">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="{{ form.nome_acomp3.id_for_label }}">Nome Completo:</label>
+                            {{ form.nome_acomp3 }}
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="{{ form.vinculo_acomp3.id_for_label }}">Vínculo Familiar:</label>
+                            {{ form.vinculo_acomp3 }}
+                        </div>
+                        <div class="form-group col-md-1">
+                            <label for="{{ form.idade_acomp3.id_for_label }}">Idade:</label>
+                            {{ form.idade_acomp3 }}
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="{{ form.sexo_acomp3.id_for_label }}">Sexo:</label>
+                            {{ form.sexo_acomp3 }}
+                        </div>
+                    </div>
+                </div>
+                <div id="acompanhante4" class="hidden">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="{{ form.nome_acomp4.id_for_label }}">Nome Completo:</label>
+                            {{ form.nome_acomp4 }}
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="{{ form.vinculo_acomp4.id_for_label }}">Vínculo Familiar:</label>
+                            {{ form.vinculo_acomp4 }}
+                        </div>
+                        <div class="form-group col-md-1">
+                            <label for="{{ form.idade_acomp4.id_for_label }}">Idade:</label>
+                            {{ form.idade_acomp4 }}
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="{{ form.sexo_acomp4.id_for_label }}">Sexo:</label>
+                            {{ form.sexo_acomp4 }}
+                        </div>
+                    </div>
+                </div>
+                <div id="acompanhante5" class="hidden">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="{{ form.nome_acomp5.id_for_label }}">Nome Completo:</label>
+                            {{ form.nome_acomp5 }}
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="{{ form.vinculo_acomp5.id_for_label }}">Vínculo Familiar:</label>
+                            {{ form.vinculo_acomp5 }}
+                        </div>
+                        <div class="form-group col-md-1">
+                            <label for="{{ form.idade_acomp5.id_for_label }}">Idade:</label>
+                            {{ form.idade_acomp5 }}
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="{{ form.sexo_acomp5.id_for_label }}">Sexo:</label>
+                            {{ form.sexo_acomp5 }}
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <h1>OUTRAS INFORMAÇÕES</h1>
+                <div class="form-row">
+                    <div class="form-group col-md-8">
+                        <label for="{{ form.cidade.id_for_label }}">Cidade de Origem:</label>
+                        {{ form.cidade }}
+                    </div>
+                    <div class="form-group col-md-1">
+                        <label for="{{ form.uf.id_for_label }}">UF:</label>
+                        {{ form.uf }}
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="{{ form.especial.id_for_label }}">Necessidades Especiais?</label>
+                        {{ form.especial }}
+                    </div>
+                    <!-- Campo oculto para status_reserva -->
+                    <input type="hidden" name="status_reserva" id="id_status_reserva" value="Pendente">
+                </div>
+                <hr />
+                <div class="form-row">
+                    <div class="form-group col-md-9"></div>
+                    <div class="form-group col-md-3">
+                        <button class="btn-sm col-lg-5" type="submit">Salvar</button>
+                        <button class="btn-sm col-lg-5" type="button" class="btn-warning" onclick="window.location.href='{% url 'consultar_reservas' %}'">Cancelar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

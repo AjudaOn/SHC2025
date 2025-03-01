@@ -1,0 +1,325 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+
+        <div id="conteudoDinamico" class="container">
+            <form method="post" action="{% url 'editar_checkin' reservas_pk=reserva.id %}">
+                {% csrf_token %}
+                <!-- Start Input Name -->
+                <h1>INFORMAÇÕES DA RESERVA</h1>
+                
+                <div class="form-row">
+                    <!-- Start Input Date -->
+                    
+                    <div class="card form-group" style="width: 32%;">
+                        <div >
+                            <div class="card-header text-center">Previsão da Hospedagem</div>
+                            <div class="form-row">
+                                <div class="card-title text-center" style="margin: 10px; width: 40%;">Entrada:</div>
+                                <div class="card-title text-center" style="margin: 10px; width: 40%;">{{ reserva.entrada|date:"d/m/Y" }}</div>
+                            </div>        
+                        </div>
+                        <div >
+                            <div class="form-row text-center">
+                                <div class="card-title text-center" style="margin: 10px; width: 40%;">Saída:</div>
+                                <div class="card-title text-center" style="margin: 10px; width: 40%;">{{ reserva.saida|date:"d/m/Y" }}</div>
+                            </div>        
+                        </div>                    
+                    </div>
+
+                            
+                    <div class="form-group " style="width: 2%;">                        
+                    </div>
+
+                    <div class="card form-group" style="width: 32%;">
+                        <div >
+                            <div class="card-header text-center">Solicitação</div>
+                            <div class="form-row">
+                                <div class="card-title text-center" style="margin: 10px; width: 50%;">Qtde de Hóspedes:</div>
+                                <div class="card-title text-center" style="margin: 10px; width: 30%;">{{ reserva.qtde_hosp}}</div>
+                            </div>        
+                        </div>
+                        <div >
+                            <div class="form-row text-center">
+                                <div class="card-title text-center" style="margin: 10px; width: 50%;">Qtde de Quartos:</div>
+                                <div class="card-title text-center" style="margin: 10px; width: 30%;">{{ reserva.qtde_quartos}}</div>
+                            </div>        
+                        </div>                    
+                    </div>            
+
+                    <div class="form-group" style="width: 2%;">                        
+                    </div>
+
+                    <div class="card form-group" style="width: 32%;">
+                        <div >
+                            <div class="card-header text-center">Necessidades Especiais?</div>
+                            <div class="form-row">                        
+                                <div class="card-title text-center" style="margin: 10px; width: 100%;">{{ reserva.especial}}</div>
+                            </div>        
+                        </div>
+                                        
+                    </div>
+
+                    
+                    
+                    
+                </div>
+                <hr>    
+                <h1>DADOS DOS HÓSPEDES</h1>
+                <div class="form-row">
+                    <!-- Start Input Date -->
+                    
+                    <div class="card form-group" style="width: 42%;">
+                        <div >
+                            <div class="card-header text-center">Hóspede Principal</div>
+                            <div class="form-row">
+                                <div class="card-title text-center" style="margin: 10px; width: 10%;">Nome:</div>
+                                <div class="card-title text-center" style="margin: 10px; width: 75%;">{{ reserva.nome }}</div>
+                            </div>        
+                        </div>
+                        <div >
+                            <div class="form-row text-center">
+                                <div class="card-title text-center" style="margin: 10px; width: 10%;">CPF:</div>
+                                <div class="card-title text-center" style="margin: 10px; width: 75%;">{{ reserva.cpf }}</div>
+                            </div>        
+                        </div>                    
+                    </div>
+
+                            
+                    <div class="form-group " style="width: 2%;">                        
+                    </div>
+
+                    <div class="card form-group" style="width: 30%;">
+                        <div >
+                            <div class="card-header text-center">Informações Militares:</div>
+                            <div class="form-row">
+                                <div class="card-title text-center" style="margin: 10px; width: 30%;">Graduação:</div>
+                                <div class="card-title text-center" style="margin: 10px; width: 52%;">{{ reserva.graduacao}}</div>
+                            </div>        
+                        </div>
+                        <div >
+                            <div class="form-row text-center">
+                                <div class="card-title text-center" style="margin: 10px; width: 30%;">Status:</div>
+                                <div class="card-title text-center" style="margin: 10px; width: 52%;">{{ reserva.status}}</div>
+                            </div>        
+                        </div>                    
+                    </div>            
+
+                    <div class="form-group" style="width: 2%;">                        
+                    </div>
+
+                    <div class="card form-group" style="width: 20%;">
+                        <div >
+                            <div class="card-header text-center">Tipo de Hospedagem</div>
+                            <div class="form-row">                        
+                                <div class="card-title text-center" style="margin: 10px; width: 100%;">{{ reserva.tipo}}</div>
+                            </div>        
+                        </div>
+                                        
+                    </div>
+                </div>
+                
+                
+                
+                <div id="linha" class="hidden"><hr /></div>
+                <div id="singular" class="hidden">     
+                    <h1>INFORMAÇÃO DO ACOMPANHANTE</h1>                                      
+                </div>
+                <div id="plural" class="hidden">     
+                    <h1>INFORMAÇÕES DOS ACOMPANHANTES</h1>                                      
+                </div>  
+                <div id="acompanhante1" class="hidden">     
+                    
+                    <div class="card form-group" style="width: 100%;">
+                        <div >
+                            <div class="card-header text-center">Acompanhantes</div>
+                                
+                        </div>
+                        <div >
+                            <div class="form-row text-center">
+                                <div class="card-title text-center" style="margin: 10px; width: 20%;">{{ reserva.nome_acomp1 }}</div>
+                                <div class="card-title text-center" style="margin: 10px; width: 20%;">{{ reserva.idade_acomp1 }}</div>
+                                <div class="card-title text-center" style="margin: 10px; width: 20%;">{{ reserva.sexo_acomp1 }}</div>
+                                <div class="card-title text-center" style="margin: 10px; width: 30%;">{{ reserva.vinculo_acomp1 }}</div>
+                            </div>        
+                        </div>                    
+                    </div>          
+                
+                    <div id="acompanhante2" class="hidden">    
+                        <div class="card form-group" style="width: 100%;">                
+                            <div >
+                                <div class="form-row text-center">
+                                    <div class="card-title text-center" style="margin: 10px; width: 20%;">{{ reserva.nome_acomp2 }}</div>
+                                    <div class="card-title text-center" style="margin: 10px; width: 20%;">{{ reserva.idade_acomp2 }}</div>
+                                    <div class="card-title text-center" style="margin: 10px; width: 20%;">{{ reserva.sexo_acomp2 }}</div>
+                                    <div class="card-title text-center" style="margin: 10px; width: 30%;">{{ reserva.vinculo_acomp2 }}</div>
+                                </div>        
+                            </div>                    
+                        </div>
+                    </div>
+                    
+                    <div id="acompanhante3" class="hidden">    
+                        <div class="card form-group" style="width: 100%;">                
+                            <div >
+                                <div class="form-row text-center">
+                                    <div class="card-title text-center" style="margin: 10px; width: 20%;">{{ reserva.nome_acomp3 }}</div>
+                                    <div class="card-title text-center" style="margin: 10px; width: 20%;">{{ reserva.idade_acomp3 }}</div>
+                                    <div class="card-title text-center" style="margin: 10px; width: 20%;">{{ reserva.sexo_acomp3 }}</div>
+                                    <div class="card-title text-center" style="margin: 10px; width: 30%;">{{ reserva.vinculo_acomp3 }}</div>
+                                </div>        
+                            </div>                    
+                        </div>
+                    </div>
+
+                    <div id="acompanhante4" class="hidden">    
+                        <div class="card form-group" style="width: 100%;">                
+                            <div >
+                                <div class="form-row text-center">
+                                    <div class="card-title text-center" style="margin: 10px; width: 20%;">{{ reserva.nome_acomp4 }}</div>
+                                    <div class="card-title text-center" style="margin: 10px; width: 20%;">{{ reserva.idade_acomp4 }}</div>
+                                    <div class="card-title text-center" style="margin: 10px; width: 20%;">{{ reserva.sexo_acomp4 }}</div>
+                                    <div class="card-title text-center" style="margin: 10px; width: 30%;">{{ reserva.vinculo_acomp4 }}</div>
+                                </div>        
+                            </div>                    
+                        </div>
+                    </div>
+                    
+                    <div id="acompanhante5" class="hidden">    
+                        <div class="card form-group" style="width: 100%;">                
+                            <div >
+                                <div class="form-row text-center">
+                                    <div class="card-title text-center" style="margin: 10px; width: 20%;">{{ reserva.nome_acomp5 }}</div>
+                                    <div class="card-title text-center" style="margin: 10px; width: 20%;">{{ reserva.idade_acomp5 }}</div>
+                                    <div class="card-title text-center" style="margin: 10px; width: 20%;">{{ reserva.sexo_acomp5 }}</div>
+                                    <div class="card-title text-center" style="margin: 10px; width: 30%;">{{ reserva.vinculo_acomp5 }}</div>
+                                </div>        
+                            </div>                    
+                        </div>
+                    </div>
+                </div>    
+                
+                    
+                <hr />
+                <h1>OUTRAS INFORMAÇÕES</h1>
+                <div class="form-row" style="width: 100%;">    
+                    
+                    <div class="form-row" style="width: 50%;">
+                        <div class="card form-group" style="width: 75%;">
+                            <div >
+                                <div class="card-header text-center" >Cidade de Origem:</div>
+                                <div class="form-row">                        
+                                    <div class="card-title text-center" style="margin: 10px;">{{ reserva.cidade}}</div>
+                                </div>        
+                            </div>
+                        </div>
+                        <div class="card form-group" style="width: 20%;">
+                            <div >
+                                <div class="card-header text-center" >UF</div>
+                                <div class="form-row">                        
+                                    <div class="card-title text-center" style="margin: 10px; width: 45%;">{{ reserva.uf}}</div>
+                                </div>        
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row" style="width: 50%;">
+                        <div class="card form-group" style="width: 75%;">
+                            <div >
+                                <div class="card-header text-center" >MHEx:</div>
+                                <div class="form-row">                        
+                                    <div class="card-title text-center" style="margin: 10px; width: 20%;">{{ reserva.mhex}}</div>
+                                </div>        
+                            </div>
+                        </div>
+                        <div class="card form-group" style="width: 20%;">
+                            <div >
+                                <div class="card-header text-center" >UH</div>
+                                <div class="form-row">                        
+                                    <div class="card-title text-center" style="margin: 10px; width: 100%;">{{ reserva.uh}}</div>
+                                </div>        
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                            
+                    <!-- Campo oculto para status_reserva -->
+                    <input type="hidden" name="status_reserva" id="id_status_reserva" value="Pendente"> 
+                </div>    
+                <hr />
+                    
+                <h1>DEFINIDO PELA RECEPÇÃO:</h1>
+                <div class="form-row">
+                    <div class="form-group col-md-4">     
+                        <label for="status_reserva">Status da Reserva:</label>
+                        <select name="status_reserva" id="status_reserva" class="form-control">                        
+                            <option value="Aprovada" {% if reserva.status_reserva == "Aprovada" %}selected{% endif %}>Aprovada</option>
+                            <option value="Checkin" {% if reserva.status_reserva == "Checkin" %}selected{% endif %}>Check-in</option>
+                            <!-- Adicione mais opções conforme necessário -->
+                        </select>                                       
+                    </div>
+                    
+                    <!-- Campo oculto para status_reserva -->
+                    {% comment %} <input type="hidden" name="status_reserva" id="id_status_reserva" value="Pendente">  {% endcomment %}
+                </div>    
+                <hr />
+                <div class="form-row">
+                    <div class="form-group col-md-9"></div>
+                    <div class="form-group col-md-3">
+                        <button class="btn-sm col-lg-5" type="submit">Salvar</button>
+                        <button class="btn-sm col-lg-5" type="button" class="btn-warning" onclick="window.location.href='{% url 'recepcao_checkin' %}'">Cancelar</button>
+                    </div>
+                </div>    
+                <!-- End Submit Button -->
+            </form>
+        </div>
+        
+    </div>
+</div>        
+{% endblock %}
+
+
+{% block jscript %}
+
+<script>
+    function toggleAcompanhanteDivs(qtdeHosp) {
+        // Loop para mostrar/esconder divs de acompanhantes baseado em qtdeHosp
+        
+        for (var i = 1; i <= 5; i++) {
+            var div = document.getElementById('acompanhante' + i);
+            if (div) {
+                div.className = i <= qtdeHosp ? 'visible' : 'hidden';
+            }
+        }
+
+        // Ajustando visibilidade para singular ou plural
+        if ((qtdeHosp === 2) || (qtdeHosp === 3) || (qtdeHosp === 4) || (qtdeHosp === 5) || (qtdeHosp === 6)) {
+            console.log("Condição verdadeira. Ocultando divs.");
+            document.getElementById('singular').className = 'hidden';
+            document.getElementById('plural').className = 'visible';
+            document.getElementById('linha').className = 'visible';
+        } else if (qtdeHosp === 1) {
+            document.getElementById('singular').className = 'visible';
+            document.getElementById('plural').className = 'hidden';
+            document.getElementById('linha').className = 'visible';
+        } else {
+            document.getElementById('singular').className = 'hidden';
+            document.getElementById('plural').className = 'hidden';
+            document.getElementById('linha').className = 'hidden';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        var qtdeHosp = parseInt("{{ reserva.qtde_hosp }}", 10)-1; // Obtém o valor de qtde_hosp do contexto do template
+        toggleAcompanhanteDivs(qtdeHosp); // Chama a função com o valor inicial de qtde_hosp
+
+        // Não é necessário adicionar um listener de mudança de evento, já que os dados vêm do backend e não vão mudar dinamicamente no cliente
+    });
+</script>
+    
+  
+
+{% endblock %}

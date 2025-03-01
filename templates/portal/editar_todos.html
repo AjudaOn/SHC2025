@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <div id="conteudoDinamico" class="container">
+            <form method="post" action="{% url 'editar_todos' reservas_pk=reserva.id %}">
+                {% csrf_token %}
+                
+                <h1>INFORMAÇÕES DA RESERVA</h1>
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+                        <label for="id_entrada">Entrada:</label>
+                        <input type="date" id="id_entrada" name="entrada" value="{{ form.instance.entrada|date:'Y-m-d' }}" class="form-control" readonly>
+                        <input type="hidden" name="entrada" value="{{ form.instance.entrada|date:'Y-m-d' }}">
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <label for="id_saida">Saída:</label>
+                        <input type="date" id="id_saida" name="saida" value="{{ form.instance.saida|date:'Y-m-d' }}" class="form-control" readonly>
+                        <input type="hidden" name="saida" value="{{ form.instance.saida|date:'Y-m-d' }}">
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <label for="{{ form.qtde_hosp.id_for_label }}">Qtde de Hóspedes:</label>
+                        <input type="text" name="qtde_hosp" value="{{ form.instance.qtde_hosp }}" class="form-control" readonly>
+                        <input type="hidden" name="qtde_hosp" value="{{ form.instance.qtde_hosp }}">
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <label for="{{ form.motivo_viagem.id_for_label }}">Motivo da Viagem:</label>
+                        <input type="text" name="motivo_viagem" value="{{ form.instance.motivo_viagem }}" class="form-control" readonly>
+                        <input type="hidden" name="motivo_viagem" value="{{ form.instance.motivo_viagem }}">
+                    </div>
+                </div>
+
+                <hr />
+                <h1>DADOS DO HÓSPEDE PRINCIPAL</h1>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="{{ form.nome.id_for_label }}">Nome Completo:</label>
+                        <input type="text" name="nome" value="{{ form.instance.nome }}" class="form-control" readonly>
+                        <input type="hidden" name="nome" value="{{ form.instance.nome }}">
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label for="{{ form.email.id_for_label }}">E-mail:</label>
+                        <input type="email" name="email" value="{{ form.instance.email }}" class="form-control" readonly>
+                        <input type="hidden" name="email" value="{{ form.instance.email }}">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="{{ form.cpf.id_for_label }}">CPF:</label>
+                        <input type="text" name="cpf" value="{{ form.instance.cpf }}" class="form-control" readonly>
+                        <input type="hidden" name="cpf" value="{{ form.instance.cpf }}">
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label for="{{ form.telefone.id_for_label }}">Telefone:</label>
+                        <input type="text" name="telefone" value="{{ form.instance.telefone }}" class="form-control" readonly>
+                        <input type="hidden" name="telefone" value="{{ form.instance.telefone }}">
+                    </div>
+                </div>
+
+                <hr />
+                <h1>DEFINIDO PELO GESTOR:</h1>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="{{ form.status_reserva.id_for_label }}">Status da Reserva</label>
+                        {{ form.status_reserva }}
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <label for="{{ form.mhex.id_for_label }}">MHEx</label>
+                        {{ form.mhex }}
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="{{ form.uh.id_for_label }}">UH</label>
+                        {{ form.uh }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="{{ form.valor_ajuste.id_for_label }}">AJUSTE DE VALOR:</label>
+                        <input type="text" name="{{ form.valor_ajuste.html_name }}" value="{{ form.instance.valor_ajuste }}" class="form-control" style="text-align: right;">
+                    </div>
+                </div>
+
+                <hr />
+                <div class="form-row">
+                    <div class="form-group col-md-9"></div>
+                    <div class="form-group col-md-3">
+                        <button class="btn-sm col-lg-5" type="submit">Salvar</button>
+                        <button type="button" class="btn-sm col-lg-5" onclick="window.location.href='{% url 'consultar_todos' %}?mes_relatorio={{ mes_relatorio }}&ano_relatorio={{ ano_relatorio }}'">Cancelar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+    
+    <div class="card">
+        <div class="card-body">
+            <h4>LISTA DE REGISTROS</h4>
+            <hr>
+               
+            
+            <div class="container-lg">
+                {% comment %} <div class="form-group col-md-0">                     
+                </div> {% endcomment %}
+                <div class="container-lg">
+                        
+                    {% if consultar_htm1 %}
+                        
+                        <table class="table">
+                            <h1>HTM 1</h1>
+                            <thead >
+                                <tr >
+                                    <th class="text-center" scope="col" style="color: gray;">Entrada</th>
+                                    <th class="text-center" scope="col" style="color: gray;">Saída</th>
+                                    <th class="text-center" scope="col" style="color: gray;">Graduação</th>
+                                    <th class="text-center" scope="col" style="color: gray;">Nome</th>
+                                    <th class="text-center" scope="col" style="color: gray;">CPF</th> 
+                                    <th class="text-center" scope="col" style="color: gray; width: 10%;">Total</th>
+                                    <th class="text-center" scope="col" style="color: gray;">Editar</th>                               
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                {% for reserva in consultar_htm1 %}
+                                    <tr>
+                                        <td class="text-center" style="color: gray;">{{ reserva.entrada|date:"d/m/Y" }}</td>
+                                        <td class="text-center" style="color: gray;">{{ reserva.saida|date:"d/m/Y" }}</td>
+                                        <td class="text-center" style="color: gray;">{{ reserva.graduacao }}</td>
+                                        <td class="text-center" style="color: gray;">{{ reserva.nome }}</td>
+                                        <td class="text-center" style="color: gray;">{{ reserva.cpf }}</td> 
+                                        <td class="text-center" style="color: gray;">{{ reserva.valor_total }}</td> 
+                                        <td class="text-center"><button style="width: 100px;" type="button" class="btn-warning" onclick="window.location.href='{% url 'editar_todos' reservas_pk=reserva.id %}'">Editar</button></td>     
+                                    </tr>
+                                {% endfor %}
+                                       
+                                
+                            </tbody>
+                        </table>
+                        
+                    {% endif %}
+                    {% if not consultar_htm1 %}
+                    
+                    <table class="table">
+                        <h1>HÓSPEDES PARA CHEGAR</h1>
+                        <hr>
+                            <div class="form-group col-md-12" align="center"> 
+                                <label colspan="12" style="text-align: center; color: red;">Não têm hospedes para chegar.</label>
+                            </div>
+                        </table>        
+                    {% endif %}
+                </div>               
+                
+            </div>
+
+            <div class="container-lg">
+                {% comment %} <div class="form-group col-md-0">                     
+                </div> {% endcomment %}
+                <div class="container-lg">
+                        
+                    {% if consultar_htm2 %}
+                        
+                        <table class="table">
+                            <h1>HTM 2</h1>
+                            <thead >
+                                <tr >
+                                    <th class="text-center" scope="col" style="color: gray;">Entrada</th>
+                                    <th class="text-center" scope="col" style="color: gray;">Saída</th>
+                                    <th class="text-center" scope="col" style="color: gray;">Graduação</th>
+                                    <th class="text-center" scope="col" style="color: gray;">Nome</th>
+                                    <th class="text-center" scope="col" style="color: gray;">CPF</th>                                    
+                                    
+                                    <th class="text-center" scope="col" style="color: gray; width: 10%;">Total</th>
+                                    <th class="text-center" scope="col" style="color: gray;">Editar</th>                               
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                {% for reserva in consultar_htm2 %}
+                                    <tr>
+                                        <td class="text-center" style="color: gray;">{{ reserva.entrada|date:"d/m/Y" }}</td>
+                                        <td class="text-center" style="color: gray;">{{ reserva.saida|date:"d/m/Y" }}</td>
+                                        <td class="text-center" style="color: gray;">{{ reserva.graduacao }}</td>
+                                        <td class="text-center" style="color: gray;">{{ reserva.nome }}</td>
+                                        <td class="text-center" style="color: gray;">{{ reserva.cpf }}</td>                                       
+                                        
+                                        <td class="text-center" style="color: gray;">{{ reserva.valor_total }}</td> 
+                                        <td class="text-center"><button style="width: 100px;" type="button" class="btn-warning" onclick="window.location.href='{% url 'editar_todos' reservas_pk=reserva.id %}'">Editar</button></td>      
+                                    </tr>
+                                {% endfor %}
+                                       
+                                
+                            </tbody>
+                        </table>
+                        
+                    {% endif %}
+                    {% if not consultar_htm2 %}
+                    
+                    <table class="table">
+                        <h1>LISTA DE REGISTROS</h1>
+                        <hr>
+                            <div class="form-group col-md-12" align="center"> 
+                                <label colspan="12" style="text-align: center; color: red;">Não existe registro para esse mês.</label>
+                            </div>
+                        </table>        
+                    {% endif %}
+                </div>               
+                
+            </div>
+        </div>
+    </div>
+    
+{% endblock %}
+
+
+{% block jscript %}
+
+{% comment %} <script>
+    function redirecionarParaConsumacao(reservas_pk) {
+        window.location.href = "/consumacao/" + reservas_pk + "/";
+    }
+</script> {% endcomment %}
+
+{% endblock %}

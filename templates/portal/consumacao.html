@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+    
+        
+
+        <div id="conteudoDinamico" class="container">
+            <form method="post" action="{% url 'editar_consumacao' reservas_pk=reserva.id %}">
+                {% csrf_token %}
+                <!-- Start Input Name -->
+                <h1>CONSUMAÇÃO:</h1>
+                <div class="form-row">
+                    <div class="form-group col-md-4">     
+                        <label for="{{ form.qtde_agua.id_for_label }}">Água</label>                                        
+                        <select name="qtde_agua" id="id_qtde_agua" class="form-control">
+                            {% for i in 10|get_range %}
+                                <option value="{{ i }}" {% if i == reserva.qtde_agua %}selected{% endif %}>{{ i }}</option>
+                            {% endfor %}
+                        </select>                                       
+                    </div>
+                    <div class="form-group col-md-4">     
+                        <label for="{{ form.qtde_refri.id_for_label }}">Refrigerante</label>                                        
+                        <select name="qtde_refri" id="id_qtde_refri" class="form-control">
+                            {% for i in 10|get_range %}
+                                <option value="{{ i }}" {% if i == reserva.qtde_refri %}selected{% endif %}>{{ i }}</option>
+                            {% endfor %}
+                        </select>                                       
+                    </div>
+                    <div class="form-group col-md-4">     
+                        <label for="{{ form.qtde_cerveja.id_for_label }}">Cerveja</label>                                        
+                        <select name="qtde_cerveja" id="id_qtde_cerveja" class="form-control">
+                            {% for i in 10|get_range %}
+                                <option value="{{ i }}" {% if i == reserva.qtde_cerveja %}selected{% endif %}>{{ i }}</option>
+                            {% endfor %}
+                        </select>                                       
+                    </div>
+                    
+                </div>
+                <hr />
+                <h1>QUANTIDADE DE PETS:</h1>
+                <div class="form-row">
+                    
+                    <div class="form-group col-md-4">     
+                        <label for="{{ form.qtde_pet.id_for_label }}">Pets</label>                                        
+                        <select name="qtde_pet" id="id_qtde_pet" class="form-control">
+                            {% for i in 10|get_range %}
+                                <option value="{{ i }}" {% if i == reserva.qtde_pet %}selected{% endif %}>{{ i }}</option>
+                            {% endfor %}
+                        </select>                                       
+                    </div>
+                </div>    
+                    
+                <hr />
+                <div class="form-row">
+                    <div class="form-group col-md-9"></div>
+                    <div class="form-group col-md-3">
+                        <button class="btn-sm col-lg-5" type="submit">Salvar</button>
+                        <button class="btn-sm col-lg-5" onclick="window.location.href='{% url 'recepcao_checkout' %}'">Cancelar</button>
+                    </div>
+                </div>    
+                <!-- End Submit Button -->
+            </form>
+            
+        </div>  
+
+
+        
+    
+    </div>
+</div> 
+{% endblock %}
+
+
+{% block jscript %}   
+  
+
+{% endblock %}

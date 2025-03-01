@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+    
+    <div class="card">
+        <div class="card-body">
+            <h4>APROVAR RESERVAS</h4>
+            <hr>
+            <div class="form-row">
+                
+                <div class="form-group col-md-2 text-left"> 
+                    <button type="button" style="width: 200px;" class="btn-success" onclick="window.location.href='{% url 'fazer_reservas' %}'">Nova Reserva</button>
+                </div>
+                <div class="form-group col-md-10">                     
+                </div>
+            </div>    
+            <hr>
+            <div class="form-row">
+                <div class="form-group col-md-0">                     
+                </div>
+                <div class="form-group col-md-12">
+                    {% if consultar %}
+                        <table class="table">
+                            <thead >
+                                <tr >
+                                    <th class="text-center" scope="col" style="color: gray;" >Entrada</th>
+                                    <th class="text-center" scope="col" style="color: gray;">Saída</th>
+                                    <th class="text-center" scope="col" style="color: gray;">Nome</th>
+                                    <th class="text-center" scope="col" style="color: gray;">Graduação</th>
+                                    <th class="text-center" scope="col" style="color: gray;">Qtde Hosp</th>
+                                    <th class="text-center" scope="col" style="color: gray;">Qtde Quarto</th>
+                                    <th class="text-center" scope="col" style="color: gray;">Especial?</th>
+                                    <th class="text-center" scope="col" style="color: gray;">Gerenciar</th>                          
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                {% for reserva in consultar %}
+                                    <tr>
+                                        <td class="text-center" style="color: gray;">{{ reserva.entrada|date:"d/m/Y" }}</td>
+                                        <td class="text-center" style="color: gray;">{{ reserva.saida|date:"d/m/Y" }}</td>
+                                        <td class="text-center" style="color: gray;">{{ reserva.nome }}</td>
+                                        <td class="text-center" style="color: gray;">{{ reserva.graduacao }}</td>
+                                        <td class="text-center" style="color: gray;">{{ reserva.qtde_hosp }}</td>
+                                        <td class="text-center" style="color: gray;">{{ reserva.qtde_quartos }}</td>
+                                        <td class="text-center" style="color: gray;">{{ reserva.especial }}</td>                            
+                                        <td class="text-center"><button style="width: 100px;" type="button" class="btn-warning" onclick="window.location.href='{% url 'editar_reservas' reservas_pk=reserva.id %}'">Editar</button></td>
+                                    </tr>
+                                {% endfor %}
+                                
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <div class="form-group col-md-12" align="center"> 
+                            <label colspan="12" style="text-align: center; color: red;">Não existem reservas pendentes.</label>
+                        </div>
+                    {% endif %}
+                </div>    
+            </div>
+        </div>
+    </div>
+    
+{% endblock %}

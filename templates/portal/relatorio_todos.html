@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+    
+<div class="card">
+    <div class="card-body">
+        <h4>RELATORIO MENSAL - ALTERAR STATUS</h4>
+        <hr> 
+        <div class="container-fluid">
+
+            <form method="GET" action="{% url 'consultar_todos' %}">
+                <!-- Campos do primeiro formulário -->
+                <label for="id_mes_relatorio">Mês:</label>
+                <select name="mes_relatorio" id="id_mes_relatorio">
+                    <option value=1>Janeiro</option>
+                    <option value=2>Fevereiro</option>
+                    <option value=3>Março</option>
+                    <option value=4>Abril</option>
+                    <option value=5>Maio</option>
+                    <option value=6>Junho</option>
+                    <option value=7>Julho</option>
+                    <option value=8>Agosto</option>
+                    <option value=9>Setembro</option>
+                    <option value=10>Outubro</option>
+                    <option value=11>Novembro</option>
+                    <option value=12>Dezembro</option>
+                    <!-- Opções do mês -->
+                </select>
+                <label for="id_ano_relatorio">Ano:</label>
+                <select name="ano_relatorio" id="id_ano_relatorio">
+                    <option value=2024>2024</option>
+                    <option value=2025>2025</option>
+                    
+                    <!-- Opções do ano -->
+                </select>
+                
+                <button type="submit">Consultar</button>
+            </form>
+            
+        </div>
+    </div>
+</div>        
+
+{% endblock %}
+
+

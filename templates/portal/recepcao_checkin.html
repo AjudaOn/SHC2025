@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+    
+    <div class="card">
+        <div class="card-body">
+            <h4>RECEPÇÃO</h4>
+            <hr>
+               
+            
+            <div class="container-fluid">
+                {% comment %} <div class="form-group col-md-0">                     
+                </div> {% endcomment %}
+                <div class="container-fluid">
+                    {% if consultar %}
+                        
+                        <table class="table">
+                            <h1>HÓSPEDES PARA CHEGAR</h1>
+                            <thead >
+                                <tr >
+                                    <th class="text-center" scope="col" style="color: gray; width: 5%;" >Entrada</th>
+                                    <th class="text-center" scope="col" style="color: gray; width: 5%;">Saída</th>
+                                    <th class="text-center" scope="col" style="color: gray; width: 45%;">Nome</th>
+                                    <th class="text-center" scope="col" style="color: gray; width: 8%;">Graduação</th>
+                                    <th class="text-center" scope="col" style="color: gray; width: 5%;">Qtde Hosp</th>
+                                    <th class="text-center" scope="col" style="color: gray; width: 5%;">Qtde Quarto</th>
+                                    <th class="text-center" scope="col" style="color: gray; width: 5%;">Especial?</th>
+                                    <th class="text-center" scope="col" style="color: gray; width: 30%;">Gerenciar</th>
+                                                             
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                {% for reserva in consultar %}
+                                    <tr>
+                                        <td class="text-center" style="color: gray;">{{ reserva.entrada|date:"d/m/Y" }}</td>
+                                        <td class="text-center" style="color: gray;">{{ reserva.saida|date:"d/m/Y" }}</td>
+                                        <td class="text-center" style="color: gray;">{{ reserva.nome }}</td>
+                                        <td class="text-center" style="color: gray;">{{ reserva.graduacao }}</td>
+                                        <td class="text-center" style="color: gray;">{{ reserva.qtde_hosp }}</td>
+                                        <td class="text-center" style="color: gray;">{{ reserva.qtde_quartos }}</td>
+                                        <td class="text-center" style="color: gray;">{{ reserva.especial }}</td>                            
+                                        <td class="text-center"><button style="width: 100px;" type="button" class="btn-warning" onclick="window.location.href='{% url 'editar_checkin' reservas_pk=reserva.id %}'">Check-in</button></td>
+                                    </tr>
+                                {% endfor %}
+                                
+                            </tbody>
+                        </table>
+                    {% endif %}
+                    {% if not consultar %}
+                    <table class="table">
+                        <h1>HÓSPEDES PARA CHEGAR</h1>
+                        <hr>
+                            <div class="form-group col-md-12" align="center"> 
+                                <label colspan="12" style="text-align: center; color: red;">Não têm hospedes para chegar.</label>
+                            </div>
+                        </table>        
+                    {% endif %}
+                </div>               
+                
+            </div>
+
+            
+        </div>
+    </div>
+    
+{% endblock %}
+
+
+{% block jscript %}
+
+<script>
+    function redirecionarParaConsumacao(reservas_pk) {
+        window.location.href = "/consumacao/" + reservas_pk + "/";
+    }
+</script>
+
+{% endblock %}

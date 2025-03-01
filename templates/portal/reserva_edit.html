@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="card">
+    <div class="card-body">
+        <h4>EDITAR RESERVA</h4>
+        <hr>
+        <div id="conteudoDinamico" class="container">
+            <form method="post" action="{% url 'editar_reservas' reservas_pk=reserva.id %}">
+                {% csrf_token %}
+                
+                <h1>INFORMAÇÕES DA RESERVA</h1>
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+                        <label for="id_entrada">Entrada:</label>
+                        <input type="date" id="id_entrada" name="entrada" class="form-control"
+                               value="{{ reserva.entrada|date:'Y-m-d' }}">
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <label for="id_saida">Saída:</label>
+                        <input type="date" id="id_saida" name="saida" class="form-control"
+                               value="{{ reserva.saida|date:'Y-m-d' }}">
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <label for="{{ form.qtde_hosp.id_for_label }}">Qtde de Hóspedes:</label>
+                        <input type="text" class="form-control" value="{{ reserva.qtde_hosp }}" readonly>
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <label for="{{ form.motivo_viagem.id_for_label }}">Motivo da Viagem:</label>
+                        <input type="text" class="form-control" value="{{ reserva.motivo_viagem }}" readonly>
+                    </div>
+                </div>
+                <hr />
+
+                <h1>DADOS DO HÓSPEDE PRINCIPAL</h1>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="{{ form.nome.id_for_label }}">Nome Completo:</label>
+                        <input type="text" class="form-control" value="{{ reserva.nome }}" readonly>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label for="{{ form.email.id_for_label }}">E-mail:</label>
+                        <input type="text" class="form-control" value="{{ reserva.email }}" readonly>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="{{ form.cpf.id_for_label }}">CPF:</label>
+                        <input type="text" class="form-control" value="{{ reserva.cpf }}" readonly>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label for="{{ form.telefone.id_for_label }}">Telefone:</label>
+                        <input type="text" class="form-control" value="{{ reserva.telefone }}" readonly>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="{{ form.status.id_for_label }}">Status:</label>
+                        <input type="text" class="form-control" value="{{ reserva.status }}" readonly>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="{{ form.graduacao.id_for_label }}">Graduação:</label>
+                        <input type="text" class="form-control" value="{{ reserva.graduacao }}" readonly>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="{{ form.tipo.id_for_label }}">Tipo:</label>
+                        <input type="text" class="form-control" value="{{ reserva.tipo }}" readonly>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="{{ form.sexo.id_for_label }}">Sexo:</label>
+                        <input type="text" class="form-control" value="{{ reserva.sexo }}" readonly>
+                    </div>
+                </div>
+                <hr />
+
+                <h1>OUTRAS INFORMAÇÕES</h1>
+                <div class="form-row">
+                    <div class="form-group col-md-8">
+                        <label for="{{ form.cidade.id_for_label }}">Cidade de Origem:</label>
+                        <input type="text" class="form-control" value="{{ reserva.cidade }}" readonly>
+                    </div>
+                    <div class="form-group col-md-1">
+                        <label for="{{ form.uf.id_for_label }}">UF:</label>
+                        <input type="text" class="form-control" value="{{ reserva.uf }}" readonly>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="{{ form.especial.id_for_label }}">Necessidades Especiais?</label>
+                        <input type="text" class="form-control" value="{{ reserva.especial }}" readonly>
+                    </div>
+                </div>
+                <hr />
+
+                <h1>STATUS E ALOCAÇÃO</h1>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="id_status_reserva">Status da Reserva:</label>
+                        <select name="status_reserva" id="id_status_reserva" class="form-control">
+                            <option value="Pendente" {% if reserva.status_reserva == "Pendente" %}selected{% endif %}>Pendente</option>
+                            <option value="Aprovada" {% if reserva.status_reserva == "Aprovada" %}selected{% endif %}>Aprovada</option>
+                            <option value="Recusada" {% if reserva.status_reserva == "Recusada" %}selected{% endif %}>Recusada</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <label for="id_mhex">MHEx:</label>
+                        {{ form.mhex }}
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <label for="id_uh">UH:</label>
+                        {{ form.uh }}
+                    </div>
+                </div>
+
+                <hr />
+                <div class="form-row">
+                    <div class="form-group col-md-9"></div>
+                    <div class="form-group col-md-3">
+                        <button class="btn-sm col-lg-5" type="submit">Salvar</button>
+                        <button type="button" class="btn-sm col-lg-5" onclick="window.location.href='{% url 'consultar_reservas' %}'">Cancelar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

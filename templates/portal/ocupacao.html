@@ -1,0 +1,75 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="card container-lg">
+    <div class="card-body">
+        
+            <div class="row justify-content-center">
+                <div class="col-md-8 text-center" width="30%">
+                    <h3>UHs - HTM 1</h3>
+                </div>
+                <div class="col-md-4 text-center">
+                    <h3>UHs - HTM 2</h3>
+                </div>
+            </div>
+            <div class="row justify-content-center" width="100%";>
+                <div width="30%">
+                    <table class="table" border="3" style="border-color: gray;">
+                        <tr>
+                            <th class="text-center" scope="col" style="color: write; width: 2%; background: #d2d0cc;">Dia</th>
+                            {% for quarto in ocupacao_htm_01.1 %}
+                            <th class="text-center" scope="col" style="color: write; width: 2%; background: #d2d0cc;"> {{ quarto }}</th>
+                            {% endfor %}
+                        </tr>
+                        {% for dia, ocupacao_quartos in ocupacao_htm_01.items %}
+                        <tr>
+                            <td class="text-center" scope="col" style="color: gray; width: 1%;"><b>{{ dia }}</b></td>
+                            {% for quarto, ocupacao in ocupacao_quartos.items %}
+                            <td class="text-center" style="color: white;">
+                                {% if ocupacao.ocupado %}
+                                    <img src="{% static "img/ocupado50.png" %}" alt="Ocupado"> 
+                                    <!-- Imagem para quarto ocupado -->
+                                {% else %}
+                                <img src="{% static "img/vago50.png" %}" alt="Vago"> <!-- Imagem para quarto vago -->
+                                {% endif %}                                
+                            </td>
+                            
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+                <div width="30%">
+                    <table class="table" border="3" style="border-color: gray;">
+                        <tr>
+                            <th class="text-center" scope="col" style="color: write; width: 2%; background: #d2d0cc;">Dia</th>
+                            {% for quarto in ocupacao_htm_02.1 %}
+                            <th class="text-center" scope="col" style="color: write; width: 2%; background: #d2d0cc;">{{ quarto }}</th>
+                            {% endfor %}
+                        </tr>
+                        {% for dia, ocupacao_quartos in ocupacao_htm_02.items %}
+                        <tr>
+                            <td class="text-center" scope="col" style="color: gray; width: 2%;"><b>{{ dia }}</b></td>
+                            {% for quarto, ocupacao in ocupacao_quartos.items %}
+                            <td class="text-center" style="color: white;">
+                                {% if ocupacao.ocupado %}
+                                    <img src="{% static "img/ocupado50.png" %}" alt="Ocupado"> 
+                                    <!-- Imagem para quarto ocupado -->
+                                {% else %}
+                                <img src="{% static "img/vago50.png" %}" alt="Vago"> <!-- Imagem para quarto vago -->
+                                {% endif %}                                
+                            </td>
+                            
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        
+    </div>    
+</div>
+      
+{% endblock %}

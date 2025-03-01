@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+    
+    <div class="card">
+        <div class="card-body">
+            <h4>HOSPEDES E VALORES</h4>
+            <hr>
+               
+            
+            <div class="container-fluid">
+                
+                {% for hotel in relatorios %}
+                    <h2>Hotel: {{ hotel.nome }}</h2>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Dia</th>
+                            {% for mes in meses %}
+                            <th>{{ mes }} (Hóspedes)</th>
+                            <th>{{ mes }} (Valor)</th>
+                            {% endfor %}
+                            <th>Total Ano (Hóspedes)</th>
+                            <th>Total Ano (Valor)</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for dia in dias %}  <tr>
+                            <td>{{ dia }}</td>
+                            {% for dados_mes in hotel.dados_meses %}
+                                <td>{{ dados_mes.total_hospedes.get(dia, 0) }}</td>
+                                <td>R$ {{ dados_mes.valor_total.get(dia, 0.00) }}</td>
+                            {% endfor %}
+                            <td>{{ hotel.total_ano.total_hospedes.get(dia, 0) }}</td>
+                            <td>R$ {{ hotel.total_ano.valor_total.get(dia, 0.00) }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% endfor %}
+                
+            </div>
+
+           
+        </div>
+    </div>
+    
+{% endblock %}
+
+
+{% block jscript %}
+
+{% comment %} <script>
+    function redirecionarParaConsumacao(reservas_pk) {
+        window.location.href = "/consumacao/" + reservas_pk + "/";
+    }
+</script> {% endcomment %}
+
+{% endblock %}

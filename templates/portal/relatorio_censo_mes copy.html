@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card container-fluid">
+    <div class="card-body">
+
+        <!-- Mensagem de erro, se houver -->
+        {% if error_message %}
+        <div class="alert alert-danger text-center">
+            {{ error_message }}
+        </div>
+        {% endif %}
+
+        <!-- Formulário para selecionar o ano -->
+        <div class="card">
+            <div class="card-body">
+                <h4 class="text-center">RELATÓRIO ANUAL - FINANCEIRO</h4>
+                <hr>
+                <div class="container-fluid">
+                    <form method="GET" action="">
+                        <div class="row justify-content-center">
+                            <div class="col-md-3">
+                                <label for="id_ano_relatorio" class="form-label">Ano:</label>
+                                <select name="ano_relatorio" id="id_ano_relatorio" class="form-select">
+                                    <option value="2024" selected>2024</option>
+                                    <option value="2023">2023</option>
+                                    <option value="2022">2022</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3 d-flex align-items-end">
+                                <button type="submit" class="btn btn-primary">Gerar Relatório</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Se houver relatório disponível -->
+        {% if relatorio_gerado %}
+        <div class="alert alert-success text-center mt-4">
+            O relatório do ano {{ ano_relatorio }} foi gerado com sucesso! O download deve iniciar automaticamente.
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}

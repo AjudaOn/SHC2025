@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<div class="card container-fluid">
+    <div class="card-body">
+        
+            <div class="row justify-content-center">
+                <div class="col-md-7 text-center">
+                    <h3>HTM 1</h3>
+                </div>
+                <div class="col-md-3 text-center">
+                    <h3>HTM 2</h3>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-7">
+                    <table class="table" border="3" style="border-color: white;">
+                        <tr>
+                            <th class="text-center" scope="col" style="color: gray; width: 2%;">Dia</th>
+                            {% for quarto in ocupacao_htm_01.1 %}
+                            <th class="text-center" scope="col" style="color: gray; width: 2%;">Quarto {{ quarto }}</th>
+                            {% endfor %}
+                        </tr>
+                        {% for dia, ocupacao_quartos in ocupacao_htm_01.items %}
+                        <tr>
+                            <td class="text-center" scope="col" style="color: gray; width: 2%;">{{ dia }}</td>
+                            {% for quarto, ocupacao in ocupacao_quartos.items %}
+                            <td class="text-center" style="background-color: {% if ocupacao.ocupado %}red{% else %}green{% endif %}; color: white;">
+                                {% if ocupacao.diaria %}
+                                    {{ ocupacao.diaria }}
+                                {% endif %}
+                            </td> 
+                            
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+                <div class="col-md-3">
+                    <table class="table" border="3" style="border-color: white;">
+                        <tr>
+                            <th class="text-center" scope="col" style="color: gray; width: 2%;">Dia</th>
+                            {% for quarto in ocupacao_htm_02.1 %}
+                            <th class="text-center" style="color: gray; width: 2%;">Quarto {{ quarto }}</th>
+                            {% endfor %}
+                        </tr>
+                        {% for dia, ocupacao_quartos in ocupacao_htm_02.items %}
+                        <tr>
+                            <td class="text-center" scope="col" style="color: gray; width: 2%;">{{ dia }}</td>
+                            {% for quarto, ocupacao in ocupacao_quartos.items %}
+                            <td class="text-center" style="color: white; width: 2%; background-color: {% if ocupacao.ocupado %}red{% else %}green{% endif %};">
+                                {% if ocupacao.diaria %}
+                                    {{ ocupacao.diaria }}
+                                {% endif %}
+                            </td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        
+    </div>    
+</div>
+      
+{% endblock %}

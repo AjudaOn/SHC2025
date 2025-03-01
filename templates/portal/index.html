@@ -1,0 +1,557 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>SCH</title>
+
+    <!-- Custom fonts for this template-->
+    <link href={% static "vendor/fontawesome-free/css/all.min.css" %} rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href={% static "css/sb-admin-2.css" %} rel="stylesheet">
+    <link href={% static "css/meu-formulario.css" %} rel="stylesheet">
+
+</head>
+
+<body class="bg-gradient-primary">
+    <div class="container d-flex justify-content-center align-items-center">
+        <div class="container">
+
+            <!-- Outer Row -->
+            <div class="row justify-content-center">
+
+                <div class="col-xl-12 col-lg-12 col-md-10">
+
+                    <div class="card o-hidden border-0 shadow-lg my-5">
+                        <div class="card-body">
+                            <!-- Nested Row within Card Body -->
+                            <div class="row">
+                                {% comment %} <div class="col-lg-6 d-none d-lg-block bg-login-image"></div> {% endcomment %}
+                                <div class="col-lg-12">
+                                    <div class="form-row text-center">
+                                        <div class="form-group col-md-3 d-flex justify-content-center align-items-center"><img src="{% static 'img/logo11.gif' %}" alt="Imagem Principal"></div>
+                                        
+                                        <div class="form-group col-md-8"><h1 class="h1 mb-4">HOTEL DE TRÂNSITO DO EXÉRCITO</h1> <h3 class="h4 mb-4">Ponta Porã - MS</h3></div>
+                                    </div>
+                                </div>    
+                            </div>
+                        </div>
+                    </div>  
+                    
+                    <div class="card o-hidden border-0 shadow-lg my-5">
+                        <div class="card-body">
+                            <!-- Nested Row within Card Body -->
+                            
+                                {% comment %} <div class="col-lg-6 d-none d-lg-block bg-login-image"></div> {% endcomment %}
+                                <div class="col-lg-12">  
+                                    <div class="container-fluid">
+                                            <h1 class="h3 mb-2">Leia com atenção!</h1> 
+                                            <p style="font-size: 18px; padding-left: 0px;" class="text-justify" >
+                                                <b>Sobre o preenchimento do formulário de pré-reserva:</b></br></br>
+
+                                                Por favor, preencha um formulário para cada quarto solicitado. Isso significa que, se você precisar reservar mais de um quarto, será necessário preencher o formulário duas vezes. No primeiro formulário, insira seus próprios dados. No segundo formulário, forneça os dados do outro hóspede que ocupará o quarto.
+
+                                                <br><br>Este hotel aceita pets. A diária é cobrada por animal.
+
+                                            </p>
+                                    </div>
+                                </div>    
+                            
+                        </div>
+                    </div> 
+
+                    <div class="card o-hidden border-0 shadow-lg my-5">
+                        <div class="card-body">
+                            <!-- Nested Row within Card Body -->
+                            <div class="row">
+                                {% comment %} <div class="col-lg-6 d-none d-lg-block bg-login-image"></div> {% endcomment %}
+                                <div class="col-lg-12">
+                                    <div class="p-4">
+                                        
+                                        
+                                        <form id="myForm" method="post" action="{% url 'reserva_externa' %}">
+                                            {% csrf_token %}
+                                            <!-- Start Input Name -->
+                                            <h1>INFORMAÇÕES DA PRÉ-RESERVA</h1>
+                                            <div class="form-row">
+                                                <!-- Start Input Date -->
+                                                <div class="form-group col-md-3">     
+                                                    <label for="{{ form.entrada.id_for_label }}">Entrada:</label>                                        
+                                                        {{ form.entrada }}                                       
+                                                </div>
+                                                
+                                                <div class="form-group col-md-3">     
+                                                    <label for="{{ form.saida.id_for_label }}">Saída:</label>                                        
+                                                        {{ form.saida }}
+                                                                                               
+                                                </div>
+                                                
+                                                <div class="form-group col-md-3">
+                                                    <label for="{{ form.qtde_hosp.id_for_label }}">Qtde de Hóspedes:</label>
+                                                    {{ form.qtde_hosp }}                                             
+                                                </div> 
+                                                
+                                                
+                                                <div class="form-group col-md-2" style="display:none;">
+                                                    <input type="hidden" id="qtde_quartos" name="qtde_quartos" value="1">                                           
+                                                </div>
+                        
+                                                <div class="form-group col-md-3">
+                                                    <label for="{{ form.motivo_viagem.id_for_label }}">Motivo da Viagem:</label>
+                                                    {{ form.motivo_viagem }}                                             
+                                                </div> 
+                        
+                                            </div>
+                                            <hr />
+                                            <h1>DADOS DO HÓSPEDE PRINCIPAL</h1>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-6">
+                                                    <label for="{{ form.nome.id_for_label }}">Nome Completo:</label>                                        
+                                                        {{ form.nome }}                                             
+                                                </div>
+                                                
+                                                <div class="form-group col-md-6">
+                                                    <label for="{{ form.email.id_for_label }}">E-mail:</label>                                        
+                                                        {{ form.email }}                                             
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-6">
+                                                    <label for="{{ form.cpf.id_for_label }}">CPF:</label>                                        
+                                                        {{ form.cpf }}                                             
+                                                </div>
+                                                
+                                                <div class="form-group col-md-6">
+                                                    <label for="{{ form.telefone.id_for_label }}">Telefone:</label>                                        
+                                                        {{ form.telefone }}                                             
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-4">     
+                                                    <label for="{{ form.status.id_for_label }}">Status:</label>                                        
+                                                        {{ form.status }} 
+                                                </div>
+                                                <div class="form-group col-md-3">     
+                                                    <label for="{{ form.graduacao.id_for_label }}">Graduação:</label>                                        
+                                                        {{ form.graduacao }} 
+                                                </div>
+                                                <div class="form-group col-md-3">     
+                                                    <label for="{{ form.tipo.id_for_label }}">Tipo:</label>                                        
+                                                        {{ form.tipo }} 
+                                                </div>
+                                                <div class="form-group col-md-2">     
+                                                    <label for="{{ form.sexo.id_for_label }}">Sexo:</label>                                        
+                                                        {{ form.sexo }}                                       
+                                                </div>
+                                            </div>    
+                                            <div id="linha" class="hidden"><hr /></div>
+                                            <div id="singular" class="hidden">     
+                                                <h1>INFORMAÇÃO DO ACOMPANHANTE</h1>                                      
+                                            </div>
+                                            <div id="plural" class="hidden">     
+                                                <h1>INFORMAÇÕES DOS ACOMPANHANTES</h1>                                      
+                                            </div>  
+                                            <div id="acompanhante1" class="hidden">     
+                                                
+                                                <div class="form-row">
+                                                    
+                                                    <div class="form-group col-md-6">     
+                                                        <label for="{{ form.nome_acomp1.id_for_label }}">Nome Completo:</label>                                        
+                                                            {{ form.nome_acomp1 }}                                       
+                                                    </div>
+                                                    <div class="form-group col-md-3">     
+                                                        <label for="{{ form.vinculo_acomp1.id_for_label }}">Vínculo Familiar:</label>                                        
+                                                            {{ form.vinculo_acomp1 }}                                       
+                                                    </div>
+                                                    <div class="form-group col-md-1">
+                                                        <label for="{{ form.idade_acomp1.id_for_label }}">Idade:</label>                                        
+                                                            {{ form.idade_acomp1 }}                                             
+                                                    </div>                                        
+                                                    <div class="form-group col-md-2">     
+                                                        <label for="{{ form.sexo_acomp1.id_for_label }}">Sexo:</label>                                        
+                                                            {{ form.sexo_acomp1 }}                                       
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                            <div id="acompanhante2" class="hidden">     
+                                                
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6">     
+                                                        <label for="{{ form.nome_acomp2.id_for_label }}">Nome Completo:</label>                                        
+                                                            {{ form.nome_acomp2 }}                                       
+                                                    </div>
+                                                    <div class="form-group col-md-3">     
+                                                        <label for="{{ form.vinculo_acomp2.id_for_label }}">Vínculo Familiar:</label>                                        
+                                                            {{ form.vinculo_acomp2 }}                                       
+                                                    </div>
+                                                    <div class="form-group col-md-1">
+                                                        <label for="{{ form.idade_acomp2.id_for_label }}">Idade:</label>                                        
+                                                            {{ form.idade_acomp2 }}                                             
+                                                    </div>                                        
+                                                    <div class="form-group col-md-2">     
+                                                        <label for="{{ form.sexo_acomp2.id_for_label }}">Sexo:</label>                                        
+                                                            {{ form.sexo_acomp2 }}                                       
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                            
+                                            <div id="acompanhante3" class="hidden">     
+                                                
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6">     
+                                                        <label for="{{ form.nome_acomp3.id_for_label }}">Nome Completo:</label>                                        
+                                                            {{ form.nome_acomp3 }}                                       
+                                                    </div>
+                                                    <div class="form-group col-md-3">     
+                                                        <label for="{{ form.vinculo_acomp3.id_for_label }}">Vínculo Familiar:</label>                                        
+                                                            {{ form.vinculo_acomp3 }}                                       
+                                                    </div>
+                                                    <div class="form-group col-md-1">
+                                                        <label for="{{ form.idade_acomp3.id_for_label }}">Idade:</label>                                        
+                                                            {{ form.idade_acomp3 }}                                             
+                                                    </div>                                        
+                                                    <div class="form-group col-md-2">     
+                                                        <label for="{{ form.sexo_acomp3.id_for_label }}">Sexo:</label>                                        
+                                                            {{ form.sexo_acomp3 }}                                       
+                                                    </div>
+                                                </div>
+                                                
+                                            </div> 
+                                            
+                                            <div id="acompanhante4" class="hidden">     
+                                                
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6">     
+                                                        <label for="{{ form.nome_acomp4.id_for_label }}">Nome Completo:</label>                                        
+                                                            {{ form.nome_acomp4 }}                                       
+                                                    </div>
+                                                    <div class="form-group col-md-3">     
+                                                        <label for="{{ form.vinculo_acomp4.id_for_label }}">Vínculo Familiar:</label>                                        
+                                                            {{ form.vinculo_acomp4 }}                                       
+                                                    </div>
+                                                    <div class="form-group col-md-1">
+                                                        <label for="{{ form.idade_acomp4.id_for_label }}">Idade:</label>                                        
+                                                            {{ form.idade_acomp4 }}                                             
+                                                    </div>                                        
+                                                    <div class="form-group col-md-2">     
+                                                        <label for="{{ form.sexo_acomp4.id_for_label }}">Sexo:</label>                                        
+                                                            {{ form.sexo_acomp4 }}                                       
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>  
+                                            
+                                            <div id="acompanhante5" class="hidden">     
+                                                
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6">     
+                                                        <label for="{{ form.nome_acomp5.id_for_label }}">Nome Completo:</label>                                        
+                                                            {{ form.nome_acomp5 }}                                       
+                                                    </div>
+                                                    <div class="form-group col-md-3">     
+                                                        <label for="{{ form.vinculo_acomp5.id_for_label }}">Vínculo Familiar:</label>                                        
+                                                            {{ form.vinculo_acomp5 }}                                       
+                                                    </div>
+                                                    <div class="form-group col-md-1">
+                                                        <label for="{{ form.idade_acomp5.id_for_label }}">Idade:</label>                                        
+                                                            {{ form.idade_acomp5 }}                                             
+                                                    </div>                                        
+                                                    <div class="form-group col-md-2">     
+                                                        <label for="{{ form.sexo_acomp5.id_for_label }}">Sexo:</label>                                        
+                                                            {{ form.sexo_acomp5 }}                                       
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>       
+                                            <hr />    
+                                            <h1>OUTRAS INFORMAÇÕES</h1>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-8">     
+                                                    <label for="{{ form.cidade.id_for_label }}">Cidade de Origem:</label>                                        
+                                                        {{ form.cidade }}                                       
+                                                </div>
+                                                <div class="form-group col-md-1">     
+                                                    <label for="{{ form.uf.id_for_label }}">UF:</label>                                        
+                                                        {{ form.uf }}                                       
+                                                </div>
+                                                <div class="form-group col-md-3">     
+                                                    <label for="{{ form.especial.id_for_label }}">Necessidades Especiais?</label>                                        
+                                                        {{ form.especial }}                                       
+                                                </div>
+                                                <!-- Campo oculto para status_reserva -->
+                                                <input type="hidden" name="status_reserva" id="id_status_reserva" value="Pendente"> 
+                                            </div>    
+                                            
+
+                                            <div class="form-row">
+                                                <div class="form-group col-md-12">     
+                                                    <label for="{{ form.observacao.id_for_label }}">Observação:</label>                                        
+                                                        {{ form.observacao }}                                       
+                                                </div>
+                                                
+                                                 
+                                            </div>
+                                            <hr />
+                                            <div class="form-row">
+                                                <div class="form-group col-md-9"></div>
+                                                <div class="form-group col-md-3">
+                                                    <button id="btnSalvar" class="btn-sm col-lg-5" >Salvar</button>
+                                                    <button class="btn-sm col-lg-5" type="button" class="btn-warning" onclick="window.location.href='{% url 'reserva_externa' %}'">Cancelar</button>
+                                                </div>
+                                            </div>    
+                                            <!-- End Submit Button -->
+                                        </form>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>    
+
+    <!-- Bootstrap core JavaScript-->
+    <script src={% static "vendor/jquery/jquery.min.js" %}></script>
+    <script src={% static "vendor/bootstrap/js/bootstrap.bundle.min.js" %}></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src={% static "vendor/jquery-easing/jquery.easing.min.js" %}></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src={% static "js/sb-admin-2.min.js" %}></script>
+    
+
+    <script>
+        function toggleAcompanhanteDivs() {
+            var qtdeHospInput = document.getElementById('id_qtde_hosp');
+            var qtdeHosp = parseInt(qtdeHospInput.value, 10) - 1;
+            console.log('Quantidade de Acompanhantes:', qtdeHosp);
+            console.log("JavaScript executado");
+        
+            // Loop para mostrar/esconder divs de acompanhantes baseado em qtde_hosp
+            for (var i = 1; i <= 5; i++) {
+                var div = document.getElementById('acompanhante' + i);
+                if (div) {
+                    div.className = i <= qtdeHosp ? 'visible' : 'hidden';
+                }
+            }
+        
+            // Você não precisa redefinir qtdeHosp após o primeiro uso, a menos que o valor de qtdeHospInput tenha mudado.
+            //var qtdeHosp = parseInt(qtdeHospInput.value, 10);
+        
+            // Ajustando visibilidade para singular ou plural
+            if ((qtdeHosp + 1 === 3) || (qtdeHosp + 1 === 4) || (qtdeHosp + 1 === 5) || (qtdeHosp + 1 === 6)) {
+                // Ajuste para qtdeHosp + 1 porque você diminuiu 1 antes
+                console.log("Condição verdadeira. Ocultando divs.");
+                document.getElementById('singular').className = 'hidden';
+                document.getElementById('plural').className = 'visible';
+                document.getElementById('linha').className = 'visible';
+            } else if (qtdeHosp + 1 === 2) {
+                document.getElementById('singular').className = 'visible';
+                document.getElementById('plural').className = 'hidden';
+                document.getElementById('linha').className = 'visible';
+            } else {
+                document.getElementById('singular').className = 'hidden';
+                document.getElementById('plural').className = 'hidden';
+                document.getElementById('linha').className = 'hidden';
+            }
+        }
+        
+        // Use DOMContentLoaded para adicionar event listeners ou para executar código inicial
+        document.addEventListener('DOMContentLoaded', (event) => {
+            // Aqui você pode adicionar listeners, por exemplo:
+            var qtdeHospInput = document.getElementById('id_qtde_hosp');
+            if (qtdeHospInput) {
+                qtdeHospInput.addEventListener('change', toggleAcompanhanteDivs);
+                // Também pode querer chamar a função diretamente para definir o estado inicial:
+                toggleAcompanhanteDivs();
+            } else {
+                console.error('Elemento qtde_hosp não encontrado');
+            }
+        });
+    </script>
+
+    {% comment %} <script>
+        // Função para adicionar a classe 'form-control' e o atributo 'required' ao campo UF
+        function modificarCampoUF() {
+            var campoUF = document.getElementById("{{ form.uf.id_for_label }}");
+            campoUF.classList.add("form-control");
+            campoUF.setAttribute("required", "required");
+        }
+    
+        // Chamar a função para modificar o campo UF após o carregamento do DOM
+        document.addEventListener("DOMContentLoaded", function() {
+            modificarCampoUF();
+        });
+    
+        // Função para criar e mostrar o popup
+        function mostrarPopup() {
+            // Criar div do popup
+            var popup = document.createElement("div");
+            popup.classList.add("popup");
+        
+            // Criar conteúdo do popup
+            var popupContent = document.createElement("div");
+            popupContent.classList.add("popup-content");
+            popupContent.innerHTML = "<p>Sua <b>PRÉ-RESERVA</b> foi enviada!<br><br>Te ligaremos em até 72 horas <br>Obrigado!</p>";
+        
+            // Criar botão OK
+            var btnOK = document.createElement("button");
+            btnOK.textContent = "OK";
+            btnOK.classList.add("btn-sm", "col-lg-5");
+            btnOK.addEventListener("click", function () {
+                // Remover o popup ao clicar no botão OK
+                popup.remove();
+                // Limpar o formulário
+                limparFormulario();
+            });
+        
+            // Adicionar conteúdo ao popup
+            popupContent.appendChild(btnOK);
+            popup.appendChild(popupContent);
+        
+            // Adicionar popup ao body
+            document.body.appendChild(popup);
+        }
+    
+        // Função para limpar o formulário
+        function limparFormulario() {
+            var form = document.getElementById("myForm");
+            form.reset();
+        }
+    
+        // Quando o botão de salvar for clicado, validar o formulário e enviar via AJAX
+        document.getElementById("btnSalvar").addEventListener("click", function (event) {
+            // Impedir o envio tradicional do formulário
+            event.preventDefault();
+    
+            // Validar o formulário antes de enviar via AJAX
+            var form = document.getElementById("myForm");
+            if (form.checkValidity()) {
+                var formData = new FormData(form);
+    
+                // Enviar o formulário via AJAX
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", form.action, true);
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        // Exibir o popup após o envio bem-sucedido
+                        mostrarPopup();
+                    }
+                };
+                xhr.send(formData);
+            } else {
+                form.reportValidity(); // Exibir mensagens de validação do formulário
+            }
+        });
+    </script> {% endcomment %}
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Função para adicionar a classe 'form-control' e o atributo 'required' ao campo UF
+            function modificarCampoUF() {
+                var campoUF = document.getElementById("{{ form.uf.id_for_label }}");
+                if (campoUF) {
+                    campoUF.classList.add("form-control");
+                    campoUF.setAttribute("required", "required");
+                }
+            }
+    
+            modificarCampoUF();
+    
+            // Função para criar e mostrar o popup com base na resposta do servidor
+            function mostrarPopup(mensagem) {
+                var popup = document.createElement("div");
+                popup.classList.add("popup");
+                var popupContent = document.createElement("div");
+                popupContent.classList.add("popup-content");
+                popupContent.innerHTML = mensagem;
+                var btnOK = document.createElement("button");
+                btnOK.textContent = "OK";
+                btnOK.classList.add("btn-sm", "col-lg-5");
+                btnOK.addEventListener("click", function() {
+                    popup.remove(); // Remover o popup
+                    limparFormulario(); // Limpar o formulário após sucesso
+                });
+                popupContent.appendChild(btnOK);
+                popup.appendChild(popupContent);
+                document.body.appendChild(popup);
+            }
+    
+            // Função para limpar o formulário
+            function limparFormulario() {
+                var form = document.getElementById("myForm");
+                form.reset();
+            }
+    
+            // Manipulação do evento de clique no botão Salvar para enviar via AJAX
+            document.getElementById("btnSalvar").addEventListener("click", function(event) {
+                event.preventDefault(); // Impedir o envio tradicional do formulário
+                var form = document.getElementById("myForm");
+                if (form.checkValidity()) {
+                    var formData = new FormData(form);
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", form.action, true);
+                    xhr.onload = function() {
+                        if (xhr.status === 200) {
+                            var response = JSON.parse(xhr.responseText);
+                            if (response.success) {
+                                mostrarPopup("<p><b>Sua PRÉ-RESERVA foi enviada com sucesso!</b><br><br>Te ligaremos em até 72 horas.<br>Obrigado!</p>");
+                            } else {
+                                mostrarPopup("<p>Erro ao enviar o formulário: " + response.message + "</p>");
+                            }
+                        } else {
+                            mostrarPopup("<p>Erro ao conectar com o servidor. Por favor, tente novamente.</p>");
+                        }
+                    };
+                    xhr.send(formData);
+                } else {
+                    form.reportValidity(); // Exibir mensagens de validação do formulário
+                }
+            });
+        });
+    </script>
+    
+    <style>
+        /* Estilos para o popup */
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 30px;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 0px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+        }
+    
+        .popup-content {
+            text-align: center;
+            width: 300px;
+        }
+    </style>
+    
+
+</body>
+
+</html>

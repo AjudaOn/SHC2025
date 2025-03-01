@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card container-fluid">
+    <div class="card-body">
+
+        <!-- Exibir mensagem de erro, se houver -->
+        {% if error_message %}
+        <div class="alert alert-danger text-center">
+            {{ error_message }}
+        </div>
+        {% endif %}
+
+        <!-- Formulário para selecione ano -->
+        <div class="card">
+            <div class="card-body">
+                <h4>RELATORIO DE OCUPAÇÃO - FINANCEIRO</h4>
+                <hr> 
+                <div class="container-fluid">
+        
+                    <form method="GET" action="">
+                        <!-- Campos do primeiro formulário -->
+                        <label for="id_mes_relatorio">Mês:</label>
+                        <select name="mes_relatorio" id="id_mes_relatorio">
+                            <option value=1>Janeiro</option>
+                            <option value=2>Fevereiro</option>
+                            <option value=3>Março</option>
+                            <option value=4>Abril</option>
+                            <option value=5>Maio</option>
+                            <option value=6>Junho</option>
+                            <option value=7>Julho</option>
+                            <option value=8>Agosto</option>
+                            <option value=9>Setembro</option>
+                            <option value=10>Outubro</option>
+                            <option value=11>Novembro</option>
+                            <option value=12>Dezembro</option>
+                            <!-- Opções do mês -->
+                        </select>
+                        <label for="id_ano_relatorio">Ano:</label>
+                        <select name="ano_relatorio" id="id_ano_relatorio">
+                            <option value=2024>2024</option>
+                            <option value=2025>2025</option>
+                            
+                            <!-- Opções do ano -->
+                        </select>
+                        {% comment %} <label for="id_forma_pagamento">Forma de Pagamento:</label>
+                        <input type="hidden" name="forma_pagamento" value="DINHEIRO"> {% endcomment %}
+                        <button type="submit">Gerar Relatório</button>
+                    </form>
+                    
+                </div>
+            </div>
+        </div>        
+
+        {% if censo_htm_01 and censo_htm_02 %}
+        <!-- Relatório do Censo - Título com mês e ano -->
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-10 text-center">
+                <h2>Relatório do Censo - {{ mes_texto }} / {{ ano_relatorio }}</h2>
+            </div>
+        </div>
+
+        <!-- Relatório do Censo para HTM 01 -->
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-10 text-center">
+                <h3>Censo HTM 01</h3>
+            </div>
+        </div>
+
+        <!-- Tabela para o censo do HTM 01 -->
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <table class="table" border="3" style="border-color: white;">
+                    <thead>
+                        <tr>
+                            <th class="text-center" scope="col" style="color: gray;">Dia</th>
+                            <th class="text-center" scope="col" style="color: gray;">Total Hóspedes</th>
+                            <th class="text-center" scope="col" style="color: gray;">Valor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for dia in censo_htm_01 %}
+                        <tr>
+                            <td class="text-center">{{ dia.dia }}</td>
+                            <td class="text-center">{{ dia.qtde }}</td>
+                            <td class="text-center">{{ dia.valor|floatformat:2 }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Relatório do Censo para HTM 02 -->
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-10 text-center">
+                <h3>Censo HTM 02</h3>
+            </div>
+        </div>
+
+        <!-- Tabela para o censo do HTM 02 -->
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <table class="table" border="3" style="border-color: white;">
+                    <thead>
+                        <tr>
+                            <th class="text-center" scope="col" style="color: gray;">Dia</th>
+                            <th class="text-center" scope="col" style="color: gray;">Total Hóspedes</th>
+                            <th class="text-center" scope="col" style="color: gray;">Valor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for dia in censo_htm_02 %}
+                        <tr>
+                            <td class="text-center">{{ dia.dia }}</td>
+                            <td class="text-center">{{ dia.qtde }}</td>
+                            <td class="text-center">{{ dia.valor|floatformat:2 }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}
