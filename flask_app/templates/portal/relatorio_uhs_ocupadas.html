@@ -1,0 +1,67 @@
+{% extends "layouts/sch_base.html" %}
+
+{% block content %}
+<section class="sch-card">
+  <header class="sch-card-header">
+    <h1 class="sch-card-title">UHS OCUPADAS</h1>
+  </header>
+
+  <div class="sch-card-content">
+    <form class="sch-form" method="get">
+      <div class="sch-section">
+        <h2 class="sch-section-title">FILTRO</h2>
+        <div class="sch-grid sch-grid-3">
+          <div class="sch-field">
+            <label for="ano">Ano:</label>
+            <select name="ano" id="ano" class="sch-input">
+              {% for ano_val in anos %}
+              <option value="{{ ano_val }}" {% if ano_val == ano %}selected{% endif %}>{{ ano_val }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="sch-field">
+            <label>&nbsp;</label>
+            <button class="sch-btn" type="submit">Gerar Relatório</button>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div class="sch-divider sch-divider-space"></div>
+
+    <div class="occ-table-wrap">
+      <table class="occ-table">
+        <thead>
+          <tr>
+            <th class="occ-day-col" rowspan="2">Dia</th>
+            {% for mes in meses %}
+              <th class="occ-room-col" colspan="2">{{ mes }}</th>
+            {% endfor %}
+          </tr>
+          <tr>
+            {% for mes in meses %}
+              <th class="occ-room-col">Total UH do dia</th>
+              <th class="occ-room-col">UH ocupada no dia</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for dia in dias %}
+          <tr class="{{ 'occ-row-alt' if loop.index0 % 2 == 1 }}">
+            <td class="occ-day-col"><span class="occ-day-name">{{ dia }}</span></td>
+            {% for dados_mes in dados_meses %}
+              <td class="occ-status-cell">{{ dados_mes.total_qtd.get(dia, '') }}</td>
+              <td class="occ-status-cell">{{ dados_mes.total_uh.get(dia, 0) }}</td>
+            {% endfor %}
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="sch-form-actions sch-form-actions-spaced">
+      <a class="sch-btn" href="{{ url_for('relatorios.relatorio_uhs_ocupadas_excel', ano=ano) }}">Baixar Excel</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

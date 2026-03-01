@@ -1,0 +1,129 @@
+{% extends "layouts/sch_base.html" %}
+
+{% block content %}
+<section class="sch-card">
+  <header class="sch-card-header">
+    <h1 class="sch-card-title">
+      {{ 'EDITAR USUÁRIO' if mode == 'edit' else 'CADASTRAR USUÁRIO' }}
+    </h1>
+  </header>
+  <div class="sch-card-content">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="sch-alerts">
+          {% for category, message in messages %}
+            <div class="sch-alert sch-alert-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <form class="sch-form" method="post">
+      {{ form.hidden_tag() }}
+
+      <div class="sch-section">
+        <h2 class="sch-section-title">DADOS DO USUÁRIO</h2>
+        <div class="sch-grid sch-grid-2">
+          <div class="sch-field">
+            <label for="username">CPF:</label>
+            {{ form.username(class="sch-input", id="username", placeholder="000.000.000-00") }}
+            {% if form.username.errors %}
+              <div class="sch-field-error">{{ form.username.errors[0] }}</div>
+            {% endif %}
+          </div>
+          <div class="sch-field">
+            <label for="first_name">Nome:</label>
+            {{ form.first_name(class="sch-input", id="first_name") }}
+            {% if form.first_name.errors %}
+              <div class="sch-field-error">{{ form.first_name.errors[0] }}</div>
+            {% endif %}
+          </div>
+          <div class="sch-field">
+            <label for="last_name">Patente:</label>
+            {{ form.last_name(class="sch-input", id="last_name") }}
+            {% if form.last_name.errors %}
+              <div class="sch-field-error">{{ form.last_name.errors[0] }}</div>
+            {% endif %}
+          </div>
+          <div class="sch-field">
+            <label for="email">E-mail:</label>
+            {{ form.email(class="sch-input", id="email") }}
+            {% if form.email.errors %}
+              <div class="sch-field-error">{{ form.email.errors[0] }}</div>
+            {% endif %}
+          </div>
+          <div class="sch-field">
+            <label for="perfil">Perfil:</label>
+            {{ form.perfil(class="sch-input", id="perfil") }}
+            {% if form.perfil.errors %}
+              <div class="sch-field-error">{{ form.perfil.errors[0] }}</div>
+            {% endif %}
+          </div>
+          <div class="sch-field">
+            <label for="is_active">Ativo:</label>
+            <div class="sch-inline-toggle">
+              {{ form.is_active(id="is_active") }}
+              <span>Usuário ativo no sistema</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {% if form.password is defined %}
+        <div class="sch-divider"></div>
+
+        <div class="sch-section">
+          <h2 class="sch-section-title">ACESSO</h2>
+          <div class="sch-grid sch-grid-2">
+            <div class="sch-field">
+              <label for="password">Senha:</label>
+              {{ form.password(class="sch-input", id="password") }}
+              {% if form.password.errors %}
+                <div class="sch-field-error">{{ form.password.errors[0] }}</div>
+              {% endif %}
+            </div>
+            <div class="sch-field">
+              <label for="confirm_password">Confirmar Senha:</label>
+              {{ form.confirm_password(class="sch-input", id="confirm_password") }}
+              {% if form.confirm_password.errors %}
+                <div class="sch-field-error">{{ form.confirm_password.errors[0] }}</div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% endif %}
+
+      <div class="sch-divider"></div>
+
+      <div class="sch-form-actions">
+        <a href="{{ url_for('usuarios.consultar_usuarios') }}" class="sch-btn sch-btn-secondary">Cancelar</a>
+        <button class="sch-btn" type="submit">Salvar</button>
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  function formatCPF(value) {
+    var digits = (value || '').replace(/\D/g, '');
+    if (digits.length > 11) digits = digits.slice(0, 11);
+    if (digits.length <= 3) return digits;
+    if (digits.length <= 6) return digits.replace(/(\d{3})(\d+)/, '$1.$2');
+    if (digits.length <= 9) return digits.replace(/(\d{3})(\d{3})(\d+)/, '$1.$2.$3');
+    return digits.replace(/(\d{3})(\d{3})(\d{3})(\d+)/, '$1.$2.$3-$4');
+  }
+
+  var cpfInput = document.getElementById('username');
+  if (cpfInput) {
+    cpfInput.value = formatCPF(cpfInput.value || '');
+    cpfInput.addEventListener('input', function () {
+      cpfInput.value = formatCPF(cpfInput.value);
+    });
+    cpfInput.addEventListener('blur', function () {
+      cpfInput.value = formatCPF(cpfInput.value);
+    });
+  }
+</script>
+{% endblock %}

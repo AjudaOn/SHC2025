@@ -1,0 +1,46 @@
+{% extends "layouts/sch_base.html" %}
+
+{% block content %}
+<section class="sch-card">
+  <header class="sch-card-header">
+    <h1 class="sch-card-title">RESERVAS EXPIRADAS DO MÊS</h1>
+  </header>
+
+  <div class="sch-card-content">
+    {% if consultar %}
+    <div class="sch-table-wrap">
+      <table class="sch-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Entrada</th>
+            <th>Saída</th>
+            <th>Nome Completo</th>
+            <th>CPF</th>
+            <th>Graduação</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for reserva in consultar %}
+          <tr>
+            <td>{{ reserva.id }}</td>
+            <td>{{ reserva.entrada.strftime('%d/%m/%Y') if reserva.entrada else '' }}</td>
+            <td>{{ reserva.saida.strftime('%d/%m/%Y') if reserva.saida else '' }}</td>
+            <td class="name">{{ reserva.nome|upper }}</td>
+            <td>{{ format_cpf_display(reserva.cpf) }}</td>
+            <td>{{ reserva.graduacao }}</td>
+            <td>{{ reserva.status_reserva }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="sch-empty">
+      Não existem reservas expiradas neste mês.
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

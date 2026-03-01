@@ -1,0 +1,109 @@
+{% extends "layouts/sch_base.html" %}
+
+{% block title %}SCH - Ocupação Mensal{% endblock %}
+
+{% block content %}
+<section class="sch-card">
+    <header class="sch-card-header">
+        <h1 class="sch-card-title">OCUPAÇÃO DO HOTEL - MENSAL{% if hotel_label %} ({{ hotel_label }}){% endif %}</h1>
+        <div class="occ-month">
+            <label for="occ-month" class="occ-month-label">Mês</label>
+            <input id="occ-month" class="occ-month-input" type="month" value="{{ '%04d-%02d'|format(year, month) }}">
+            <button class="occ-month-btn" type="button" onclick="applyMonth()">Aplicar</button>
+        </div>
+    </header>
+
+    <div class="sch-card-content">
+        <div class="occ-legend">
+            <div class="occ-legend-item">
+                <span class="status-dot status-available"></span>
+                <span>Disponível</span>
+            </div>
+            <div class="occ-legend-item">
+                <span class="status-dot status-occupied"></span>
+                <span>Ocupado</span>
+            </div>
+            <div class="occ-legend-item">
+                <span class="status-dot status-reserved"></span>
+                <span>Reservado</span>
+            </div>
+            <div class="occ-legend-item">
+                <span class="status-dot status-paid"></span>
+                <span>Pago</span>
+            </div>
+        </div>
+
+        <div class="occ-table-wrap">
+            <table class="occ-table">
+                <thead>
+                    <tr>
+                        <th class="occ-day-col">Dia</th>
+                        {% for room in rooms %}
+                        <th class="occ-room-col">Q{{ room }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for day in days %}
+                    {% set day_index = loop.index0 %}
+                    <tr class="{{ 'occ-row-alt' if day_index % 2 == 1 }}">
+                        <td class="occ-day-col">
+                            <span class="occ-day-name">{{ day }}</span>
+                        </td>
+                        {% for room in rooms_data %}
+                            {% set status = room.statuses[day_index] %}
+                            <td class="occ-status-cell">
+                                <span class="status-dot status-{{ status }}"></span>
+                                {% if room.ids[day_index] %}
+                                <span class="occ-reserva-id">{{ room.ids[day_index] }}</span>
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% set ns = namespace(occupied=0, available=0, reserved=0) %}
+        {% for room in rooms_data %}
+            {% for status in room.statuses %}
+                {% if status == 'occupied' %}
+                    {% set ns.occupied = ns.occupied + 1 %}
+                {% elif status == 'available' %}
+                    {% set ns.available = ns.available + 1 %}
+                {% elif status == 'reserved' %}
+                    {% set ns.reserved = ns.reserved + 1 %}
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+
+        <div class="occ-summary occ-summary-weekly">
+            <div class="occ-summary-card occ-summary-occupied">
+                <p class="occ-summary-label">Total de Ocupações</p>
+                <p class="occ-summary-value">{{ ns.occupied }}</p>
+            </div>
+            <div class="occ-summary-card occ-summary-available">
+                <p class="occ-summary-label">Total Disponível</p>
+                <p class="occ-summary-value">{{ ns.available }}</p>
+            </div>
+            <div class="occ-summary-card occ-summary-reserved">
+                <p class="occ-summary-label">Total Reservado</p>
+                <p class="occ-summary-value">{{ ns.reserved }}</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+  function applyMonth() {
+    const input = document.getElementById("occ-month");
+    if (!input || !input.value) return;
+    const [year, month] = input.value.split("-");
+    const params = new URLSearchParams(window.location.search);
+    params.set("year", year);
+    params.set("month", String(parseInt(month, 10)));
+    window.location.search = params.toString();
+  }
+</script>
+{% endblock %}

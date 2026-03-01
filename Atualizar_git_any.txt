@@ -1,0 +1,77 @@
+﻿GUIA DE ATUALIZACAO - WINDOWS + PYTHONANYWHERE
+
+IMPORTANTE
+- Use sempre o comando correto: git pull (nao existe "git pool").
+- Nao subir db.sqlite3 para o GitHub.
+- Escolha um unico repo para deploy e mantenha o mesmo fluxo sempre.
+
+==================================================
+SECAO 1 - WINDOWS (PC LOCAL) - ATUALIZAR GITHUB
+==================================================
+
+1) Ir para a pasta do projeto (PowerShell):
+cd C:\Projetos2026\SCH_V02
+
+2) Verificar o que mudou:
+git status
+
+3) Adicionar arquivos desejados (evite db.sqlite3):
+git add <arquivos>
+
+4) Commitar:
+git commit -m "mensagem clara da alteracao"
+
+5) Enviar para o GitHub:
+git push origin main
+
+6) Conferencia:
+git status
+git log -1 --oneline
+
+Obs:
+- Se user.name e user.email ainda nao estiverem configurados no Windows:
+  git config --global user.name "SEU_NOME"
+  git config --global user.email "SEU_EMAIL"
+
+==================================================
+SECAO 2 - PYTHONANYWHERE - ATUALIZAR PRODUCAO
+==================================================
+
+1) Abrir Bash Console no PythonAnywhere e entrar no projeto:
+cd /home/HTMPONTAPORA/SCH_V2026
+pwd
+
+2) Atualizar codigo do GitHub:
+git pull origin main
+
+3) Se houver erro por arquivo local alterado (ex.: flask_app/config.py):
+git stash push -m "config local pythonanywhere" flask_app/config.py
+git pull origin main
+git stash pop
+
+4) Recarregar a aplicacao:
+- Painel Web > Reload
+ou
+touch /var/www/htmpontapora_pythonanywhere_com_wsgi.py
+
+5) Teste rapido:
+curl -sS https://htmpontapora.pythonanywhere.com/health
+
+==================================================
+SECAO 3 - CHECKLIST ANTES DE DEPLOY
+==================================================
+
+1) Confirmar que colunas novas no banco de producao ja existem quando necessario
+   (ex.: QUARTEL e FUNCAO).
+2) Garantir que nenhum arquivo sensivel foi para commit (.env, chaves, etc.).
+3) Confirmar ultimo hash local e no servidor:
+   git log -1 --oneline
+
+==================================================
+BLOCO RAPIDO - COMANDOS DO SERVIDOR
+==================================================
+
+cd /home/HTMPONTAPORA/SCH_V2026
+git pull origin main
+touch /var/www/htmpontapora_pythonanywhere_com_wsgi.py
+curl -sS https://htmpontapora.pythonanywhere.com/health

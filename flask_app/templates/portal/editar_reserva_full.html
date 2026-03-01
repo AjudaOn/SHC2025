@@ -1,0 +1,758 @@
+{% extends "layouts/sch_base.html" %}
+
+{% block content %}
+<section class="sch-card">
+    <header class="sch-card-header">
+        <h1 class="sch-card-title">EDITAR RESERVA</h1>
+    </header>
+    <div class="sch-card-content">
+        <form class="sch-form" method="post">
+            {{ form.hidden_tag() }}
+
+            <div class="sch-section">
+                <h2 class="sch-section-title">HÓSPEDE PRINCIPAL</h2>
+                <div class="sch-grid sch-grid-4">
+                    <div class="sch-info-card">
+                        <div class="sch-info-title">Nome</div>
+                        <div class="sch-info-body sch-info-center">
+                            {{ form.nome(class="sch-input") }}
+                        </div>
+                    </div>
+                    <div class="sch-info-card">
+                        <div class="sch-info-title">CPF</div>
+                        <div class="sch-info-body sch-info-center">
+                            {{ form.cpf(class="sch-input", id="cpf") }}
+                        </div>
+                    </div>
+                    <div class="sch-info-card">
+                        <div class="sch-info-title">Graduação</div>
+                        <div class="sch-info-body sch-info-center">
+                            {{ form.graduacao(class="sch-input") }}
+                        </div>
+                    </div>
+                    <div class="sch-info-card">
+                        <div class="sch-info-title">Telefone</div>
+                        <div class="sch-info-body sch-info-center">
+                            {{ form.telefone(class="sch-input", id="telefone") }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sch-divider"></div>
+
+            <div class="sch-section">
+                <h2 class="sch-section-title">PERMANÊNCIA</h2>
+                <div class="sch-grid sch-grid-6">
+                    <div class="sch-info-card">
+                        <div class="sch-info-title">Entrada</div>
+                        <div class="sch-info-body sch-info-center">
+                            {{ form.entrada(class="sch-input", id="entrada") }}
+                        </div>
+                    </div>
+                    <div class="sch-info-card">
+                        <div class="sch-info-title">Saída</div>
+                        <div class="sch-info-body sch-info-center">
+                            {{ form.saida(class="sch-input", id="saida") }}
+                        </div>
+                    </div>
+                    <div class="sch-info-card">
+                        <div class="sch-info-title">Diárias</div>
+                        <div class="sch-info-body sch-info-center">
+                            {{ form.diarias(class="sch-input", id="diarias", readonly=True) }}
+                        </div>
+                    </div>
+                    <div class="sch-info-card">
+                        <div class="sch-info-title">Hóspedes</div>
+                        <div class="sch-info-body sch-info-center">
+                            {{ form.qtde_hosp(class="sch-input", id="qtde_hosp") }}
+                        </div>
+                    </div>
+                    <div class="sch-info-card">
+                        <div class="sch-info-title">MHEx</div>
+                        <div class="sch-info-body sch-info-center">
+                            {{ form.mhex(class="sch-input", id="mhex") }}
+                        </div>
+                    </div>
+                    <div class="sch-info-card">
+                        <div class="sch-info-title">UH</div>
+                        <div class="sch-info-body sch-info-center">
+                            {{ form.uh(class="sch-input", id="uh") }}
+                        </div>
+                    </div>
+                </div>
+                <div class="sch-grid sch-grid-4" style="margin-top: 12px;">
+                    <div class="sch-info-card">
+                        <div class="sch-info-title">Qtde Quartos</div>
+                        <div class="sch-info-body sch-info-center">
+                            {{ form.qtde_quartos(class="sch-input", id="qtde_quartos") }}
+                        </div>
+                    </div>
+                    <div class="sch-info-card">
+                        <div class="sch-info-title">Especial?</div>
+                        <div class="sch-info-body sch-info-center">
+                            {{ form.especial(class="sch-input", id="especial") }}
+                        </div>
+                    </div>
+                    <div class="sch-info-card">
+                        <div class="sch-info-title">Motivo da Viagem</div>
+                        <div class="sch-info-body sch-info-center">
+                            {{ form.motivo_viagem(class="sch-input", id="motivo_viagem") }}
+                        </div>
+                    </div>
+                    <div class="sch-info-card">
+                        <div class="sch-info-title">Status da Reserva</div>
+                        <div class="sch-info-body sch-info-center">
+                            {{ form.status_reserva(class="sch-input", id="status_reserva") }}
+                        </div>
+                    </div>
+                </div>
+                <div class="sch-field sch-inline-toggle sch-pets-block">
+                    <label class="sch-checkbox" for="pets_toggle">
+                        <input type="checkbox" id="pets_toggle" {% if reserva.qtde_pet %}checked{% endif %}>
+                        Com PETs
+                    </label>
+                    <div id="pets_qtde_wrap" class="hidden sch-pets-qtde">
+                        <span class="sch-inline-hint">Qtde</span>
+                        {{ form.qtde_pet(class="sch-input sch-input-sm", id="qtde_pet") }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="sch-divider"></div>
+
+            <div class="sch-section">
+                <h2 class="sch-section-title">DADOS PESSOAIS</h2>
+                <div class="sch-grid sch-grid-4">
+                    <div class="sch-info-card">
+                        <div class="sch-info-title">E-mail</div>
+                        <div class="sch-info-body sch-info-center">
+                            {{ form.email(class="sch-input", id="email") }}
+                        </div>
+                    </div>
+                    <div class="sch-info-card">
+                        <div class="sch-info-title">Sexo</div>
+                        <div class="sch-info-body sch-info-center">
+                            {{ form.sexo(class="sch-input", id="sexo") }}
+                        </div>
+                    </div>
+                    <div class="sch-info-card">
+                        <div class="sch-info-title">Status</div>
+                        <div class="sch-info-body sch-info-center">
+                            {{ form.status(class="sch-input", id="status") }}
+                        </div>
+                    </div>
+                    <div class="sch-info-card">
+                        <div class="sch-info-title">Tipo</div>
+                        <div class="sch-info-body sch-info-center">
+                            {{ form.tipo(class="sch-input", id="tipo") }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sch-divider"></div>
+
+            <div class="sch-section">
+                <h2 class="sch-section-title">LOCALIZAÇÃO</h2>
+                <div class="sch-grid sch-grid-3">
+                    <div class="sch-info-card">
+                        <div class="sch-info-title">Cidade</div>
+                        <div class="sch-info-body sch-info-center">
+                            {{ form.cidade(class="sch-input", id="cidade") }}
+                        </div>
+                    </div>
+                    <div class="sch-info-card">
+                        <div class="sch-info-title">UF</div>
+                        <div class="sch-info-body sch-info-center">
+                            {{ form.uf(class="sch-input", id="uf") }}
+                        </div>
+                    </div>
+                    <div class="sch-info-card">
+                        <div class="sch-info-title">Observação</div>
+                        <div class="sch-info-body sch-info-center">
+                            {{ form.observacao(class="sch-input", id="observacao") }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sch-divider"></div>
+
+            <div class="sch-section">
+                <div id="linha" class="hidden sch-divider"></div>
+                <div id="singular" class="hidden">
+                    <h2 class="sch-section-title">INFORMAÇÃO DO ACOMPANHANTE</h2>
+                </div>
+                <div id="plural" class="hidden">
+                    <h2 class="sch-section-title">INFORMAÇÕES DOS ACOMPANHANTES</h2>
+                </div>
+
+                <div id="acompanhante1" class="hidden">
+                    <div class="sch-grid sch-grid-4">
+                        <div class="sch-info-card">
+                            <div class="sch-info-title">Nome Acomp 1</div>
+                            <div class="sch-info-body sch-info-center">
+                                {{ form.nome_acomp1(class="sch-input", id="nome_acomp1") }}
+                            </div>
+                        </div>
+                        <div class="sch-info-card">
+                            <div class="sch-info-title">Idade Acomp 1</div>
+                            <div class="sch-info-body sch-info-center">
+                                {{ form.idade_acomp1(class="sch-input", id="idade_acomp1") }}
+                            </div>
+                        </div>
+                        <div class="sch-info-card">
+                            <div class="sch-info-title">Vínculo Acomp 1</div>
+                            <div class="sch-info-body sch-info-center">
+                                {{ form.vinculo_acomp1(class="sch-input", id="vinculo_acomp1") }}
+                            </div>
+                        </div>
+                        <div class="sch-info-card">
+                            <div class="sch-info-title">Sexo Acomp 1</div>
+                            <div class="sch-info-body sch-info-center">
+                                {{ form.sexo_acomp1(class="sch-input", id="sexo_acomp1") }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="acompanhante2" class="hidden">
+                    <div class="sch-grid sch-grid-4">
+                        <div class="sch-info-card">
+                            <div class="sch-info-title">Nome Acomp 2</div>
+                            <div class="sch-info-body sch-info-center">
+                                {{ form.nome_acomp2(class="sch-input", id="nome_acomp2") }}
+                            </div>
+                        </div>
+                        <div class="sch-info-card">
+                            <div class="sch-info-title">Idade Acomp 2</div>
+                            <div class="sch-info-body sch-info-center">
+                                {{ form.idade_acomp2(class="sch-input", id="idade_acomp2") }}
+                            </div>
+                        </div>
+                        <div class="sch-info-card">
+                            <div class="sch-info-title">Vínculo Acomp 2</div>
+                            <div class="sch-info-body sch-info-center">
+                                {{ form.vinculo_acomp2(class="sch-input", id="vinculo_acomp2") }}
+                            </div>
+                        </div>
+                        <div class="sch-info-card">
+                            <div class="sch-info-title">Sexo Acomp 2</div>
+                            <div class="sch-info-body sch-info-center">
+                                {{ form.sexo_acomp2(class="sch-input", id="sexo_acomp2") }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="acompanhante3" class="hidden">
+                    <div class="sch-grid sch-grid-4">
+                        <div class="sch-info-card">
+                            <div class="sch-info-title">Nome Acomp 3</div>
+                            <div class="sch-info-body sch-info-center">
+                                {{ form.nome_acomp3(class="sch-input", id="nome_acomp3") }}
+                            </div>
+                        </div>
+                        <div class="sch-info-card">
+                            <div class="sch-info-title">Idade Acomp 3</div>
+                            <div class="sch-info-body sch-info-center">
+                                {{ form.idade_acomp3(class="sch-input", id="idade_acomp3") }}
+                            </div>
+                        </div>
+                        <div class="sch-info-card">
+                            <div class="sch-info-title">Vínculo Acomp 3</div>
+                            <div class="sch-info-body sch-info-center">
+                                {{ form.vinculo_acomp3(class="sch-input", id="vinculo_acomp3") }}
+                            </div>
+                        </div>
+                        <div class="sch-info-card">
+                            <div class="sch-info-title">Sexo Acomp 3</div>
+                            <div class="sch-info-body sch-info-center">
+                                {{ form.sexo_acomp3(class="sch-input", id="sexo_acomp3") }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="acompanhante4" class="hidden">
+                    <div class="sch-grid sch-grid-4">
+                        <div class="sch-info-card">
+                            <div class="sch-info-title">Nome Acomp 4</div>
+                            <div class="sch-info-body sch-info-center">
+                                {{ form.nome_acomp4(class="sch-input", id="nome_acomp4") }}
+                            </div>
+                        </div>
+                        <div class="sch-info-card">
+                            <div class="sch-info-title">Idade Acomp 4</div>
+                            <div class="sch-info-body sch-info-center">
+                                {{ form.idade_acomp4(class="sch-input", id="idade_acomp4") }}
+                            </div>
+                        </div>
+                        <div class="sch-info-card">
+                            <div class="sch-info-title">Vínculo Acomp 4</div>
+                            <div class="sch-info-body sch-info-center">
+                                {{ form.vinculo_acomp4(class="sch-input", id="vinculo_acomp4") }}
+                            </div>
+                        </div>
+                        <div class="sch-info-card">
+                            <div class="sch-info-title">Sexo Acomp 4</div>
+                            <div class="sch-info-body sch-info-center">
+                                {{ form.sexo_acomp4(class="sch-input", id="sexo_acomp4") }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="acompanhante5" class="hidden">
+                    <div class="sch-grid sch-grid-4">
+                        <div class="sch-info-card">
+                            <div class="sch-info-title">Nome Acomp 5</div>
+                            <div class="sch-info-body sch-info-center">
+                                {{ form.nome_acomp5(class="sch-input", id="nome_acomp5") }}
+                            </div>
+                        </div>
+                        <div class="sch-info-card">
+                            <div class="sch-info-title">Idade Acomp 5</div>
+                            <div class="sch-info-body sch-info-center">
+                                {{ form.idade_acomp5(class="sch-input", id="idade_acomp5") }}
+                            </div>
+                        </div>
+                        <div class="sch-info-card">
+                            <div class="sch-info-title">Vínculo Acomp 5</div>
+                            <div class="sch-info-body sch-info-center">
+                                {{ form.vinculo_acomp5(class="sch-input", id="vinculo_acomp5") }}
+                            </div>
+                        </div>
+                        <div class="sch-info-card">
+                            <div class="sch-info-title">Sexo Acomp 5</div>
+                            <div class="sch-info-body sch-info-center">
+                                {{ form.sexo_acomp5(class="sch-input", id="sexo_acomp5") }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sch-divider"></div>
+
+            <div class="sch-section">
+                <h2 class="sch-section-title">VALORES DA DIÁRIA</h2>
+                <div class="sch-table-wrap" data-preco-pet="{{ preco_pet|default(0) }}" data-diarias="{{ reserva.diarias or 0 }}">
+                    <table class="sch-table sch-table-compact">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Idade</th>
+                                <th>Vínculo</th>
+                                <th>Valor</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="name">{{ reserva.nome|upper }}</td>
+                                <td>--</td>
+                                <td>--</td>
+                                <td>R$ {{ "%.2f"|format(reserva.valor_hosp or 0) }}</td>
+                            </tr>
+                            {% if reserva.nome_acomp1 %}
+                            <tr>
+                                <td class="name">{{ reserva.nome_acomp1|upper }}</td>
+                                <td>{{ reserva.idade_acomp1 }}</td>
+                                <td>{{ reserva.vinculo_acomp1 }}</td>
+                                <td>R$ {{ "%.2f"|format(reserva.valor_acomp1 or 0) }}</td>
+                            </tr>
+                            {% endif %}
+                            <tr id="pets_row" class="hidden">
+                                <td class="name">PETS (DIÁRIA)</td>
+                                <td>--</td>
+                                <td>--</td>
+                                <td id="valor_pet_unitario">R$ {{ "%.2f"|format(preco_pet or 0) }}</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr class="sch-total-row">
+                                <td colspan="3">VALOR DA DIÁRIA TOTAL</td>
+                                <td id="valor_diaria_total">R$ {{ "%.2f"|format(reserva.valor_dia or 0) }}</td>
+                            </tr>
+                            <tr class="sch-total-row-alt">
+                                <td colspan="3">SUBTOTAL (Diárias x {{ reserva.diarias }})</td>
+                                <td id="subtotal_diarias">R$ {{ "%.2f"|format(reserva.subtotal or 0) }}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+            <div class="sch-divider"></div>
+
+            <div class="sch-section">
+                <h2 class="sch-section-title">CONSUMAÇÃO E EXTRAS</h2>
+                <div class="sch-grid sch-grid-2">
+                    <div class="sch-info-card" data-precos='{"agua": {{ preco_agua|default(0) }}, "refri": {{ preco_refri|default(0) }}, "cerveja": {{ preco_cerveja|default(0) }}}'>
+                        <div class="sch-info-title">Consumo</div>
+                        <div class="sch-info-body">
+                            <table class="sch-mini-table" data-consumo="true">
+                                <thead>
+                                    <tr>
+                                        <th>Qtde</th>
+                                        <th>Produto</th>
+                                        <th>Valor</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="sch-qty">
+                                                <button type="button" class="sch-qty-btn" data-target="qtde_agua" data-step="-1">-</button>
+                                                <span class="sch-qty-value" id="qtde_agua_display">0</span>
+                                                <button type="button" class="sch-qty-btn" data-target="qtde_agua" data-step="1">+</button>
+                                            </div>
+                                            {{ form.qtde_agua(class="sch-input sch-input-sm sch-qty-input", id="qtde_agua") }}
+                                        </td>
+                                        <td>Água</td>
+                                        <td id="total_agua">R$ {{ "%.2f"|format(reserva.total_agua or 0) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="sch-qty">
+                                                <button type="button" class="sch-qty-btn" data-target="qtde_refri" data-step="-1">-</button>
+                                                <span class="sch-qty-value" id="qtde_refri_display">0</span>
+                                                <button type="button" class="sch-qty-btn" data-target="qtde_refri" data-step="1">+</button>
+                                            </div>
+                                            {{ form.qtde_refri(class="sch-input sch-input-sm sch-qty-input", id="qtde_refri") }}
+                                        </td>
+                                        <td>Refri</td>
+                                        <td id="total_refri">R$ {{ "%.2f"|format(reserva.total_refri or 0) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="sch-qty">
+                                                <button type="button" class="sch-qty-btn" data-target="qtde_cerveja" data-step="-1">-</button>
+                                                <span class="sch-qty-value" id="qtde_cerveja_display">0</span>
+                                                <button type="button" class="sch-qty-btn" data-target="qtde_cerveja" data-step="1">+</button>
+                                            </div>
+                                            {{ form.qtde_cerveja(class="sch-input sch-input-sm sch-qty-input", id="qtde_cerveja") }}
+                                        </td>
+                                        <td>Cerveja</td>
+                                        <td id="total_cerveja">R$ {{ "%.2f"|format(reserva.total_cerveja or 0) }}</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="2">Total Consumo</td>
+                                        <td id="total_consumo">R$ {{ "%.2f"|format(reserva.total_consumacao or 0) }}</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="sch-info-card sch-info-highlight">
+                        <div class="sch-info-title">Valor Total</div>
+                        <div class="sch-info-body sch-info-center">
+                            <strong id="valor_total_geral">R$ {{ "%.2f"|format(reserva.valor_total or 0) }}</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sch-divider"></div>
+
+            <div class="sch-section">
+                <h2 class="sch-section-title">DADOS DO PAGANTE E PAGAMENTO</h2>
+                <div class="sch-field">
+                    <label class="sch-checkbox">
+                        {{ form.pagante_checkbox(id="pagante_checkbox") }}
+                        A conta não será paga pelo Hóspede Principal.
+                    </label>
+                </div>
+                <div class="sch-grid sch-grid-2" id="pagante_info" style="display: none;">
+                    <div class="sch-field">
+                        <label for="nome_pagante">Nome completo:</label>
+                        {{ form.nome_pagante(class="sch-input", id="nome_pagante") }}
+                    </div>
+                    <div class="sch-field">
+                        <label for="cpf_pagante">CPF:</label>
+                        {{ form.cpf_pagante(class="sch-input", id="cpf_pagante") }}
+                    </div>
+                </div>
+                <div class="sch-grid sch-grid-2">
+                    <div class="sch-field">
+                        <label for="forma_pagamento">Forma de Pagamento:</label>
+                        {{ form.forma_pagamento(class="sch-input", id="forma_pagamento") }}
+                    </div>
+                    <div class="sch-field">
+                        <label for="valor_ajuste">Valor Ajuste:</label>
+                        {{ form.valor_ajuste(class="sch-input", id="valor_ajuste") }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="sch-divider"></div>
+
+            <div class="sch-form-actions">
+                <a href="{{ url_for('recepcao.consultar_editar_reservas') }}" class="sch-btn sch-btn-secondary">Cancelar</a>
+                <button class="sch-btn" type="submit">Salvar</button>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/availability.js') }}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        function toggleAcompanhanteDivs() {
+            var qtdeHospInput = document.getElementById('qtde_hosp');
+            if (!qtdeHospInput) return;
+            var qtdeHosp = parseInt(qtdeHospInput.value, 10) - 1;
+
+            for (var i = 1; i <= 5; i++) {
+                var div = document.getElementById('acompanhante' + i);
+                if (div) {
+                    div.className = i <= qtdeHosp ? 'visible' : 'hidden';
+                }
+            }
+
+            if ((qtdeHosp + 1 >= 3)) {
+                document.getElementById('singular').className = 'hidden';
+                document.getElementById('plural').className = 'visible';
+                document.getElementById('linha').className = 'visible sch-divider';
+            } else if (qtdeHosp + 1 === 2) {
+                document.getElementById('singular').className = 'visible';
+                document.getElementById('plural').className = 'hidden';
+                document.getElementById('linha').className = 'visible sch-divider';
+            } else {
+                document.getElementById('singular').className = 'hidden';
+                document.getElementById('plural').className = 'hidden';
+                document.getElementById('linha').className = 'hidden sch-divider';
+            }
+        }
+
+        var checkbox = document.getElementById('pagante_checkbox');
+        var info = document.getElementById('pagante_info');
+        if (checkbox && info) {
+            function toggle() {
+                info.style.display = checkbox.checked ? 'grid' : 'none';
+            }
+            checkbox.addEventListener('change', toggle);
+            toggle();
+        }
+
+        var qtdeHospInput = document.getElementById('qtde_hosp');
+        if (qtdeHospInput) {
+            qtdeHospInput.addEventListener('change', toggleAcompanhanteDivs);
+            qtdeHospInput.addEventListener('input', toggleAcompanhanteDivs);
+            toggleAcompanhanteDivs();
+        }
+
+        function formatCPF(value) {
+            var v = (value || '').replace(/\D/g, '').slice(0, 11);
+            v = v.replace(/(\d{3})(\d)/, '$1.$2');
+            v = v.replace(/(\d{3})(\d)/, '$1.$2');
+            v = v.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            return v;
+        }
+
+        function formatTelefone(value) {
+            var v = (value || '').replace(/\D/g, '').slice(0, 11);
+            if (v.length <= 10) {
+                v = v.replace(/(\d{2})(\d)/, '($1)$2');
+                v = v.replace(/(\d{4})(\d)/, '$1-$2');
+            } else {
+                v = v.replace(/(\d{2})(\d)/, '($1)$2');
+                v = v.replace(/(\d{5})(\d)/, '$1-$2');
+            }
+            return v;
+        }
+
+        var cpfInput = document.getElementById('cpf');
+        if (cpfInput) {
+            cpfInput.value = formatCPF(cpfInput.value || '');
+            cpfInput.addEventListener('input', function () {
+                cpfInput.value = formatCPF(cpfInput.value);
+            });
+        }
+
+        var cpfPagante = document.getElementById('cpf_pagante');
+        if (cpfPagante) {
+            cpfPagante.value = formatCPF(cpfPagante.value || '');
+            cpfPagante.addEventListener('input', function () {
+                cpfPagante.value = formatCPF(cpfPagante.value);
+            });
+        }
+
+        var telefoneInput = document.getElementById('telefone');
+        if (telefoneInput) {
+            telefoneInput.value = formatTelefone(telefoneInput.value || '');
+            telefoneInput.addEventListener('input', function () {
+                telefoneInput.value = formatTelefone(telefoneInput.value);
+            });
+        }
+
+        function parseNumber(value) {
+            if (!value) return 0;
+            var cleaned = String(value).replace(/[^0-9,.-]/g, '');
+            if (cleaned.indexOf(',') !== -1 && cleaned.indexOf('.') !== -1) {
+                cleaned = cleaned.replace(/\./g, '').replace(',', '.');
+            } else if (cleaned.indexOf(',') !== -1) {
+                cleaned = cleaned.replace(',', '.');
+            }
+            var parsed = parseFloat(cleaned);
+            return isNaN(parsed) ? 0 : parsed;
+        }
+
+        function getValorAjuste() {
+            var ajusteInput = document.getElementById('valor_ajuste');
+            return ajusteInput ? parseNumber(ajusteInput.value) : 0;
+        }
+
+        function updateValorTotal() {
+            var subtotalEl = document.getElementById('subtotal_diarias');
+            var totalConsumoEl = document.getElementById('total_consumo');
+            var totalGeralEl = document.getElementById('valor_total_geral');
+            if (!totalGeralEl || !subtotalEl) return;
+            var subtotalAtual = parseNumber(subtotalEl.textContent);
+            var consumoAtual = totalConsumoEl ? parseNumber(totalConsumoEl.textContent) : 0;
+            var valorAjuste = getValorAjuste();
+            totalGeralEl.textContent = 'R$ ' + (subtotalAtual + consumoAtual + valorAjuste).toFixed(2).replace('.', ',');
+        }
+
+        var diariaWrap = document.querySelector('.sch-table-wrap[data-preco-pet]');
+        if (diariaWrap) {
+            var precoPet = parseFloat(diariaWrap.getAttribute('data-preco-pet') || '0');
+            var diarias = parseInt(diariaWrap.getAttribute('data-diarias') || '0', 10) || 0;
+            var qtdePet = document.getElementById('qtde_pet');
+            var petsToggle = document.getElementById('pets_toggle');
+            var petsWrap = document.getElementById('pets_qtde_wrap');
+            var petsRow = document.getElementById('pets_row');
+            var subtotal = document.getElementById('subtotal_diarias');
+
+            function calcularPet() {
+                var qPet = parseInt((qtdePet && qtdePet.value) || 0, 10) || 0;
+                var total = qPet * diarias * precoPet;
+                var unitarioTotal = qPet * precoPet;
+                var diariaBase = {{ reserva.valor_dia or 0 }};
+                var diariaTotal = diariaBase + unitarioTotal;
+                var diariaTotalEl = document.getElementById('valor_diaria_total');
+                var totalGeralEl = document.getElementById('valor_total_geral');
+                if (subtotal) {
+                    var base = {{ reserva.subtotal or 0 }};
+                    var subtotalAtual = base + total;
+                    subtotal.textContent = 'R$ ' + subtotalAtual.toFixed(2).replace('.', ',');
+                    updateValorTotal();
+                }
+                if (diariaTotalEl) {
+                    diariaTotalEl.textContent = 'R$ ' + diariaTotal.toFixed(2).replace('.', ',');
+                }
+                if (petsRow) {
+                    var target = document.getElementById('valor_pet_unitario');
+                    if (target) {
+                        target.textContent = 'R$ ' + unitarioTotal.toFixed(2).replace('.', ',');
+                    }
+                }
+            }
+
+            function togglePets() {
+                var enabled = petsToggle && petsToggle.checked;
+                if (petsWrap) petsWrap.className = enabled ? 'visible' : 'hidden';
+                if (petsRow) petsRow.className = enabled ? '' : 'hidden';
+                if (!enabled && qtdePet) {
+                    qtdePet.value = '';
+                }
+                calcularPet();
+            }
+
+            if (qtdePet) {
+                qtdePet.addEventListener('input', calcularPet);
+                qtdePet.addEventListener('change', calcularPet);
+            }
+            if (petsToggle) {
+                petsToggle.addEventListener('change', togglePets);
+                togglePets();
+            } else {
+                calcularPet();
+            }
+        }
+
+        var consumoCard = document.querySelector('.sch-info-card[data-precos]');
+        if (consumoCard) {
+            var precos = JSON.parse(consumoCard.getAttribute('data-precos'));
+            var qtdeAgua = document.getElementById('qtde_agua');
+            var qtdeRefri = document.getElementById('qtde_refri');
+            var qtdeCerveja = document.getElementById('qtde_cerveja');
+            var totalAgua = document.getElementById('total_agua');
+            var totalRefri = document.getElementById('total_refri');
+            var totalCerveja = document.getElementById('total_cerveja');
+            var totalConsumo = document.getElementById('total_consumo');
+
+            function money(value) {
+                return 'R$ ' + value.toFixed(2).replace('.', ',');
+            }
+
+            function calcularConsumo() {
+                var qAgua = parseInt((qtdeAgua && qtdeAgua.value) || 0, 10) || 0;
+                var qRefri = parseInt((qtdeRefri && qtdeRefri.value) || 0, 10) || 0;
+                var qCerveja = parseInt((qtdeCerveja && qtdeCerveja.value) || 0, 10) || 0;
+                var vAgua = qAgua * (precos.agua || 0);
+                var vRefri = qRefri * (precos.refri || 0);
+                var vCerveja = qCerveja * (precos.cerveja || 0);
+                var vTotal = vAgua + vRefri + vCerveja;
+
+                if (totalAgua) totalAgua.textContent = money(vAgua);
+                if (totalRefri) totalRefri.textContent = money(vRefri);
+                if (totalCerveja) totalCerveja.textContent = money(vCerveja);
+                if (totalConsumo) totalConsumo.textContent = money(vTotal);
+                updateValorTotal();
+            }
+
+            function syncDisplay() {
+                var dAgua = document.getElementById('qtde_agua_display');
+                var dRefri = document.getElementById('qtde_refri_display');
+                var dCerveja = document.getElementById('qtde_cerveja_display');
+                if (dAgua && qtdeAgua) dAgua.textContent = qtdeAgua.value || '0';
+                if (dRefri && qtdeRefri) dRefri.textContent = qtdeRefri.value || '0';
+                if (dCerveja && qtdeCerveja) dCerveja.textContent = qtdeCerveja.value || '0';
+            }
+
+            document.querySelectorAll('.sch-qty-btn').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    var targetId = btn.getAttribute('data-target');
+                    var step = parseInt(btn.getAttribute('data-step') || '0', 10);
+                    var input = document.getElementById(targetId);
+                    if (!input) return;
+                    var current = parseInt(input.value || '0', 10) || 0;
+                    var next = Math.max(current + step, 0);
+                    input.value = String(next);
+                    syncDisplay();
+                    calcularConsumo();
+                });
+            });
+
+            [qtdeAgua, qtdeRefri, qtdeCerveja].forEach(function (el) {
+                if (el) {
+                    el.addEventListener('input', function () {
+                        syncDisplay();
+                        calcularConsumo();
+                    });
+                    el.addEventListener('change', function () {
+                        syncDisplay();
+                        calcularConsumo();
+                    });
+                }
+            });
+
+            syncDisplay();
+            calcularConsumo();
+        }
+
+        var valorAjusteInput = document.getElementById('valor_ajuste');
+        if (valorAjusteInput) {
+            valorAjusteInput.addEventListener('input', updateValorTotal);
+            valorAjusteInput.addEventListener('change', updateValorTotal);
+            updateValorTotal();
+        }
+    });
+</script>
+{% endblock %}

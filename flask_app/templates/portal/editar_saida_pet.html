@@ -1,0 +1,61 @@
+{% extends "layouts/sch_base.html" %}
+
+{% block title %}SCH - Editar Reserva{% endblock %}
+
+{% block content %}
+<section class="sch-card">
+    <header class="sch-card-header">
+        <h1 class="sch-card-title">EDITAR RESERVA - ATENDIMENTO</h1>
+    </header>
+
+    <div class="sch-card-content">
+        <form class="sch-form" method="post" action="{{ url_for('recepcao.editar_saida_pet', id=reserva.id, next=next_url) }}">
+            {{ form.hidden_tag() }}
+
+            <div class="sch-section">
+                <h2 class="sch-section-title">RESUMO</h2>
+                <div class="sch-grid sch-grid-4">
+                    <div class="sch-field">
+                        <label>Nome Completo:</label>
+                        <input type="text" class="sch-input" value="{{ (reserva.nome or '')|upper }}" readonly>
+                    </div>
+                    <div class="sch-field">
+                        <label>MHEx:</label>
+                        <input type="text" class="sch-input" value="{{ reserva.mhex }}" readonly>
+                    </div>
+                    <div class="sch-field">
+                        <label>UH:</label>
+                        <input type="text" class="sch-input" value="{{ reserva.uh }}" readonly>
+                    </div>
+                    <div class="sch-field">
+                        <label>Entrada:</label>
+                        <input type="text" class="sch-input" value="{% if reserva.entrada %}{{ reserva.entrada.strftime('%d/%m/%Y') }}{% endif %}" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sch-divider"></div>
+
+            <div class="sch-section">
+                <h2 class="sch-section-title">ALTERAÇÕES</h2>
+                <div class="sch-grid sch-grid-4">
+                    <div class="sch-field">
+                        <label for="saida">Saída:</label>
+                        {{ form.saida(class="sch-input") }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="sch-divider"></div>
+
+            <div class="sch-form-actions">
+                <a href="{{ next_url or url_for('recepcao.ocupacao_hoje') }}" class="sch-btn sch-btn-secondary">Cancelar</a>
+                <button class="sch-btn" type="submit">Salvar</button>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+{% endblock %}

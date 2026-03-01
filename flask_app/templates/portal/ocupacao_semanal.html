@@ -1,0 +1,110 @@
+{% extends "layouts/sch_base.html" %}
+
+{% block title %}SCH - Ocupação Semanal{% endblock %}
+
+{% block content %}
+<section class="sch-card">
+    <header class="sch-card-header">
+        <h1 class="sch-card-title">OCUPAÇÃO DO HOTEL - SEMANAL{% if hotel_label %} ({{ hotel_label }}){% endif %}</h1>
+        <p class="sch-card-subtitle">Período: {{ start_date|default('25/01/2026') }} a {{ end_date|default('31/01/2026') }}</p>
+    </header>
+
+    <div class="sch-card-content">
+        {% set days = days|default(['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo']) %}
+        {% set rooms = rooms|default(['01','02','03','04','05','06','07','08','09','10','11']) %}
+        {% set rooms_data = rooms_data|default([
+            {'room_number': '01', 'statuses': ['occupied','occupied','available','occupied','occupied','occupied','occupied']},
+            {'room_number': '02', 'statuses': ['available','available','available','available','available','available','available']},
+            {'room_number': '03', 'statuses': ['reserved','reserved','reserved','available','available','available','available']},
+            {'room_number': '04', 'statuses': ['occupied','occupied','occupied','occupied','reserved','reserved','reserved']},
+            {'room_number': '05', 'statuses': ['available','available','reserved','reserved','reserved','available','available']},
+            {'room_number': '06', 'statuses': ['reserved','reserved','available','available','available','available','available']},
+            {'room_number': '07', 'statuses': ['occupied','occupied','occupied','available','available','available','occupied']},
+            {'room_number': '08', 'statuses': ['available','available','available','available','available','available','available']},
+            {'room_number': '09', 'statuses': ['occupied','occupied','occupied','occupied','occupied','available','available']},
+            {'room_number': '10', 'statuses': ['available','reserved','reserved','reserved','available','available','available']},
+            {'room_number': '11', 'statuses': ['reserved','reserved','available','available','available','occupied','occupied']}
+        ]) %}
+
+        <div class="occ-legend">
+            <div class="occ-legend-item">
+                <span class="status-dot status-available"></span>
+                <span>Disponível</span>
+            </div>
+            <div class="occ-legend-item">
+                <span class="status-dot status-occupied"></span>
+                <span>Ocupado</span>
+            </div>
+            <div class="occ-legend-item">
+                <span class="status-dot status-reserved"></span>
+                <span>Reservado</span>
+            </div>
+            <div class="occ-legend-item">
+                <span class="status-dot status-paid"></span>
+                <span>Pago</span>
+            </div>
+        </div>
+
+        <div class="occ-table-wrap">
+            <table class="occ-table">
+                <thead>
+                    <tr>
+                        <th class="occ-day-col">Dia</th>
+                        {% for room in rooms %}
+                        <th class="occ-room-col">Q{{ room }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for day in days %}
+                    {% set day_index = loop.index0 %}
+                    <tr class="{{ 'occ-row-alt' if day_index % 2 == 1 }}">
+                        <td class="occ-day-col">
+                            <span class="occ-day-name">{{ day }}</span>
+                            <span class="occ-day-date">{{ day_dates[day_index] }}</span>
+                        </td>
+                        {% for room in rooms_data %}
+                            {% set status = room.statuses[day_index] %}
+                            <td class="occ-status-cell">
+                                <span class="status-dot status-{{ status }}"></span>
+                                {% if room.ids is defined and room.ids[day_index] and status != 'available' %}
+                                <span class="occ-reserva-id">{{ room.ids[day_index] }}</span>
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% set ns = namespace(occupied=0, available=0, reserved=0) %}
+        {% for room in rooms_data %}
+            {% for status in room.statuses %}
+                {% if status == 'occupied' %}
+                    {% set ns.occupied = ns.occupied + 1 %}
+                {% elif status == 'available' %}
+                    {% set ns.available = ns.available + 1 %}
+                {% elif status == 'reserved' %}
+                    {% set ns.reserved = ns.reserved + 1 %}
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+
+        <div class="occ-summary occ-summary-weekly">
+            <div class="occ-summary-card occ-summary-occupied">
+                <p class="occ-summary-label">Total de Ocupações</p>
+                <p class="occ-summary-value">{{ ns.occupied }}</p>
+            </div>
+            <div class="occ-summary-card occ-summary-available">
+                <p class="occ-summary-label">Total Disponível</p>
+                <p class="occ-summary-value">{{ ns.available }}</p>
+            </div>
+            <div class="occ-summary-card occ-summary-reserved">
+                <p class="occ-summary-label">Total Reservado</p>
+                <p class="occ-summary-value">{{ ns.reserved }}</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

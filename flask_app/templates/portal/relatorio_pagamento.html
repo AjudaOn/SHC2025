@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <h4 class="font-weight-bold text-primary">RELATÓRIO MENSAL</h4>
+        <hr>
+        <div class="container-fluid">
+            <form method="GET" action="{{ url_for('relatorios.relatorio_mensal') }}">
+                <div class="form-row align-items-center">
+                    <div class="col-auto">
+                        <label class="sr-only" for="id_mes_relatorio">Mês</label>
+                        <select name="mes_relatorio" id="id_mes_relatorio" class="form-control mb-2">
+                            <option value="1">Janeiro</option>
+                            <option value="2">Fevereiro</option>
+                            <option value="3">Março</option>
+                            <option value="4">Abril</option>
+                            <option value="5">Maio</option>
+                            <option value="6">Junho</option>
+                            <option value="7">Julho</option>
+                            <option value="8">Agosto</option>
+                            <option value="9">Setembro</option>
+                            <option value="10">Outubro</option>
+                            <option value="11">Novembro</option>
+                            <option value="12">Dezembro</option>
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                        <label class="sr-only" for="id_ano_relatorio">Ano</label>
+                        <select name="ano_relatorio" id="id_ano_relatorio" class="form-control mb-2">
+                            <option value="2024">2024</option>
+                            <option value="2025">2025</option>
+                            <option value="2026">2026</option>
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                        <label class="sr-only" for="id_forma_pagamento">Forma de Pagamento</label>
+                        <select name="forma_pagamento" id="id_forma_pagamento" class="form-control mb-2">
+                            <option value="PIX">PIX</option>
+                            <option value="DINHEIRO">DINHEIRO</option>
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-primary mb-2">Visualizar Relatório</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

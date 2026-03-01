@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <h4 class="font-weight-bold text-primary">RECEPÇÃO</h4>
+        <hr>
+
+        <div class="container-fluid">
+            {% if consultar %}
+            <div class="mb-5">
+                <h1 class="h3 mb-2 text-gray-800">HÓSPEDES PARA CHEGAR</h1>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th class="text-center">Entrada</th>
+                                <th class="text-center">Saída</th>
+                                <th class="text-center">Nome</th>
+                                <th class="text-center">Graduação</th>
+                                <th class="text-center">Qtde Hosp</th>
+                                <th class="text-center">Qtde Quarto</th>
+                                <th class="text-center">Especial?</th>
+                                <th class="text-center">Gerenciar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for reserva in consultar %}
+                            <tr>
+                                <td class="text-center">{{ reserva.entrada.strftime('%d/%m/%Y') if reserva.entrada else
+                                    '' }}</td>
+                                <td class="text-center">{{ reserva.saida.strftime('%d/%m/%Y') if reserva.saida else ''
+                                    }}</td>
+                                <td class="text-center">{{ reserva.nome }}</td>
+                                <td class="text-center">{{ reserva.graduacao }}</td>
+                                <td class="text-center">{{ reserva.qtde_hosp }}</td>
+                                <td class="text-center">{{ reserva.qtde_quartos }}</td>
+                                <td class="text-center">{{ reserva.especial or 'Não' }}</td>
+                                <td class="text-center">
+                                    <a href="{{ url_for('recepcao.editar_checkin', id=reserva.id) }}"
+                                        class="btn btn-warning btn-sm" style="width: 100px;">Check-in</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {% else %}
+            <div class="mb-5">
+                <h1 class="h3 mb-2 text-gray-800">HÓSPEDES PARA CHEGAR</h1>
+                <hr>
+                <div class="alert alert-danger text-center">
+                    Não têm hospedes para chegar.
+                </div>
+            </div>
+            {% endif %}
+
+            {% if consultar_checkin %}
+            <div class="mt-4">
+                <h1 class="h3 mb-2 text-gray-800">HÓSPEDES NO HOTEL</h1>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th class="text-center">Entrada</th>
+                                <th class="text-center">Saída</th>
+                                <th class="text-center">Nome</th>
+                                <th class="text-center">Graduação</th>
+                                <th class="text-center">Qtde Hosp</th>
+                                <th class="text-center">Qtde Quarto</th>
+                                <th class="text-center">Especial?</th>
+                                <th class="text-center">Gerenciar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for reserva in consultar_checkin %}
+                            <tr>
+                                <td class="text-center">{{ reserva.entrada.strftime('%d/%m/%Y') if reserva.entrada else
+                                    '' }}</td>
+                                <td class="text-center">{{ reserva.saida.strftime('%d/%m/%Y') if reserva.saida else ''
+                                    }}</td>
+                                <td class="text-center">{{ reserva.nome }}</td>
+                                <td class="text-center">{{ reserva.graduacao }}</td>
+                                <td class="text-center">{{ reserva.qtde_hosp }}</td>
+                                <td class="text-center">{{ reserva.qtde_quartos }}</td>
+                                <td class="text-center">{{ reserva.especial or 'Não' }}</td>
+                                <td class="text-center">
+                                    <a href="{{ url_for('recepcao.editar_consumacao', id=reserva.id) }}"
+                                        class="btn btn-success btn-sm" style="width: 100px;">Consumação</a>
+                                    <a href="{{ url_for('recepcao.editar_checkout', id=reserva.id) }}"
+                                        class="btn btn-warning btn-sm" style="width: 100px;">Check-out</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <h4 class="font-weight-bold text-primary">RELATÓRIO MENSAL</h4>
+        <hr>
+
+        <div class="container-fluid">
+            {% if consultar_htm1 %}
+            <h1 class="h4 mb-3 text-gray-800">HTM 1</h1>
+            <div class="table-responsive mb-4">
+                <table class="table table-bordered table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th class="text-center">Entrada</th>
+                            <th class="text-center">Saída</th>
+                            <th class="text-center">Graduação</th>
+                            <th class="text-center">Nome</th>
+                            <th class="text-center">CPF</th>
+                            <th class="text-center">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for reserva in consultar_htm1 %}
+                        <tr>
+                            <td class="text-center">{{ reserva.entrada.strftime('%d/%m/%Y') if reserva.entrada else ''
+                                }}</td>
+                            <td class="text-center">{{ reserva.saida.strftime('%d/%m/%Y') if reserva.saida else '' }}
+                            </td>
+                            <td class="text-center">{{ reserva.graduacao }}</td>
+                            <td class="text-center">{{ reserva.nome }}</td>
+                            <td class="text-center">{{ reserva.cpf }}</td>
+                            <td class="text-center">R$ {{ "%.2f"|format(reserva.valor_total) }}</td>
+                        </tr>
+                        {% endfor %}
+                        <tr class="table-info">
+                            <td class="text-center font-weight-bold" colspan="5">TOTAL - HTM 1</td>
+                            <td class="text-center font-weight-bold">R$ {{ "%.2f"|format(total_htm1) }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+
+            {% if consultar_htm2 %}
+            <h1 class="h4 mb-3 text-gray-800">HTM 2</h1>
+            <div class="table-responsive mb-4">
+                <table class="table table-bordered table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th class="text-center">Entrada</th>
+                            <th class="text-center">Saída</th>
+                            <th class="text-center">Graduação</th>
+                            <th class="text-center">Nome</th>
+                            <th class="text-center">CPF</th>
+                            <th class="text-center">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for reserva in consultar_htm2 %}
+                        <tr>
+                            <td class="text-center">{{ reserva.entrada.strftime('%d/%m/%Y') if reserva.entrada else ''
+                                }}</td>
+                            <td class="text-center">{{ reserva.saida.strftime('%d/%m/%Y') if reserva.saida else '' }}
+                            </td>
+                            <td class="text-center">{{ reserva.graduacao }}</td>
+                            <td class="text-center">{{ reserva.nome }}</td>
+                            <td class="text-center">{{ reserva.cpf }}</td>
+                            <td class="text-center">R$ {{ "%.2f"|format(reserva.valor_total) }}</td>
+                        </tr>
+                        {% endfor %}
+                        <tr class="table-info">
+                            <td class="text-center font-weight-bold" colspan="5">TOTAL - HTM 2</td>
+                            <td class="text-center font-weight-bold">R$ {{ "%.2f"|format(total_htm2) }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+
+            {% if not consultar_htm1 and not consultar_htm2 %}
+            <div class="alert alert-info text-center">
+                Selecione os filtros para gerar o relatório ou nenhum dado foi encontrado para o período.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

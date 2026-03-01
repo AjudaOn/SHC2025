@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>SCH</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="{{ url_for('static', filename='vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet"
+        type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="{{ url_for('static', filename='css/sb-admin-2.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/meu-formulario.css') }}" rel="stylesheet">
+
+</head>
+
+<body class="bg-gradient-primary">
+    <div class="container d-flex justify-content-center align-items-center">
+        <div class="container">
+
+            <!-- Outer Row -->
+            <div class="row justify-content-center">
+
+                <div class="col-xl-12 col-lg-12 col-md-10">
+
+                    <div class="card o-hidden border-0 shadow-lg my-5">
+                        <div class="card-body">
+                            <!-- Nested Row within Card Body -->
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-row text-center">
+                                        <div
+                                            class="form-group col-md-3 d-flex justify-content-center align-items-center">
+                                            <img src="{{ url_for('static', filename='img/logo11.gif') }}"
+                                                alt="Imagem Principal">
+                                        </div>
+
+                                        <div class="form-group col-md-8">
+                                            <h1 class="h1 mb-4">HOTEL DE TRÂNSITO DO EXÉRCITO</h1>
+                                            <h3 class="h4 mb-4">Ponta Porã - MS</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card o-hidden border-0 shadow-lg my-5">
+                        <div class="card-body">
+                            <div class="col-lg-12">
+                                <div class="container-fluid">
+                                    <h1 class="h3 mb-2">Leia com atenção!</h1>
+                                    <p style="font-size: 18px; padding-left: 0px;" class="text-justify">
+                                        <b>Sobre o preenchimento do formulário de pré-reserva:</b><br><br>
+                                        Por favor, preencha um formulário para cada quarto solicitado. Isso significa
+                                        que, se você precisar reservar mais de um quarto, será necessário preencher o
+                                        formulário duas vezes. No primeiro formulário, insira seus próprios dados. No
+                                        segundo formulário, forneça os dados do outro hóspede que ocupará o quarto.
+                                        <br><br>Este hotel aceita pets. A diária é cobrada por animal.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card o-hidden border-0 shadow-lg my-5">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="p-4">
+
+                                        <form id="myForm" method="post"
+                                            action="{{ url_for('reservas.reserva_externa') }}">
+                                            {{ form.csrf_token }}
+                                            {{ form.id }}
+
+                                            <h1>INFORMAÇÕES DA PRÉ-RESERVA</h1>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-3">
+                                                    <label for="entrada">Entrada:</label>
+                                                    {{ form.entrada() }}
+                                                </div>
+
+                                                <div class="form-group col-md-3">
+                                                    <label for="saida">Saída:</label>
+                                                    {{ form.saida() }}
+                                                </div>
+
+                                                <div class="form-group col-md-3">
+                                                    <label for="id_qtde_hosp">Qtde de Hóspedes:</label>
+                                                    {{ form.qtde_hosp() }}
+                                                </div>
+
+                                                <div class="form-group col-md-2" style="display:none;">
+                                                    {{ form.qtde_quartos(value="1") }}
+                                                </div>
+
+                                                <div class="form-group col-md-3">
+                                                    <label for="motivo_viagem">Motivo da Viagem:</label>
+                                                    {{ form.motivo_viagem() }}
+                                                </div>
+
+                                            </div>
+                                            <hr />
+                                            <h1>DADOS DO HÓSPEDE PRINCIPAL</h1>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-6">
+                                                    <label for="nome">Nome Completo:</label>
+                                                    {{ form.nome() }}
+                                                </div>
+
+                                                <div class="form-group col-md-6">
+                                                    <label for="email">E-mail:</label>
+                                                    {{ form.email() }}
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-6">
+                                                    <label for="cpf">CPF:</label>
+                                                    {{ form.cpf() }}
+                                                </div>
+
+                                                <div class="form-group col-md-6">
+                                                    <label for="telefone">Telefone:</label>
+                                                    {{ form.telefone() }}
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-4">
+                                                    <label for="inputStatus">Status:</label>
+                                                    {{ form.status() }}
+                                                </div>
+                                                <div class="form-group col-md-3">
+                                                    <label for="inputGraduacao">Graduação:</label>
+                                                    {{ form.graduacao() }}
+                                                </div>
+                                                <div class="form-group col-md-3">
+                                                    <label for="inputTipo">Tipo:</label>
+                                                    {{ form.tipo() }}
+                                                </div>
+                                                <div class="form-group col-md-2">
+                                                    <label for="inputSexo">Sexo:</label>
+                                                    {{ form.sexo() }}
+                                                </div>
+                                            </div>
+                                            <div id="camposMilitares" class="form-row hidden">
+                                                <div class="form-group col-md-6">
+                                                    <label for="inputQuartel">Quartel:</label>
+                                                    {{ form.quartel() }}
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label for="inputFuncao">Função:</label>
+                                                    {{ form.funcao() }}
+                                                </div>
+                                            </div>
+                                            <div id="linha" class="hidden">
+                                                <hr />
+                                            </div>
+                                            <div id="singular" class="hidden">
+                                                <h1>INFORMAÇÃO DO ACOMPANHANTE</h1>
+                                            </div>
+                                            <div id="plural" class="hidden">
+                                                <h1>INFORMAÇÕES DOS ACOMPANHANTES</h1>
+                                            </div>
+
+                                            <!-- Acompanhante 1 -->
+                                            <div id="acompanhante1" class="hidden">
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6">
+                                                        <label for="inputNome_acomp1">Nome Completo:</label>
+                                                        {{ form.nome_acomp1() }}
+                                                    </div>
+                                                    <div class="form-group col-md-3">
+                                                        <label for="inputVinculo_acomp1">Vínculo Familiar:</label>
+                                                        {{ form.vinculo_acomp1() }}
+                                                    </div>
+                                                    <div class="form-group col-md-1">
+                                                        <label for="inputIdade_acomp1">Idade:</label>
+                                                        {{ form.idade_acomp1() }}
+                                                    </div>
+                                                    <div class="form-group col-md-2">
+                                                        <label for="inputSexo_acomp1">Sexo:</label>
+                                                        {{ form.sexo_acomp1() }}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Acompanhante 2 -->
+                                            <div id="acompanhante2" class="hidden">
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6">
+                                                        <label for="inputNome_acomp2">Nome Completo:</label>
+                                                        {{ form.nome_acomp2() }}
+                                                    </div>
+                                                    <div class="form-group col-md-3">
+                                                        <label for="inputVinculo_acomp2">Vínculo Familiar:</label>
+                                                        {{ form.vinculo_acomp2() }}
+                                                    </div>
+                                                    <div class="form-group col-md-1">
+                                                        <label for="inputIdade_acomp2">Idade:</label>
+                                                        {{ form.idade_acomp2() }}
+                                                    </div>
+                                                    <div class="form-group col-md-2">
+                                                        <label for="inputSexo_acomp2">Sexo:</label>
+                                                        {{ form.sexo_acomp2() }}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Acompanhante 3 -->
+                                            <div id="acompanhante3" class="hidden">
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6">
+                                                        <label for="inputNome_acomp3">Nome Completo:</label>
+                                                        {{ form.nome_acomp3() }}
+                                                    </div>
+                                                    <div class="form-group col-md-3">
+                                                        <label for="inputVinculo_acomp3">Vínculo Familiar:</label>
+                                                        {{ form.vinculo_acomp3() }}
+                                                    </div>
+                                                    <div class="form-group col-md-1">
+                                                        <label for="inputIdade_acomp3">Idade:</label>
+                                                        {{ form.idade_acomp3() }}
+                                                    </div>
+                                                    <div class="form-group col-md-2">
+                                                        <label for="inputSexo_acomp3">Sexo:</label>
+                                                        {{ form.sexo_acomp3() }}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Acompanhante 4 -->
+                                            <div id="acompanhante4" class="hidden">
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6">
+                                                        <label for="inputNome_acomp4">Nome Completo:</label>
+                                                        {{ form.nome_acomp4() }}
+                                                    </div>
+                                                    <div class="form-group col-md-3">
+                                                        <label for="inputVinculo_acomp4">Vínculo Familiar:</label>
+                                                        {{ form.vinculo_acomp4() }}
+                                                    </div>
+                                                    <div class="form-group col-md-1">
+                                                        <label for="inputIdade_acomp4">Idade:</label>
+                                                        {{ form.idade_acomp4() }}
+                                                    </div>
+                                                    <div class="form-group col-md-2">
+                                                        <label for="inputSexo_acomp4">Sexo:</label>
+                                                        {{ form.sexo_acomp4() }}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Acompanhante 5 -->
+                                            <div id="acompanhante5" class="hidden">
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6">
+                                                        <label for="inputNome_acomp5">Nome Completo:</label>
+                                                        {{ form.nome_acomp5() }}
+                                                    </div>
+                                                    <div class="form-group col-md-3">
+                                                        <label for="inputVinculo_acomp5">Vínculo Familiar:</label>
+                                                        {{ form.vinculo_acomp5() }}
+                                                    </div>
+                                                    <div class="form-group col-md-1">
+                                                        <label for="inputIdade_acomp5">Idade:</label>
+                                                        {{ form.idade_acomp5() }}
+                                                    </div>
+                                                    <div class="form-group col-md-2">
+                                                        <label for="inputSexo_acomp5">Sexo:</label>
+                                                        {{ form.sexo_acomp5() }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr />
+                                            <h1>OUTRAS INFORMAÇÕES</h1>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-8">
+                                                    <label for="inputCidade">Cidade de Origem:</label>
+                                                    {{ form.cidade() }}
+                                                </div>
+                                                <div class="form-group col-md-1">
+                                                    <label for="inputUF">UF:</label>
+                                                    {{ form.uf() }}
+                                                </div>
+                                                <div class="form-group col-md-3">
+                                                    <label for="inputEspecial">Necessidades Especiais?</label>
+                                                    {{ form.especial() }}
+                                                </div>
+                                                <div style="display:none;">
+                                                    {{ form.status_reserva(value="Pendente") }}
+                                                </div>
+                                            </div>
+
+                                            <div class="form-row">
+                                                <div class="form-group col-md-12">
+                                                    <label for="observacao">Observação:</label>
+                                                    {{ form.observacao() }}
+                                                </div>
+                                            </div>
+                                            <hr />
+                                            <div class="form-row">
+                                                <div class="form-group col-md-9"></div>
+                                                <div class="form-group col-md-3">
+                                                    <button id="btnSalvar" class="btn-sm col-lg-5">Salvar</button>
+                                                    <button class="btn-sm col-lg-5" type="button" class="btn-warning"
+                                                        onclick="window.location.href='{{ url_for('reservas.reserva_externa') }}';">Cancelar</button>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="{{ url_for('static', filename='vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="{{ url_for('static', filename='js/sb-admin-2.min.js') }}"></script>
+
+
+    <script>
+        function toggleCamposMilitares() {
+            var graduacaoEl = document.getElementById('inputGraduacao');
+            var camposMilitares = document.getElementById('camposMilitares');
+            if (!graduacaoEl || !camposMilitares) return;
+
+            var grad = (graduacaoEl.value || '').trim().toUpperCase();
+            var exigeCampos = ['GEN', 'CEL', 'TC', 'MAJ'].indexOf(grad) >= 0;
+
+            camposMilitares.className = exigeCampos ? 'form-row visible' : 'form-row hidden';
+            var quartelEl = document.getElementById('inputQuartel');
+            var funcaoEl = document.getElementById('inputFuncao');
+            if (quartelEl) quartelEl.required = exigeCampos;
+            if (funcaoEl) funcaoEl.required = exigeCampos;
+
+            if (!exigeCampos) {
+                if (quartelEl) quartelEl.value = '';
+                if (funcaoEl) funcaoEl.value = '';
+            }
+        }
+
+        function toggleAcompanhanteDivs() {
+            var qtdeHospInput = document.getElementById('id_qtde_hosp');
+            var qtdeHosp = parseInt(qtdeHospInput.value, 10) - 1;
+            console.log('Quantidade de Acompanhantes:', qtdeHosp);
+
+            for (var i = 1; i <= 5; i++) {
+                var div = document.getElementById('acompanhante' + i);
+                if (div) {
+                    div.className = i <= qtdeHosp ? 'visible' : 'hidden';
+                }
+            }
+
+            if ((qtdeHosp + 1 >= 3)) {
+                document.getElementById('singular').className = 'hidden';
+                document.getElementById('plural').className = 'visible';
+                document.getElementById('linha').className = 'visible';
+            } else if (qtdeHosp + 1 === 2) {
+                document.getElementById('singular').className = 'visible';
+                document.getElementById('plural').className = 'hidden';
+                document.getElementById('linha').className = 'visible';
+            } else {
+                document.getElementById('singular').className = 'hidden';
+                document.getElementById('plural').className = 'hidden';
+                document.getElementById('linha').className = 'hidden';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            var qtdeHospInput = document.getElementById('id_qtde_hosp');
+            var graduacaoEl = document.getElementById('inputGraduacao');
+            if (qtdeHospInput) {
+                qtdeHospInput.addEventListener('change', toggleAcompanhanteDivs);
+                toggleAcompanhanteDivs();
+            }
+            if (graduacaoEl) {
+                graduacaoEl.addEventListener('change', toggleCamposMilitares);
+                toggleCamposMilitares();
+            }
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            function mostrarPopup(mensagem) {
+                var popup = document.createElement("div");
+                popup.classList.add("popup");
+                var popupContent = document.createElement("div");
+                popupContent.classList.add("popup-content");
+                popupContent.innerHTML = mensagem;
+                var btnOK = document.createElement("button");
+                btnOK.textContent = "OK";
+                btnOK.classList.add("btn-sm", "col-lg-5");
+                btnOK.addEventListener("click", function () {
+                    popup.remove();
+                    if (mensagem.includes("sucesso")) {
+                        limparFormulario();
+                    }
+                });
+                popupContent.appendChild(btnOK);
+                popup.appendChild(popupContent);
+                document.body.appendChild(popup);
+            }
+
+            function limparFormulario() {
+                var form = document.getElementById("myForm");
+                form.reset();
+            }
+
+            document.getElementById("btnSalvar").addEventListener("click", function (event) {
+                event.preventDefault();
+                var form = document.getElementById("myForm");
+                if (form.checkValidity()) {
+                    var formData = new FormData(form);
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", form.action, true);
+                    xhr.onload = function () {
+                        if (xhr.status === 200) {
+                            var response = JSON.parse(xhr.responseText);
+                            if (response.success) {
+                                mostrarPopup("<p><b>Sua PRÉ-RESERVA foi enviada com sucesso!</b><br><br>Te ligaremos em até 72 horas.<br>Obrigado!</p>");
+                            } else {
+                                mostrarPopup("<p>Erro ao enviar o formulário: " + response.message + "</p>");
+                            }
+                        } else if (xhr.status === 400) {
+                            var response = JSON.parse(xhr.responseText);
+                            var errorMsg = "Dados inválidos:<br>";
+                            for (var field in response.errors) {
+                                errorMsg += field + ": " + response.errors[field].join(", ") + "<br>";
+                            }
+                            mostrarPopup("<p>" + errorMsg + "</p>");
+                        } else {
+                            mostrarPopup("<p>Erro ao conectar com o servidor. Por favor, tente novamente.</p>");
+                        }
+                    };
+                    xhr.send(formData);
+                } else {
+                    form.reportValidity();
+                }
+            });
+        });
+    </script>
+
+    <style>
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 30px;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+        }
+
+        .popup-content {
+            text-align: center;
+            width: 300px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .visible {
+            display: block;
+        }
+    </style>
+
+
+</body>
+
+</html>

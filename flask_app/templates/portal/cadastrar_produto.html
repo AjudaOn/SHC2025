@@ -1,0 +1,53 @@
+{% extends "layouts/sch_base.html" %}
+
+{% block content %}
+<section class="sch-card">
+  <header class="sch-card-header">
+    <h1 class="sch-card-title">
+      {{ 'EDITAR PRODUTO' if mode == 'edit' else 'CADASTRAR PRODUTO' }}
+    </h1>
+  </header>
+  <div class="sch-card-content">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="sch-alerts">
+          {% for category, message in messages %}
+            <div class="sch-alert sch-alert-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <form class="sch-form" method="post">
+      {{ form.hidden_tag() }}
+
+      <div class="sch-section">
+        <h2 class="sch-section-title">DADOS DO PRODUTO</h2>
+        <div class="sch-grid sch-grid-2">
+          <div class="sch-field">
+            <label for="nome">Nome:</label>
+            {{ form.nome(class="sch-input", id="nome") }}
+            {% if form.nome.errors %}
+              <div class="sch-field-error">{{ form.nome.errors[0] }}</div>
+            {% endif %}
+          </div>
+          <div class="sch-field">
+            <label for="valor">Valor:</label>
+            {{ form.valor(class="sch-input", id="valor", step="0.01") }}
+            {% if form.valor.errors %}
+              <div class="sch-field-error">{{ form.valor.errors[0] }}</div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <div class="sch-divider"></div>
+
+      <div class="sch-form-actions">
+        <a href="{{ url_for('produtos.consultar_produtos') }}" class="sch-btn sch-btn-secondary">Cancelar</a>
+        <button class="sch-btn" type="submit">Salvar</button>
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock %}

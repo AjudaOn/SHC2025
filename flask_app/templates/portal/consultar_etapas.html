@@ -1,0 +1,93 @@
+{% extends "layouts/sch_base.html" %}
+
+{% block title %}SCH - Consultar Etapas da Reserva{% endblock %}
+
+{% block content %}
+<section class="sch-card">
+  <header class="sch-card-header">
+    <h1 class="sch-card-title">CONSULTAR ETAPAS DA RESERVA</h1>
+  </header>
+
+  <div class="sch-card-content">
+    <form class="sch-form" method="get">
+      <div class="sch-grid sch-grid-3">
+        <div class="sch-field">
+          <label for="id">ID da Reserva</label>
+          <div style="display:flex; gap: 12px; align-items: flex-end;">
+            <input class="sch-input" id="id" name="id" type="number" inputmode="numeric" value="{{ reserva_id or '' }}">
+            <button class="sch-btn" type="submit">Consultar</button>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    {% if reserva %}
+      <div class="sch-divider" style="margin-top: 16px;"></div>
+      <div class="sch-section" style="margin-top: 16px;">
+        <h2 class="sch-section-title">RESERVA</h2>
+        <div class="sch-grid sch-grid-4">
+          <div class="sch-field">
+            <label>ID</label>
+            <input class="sch-input" value="{{ reserva.id }}" readonly>
+          </div>
+          <div class="sch-field">
+            <label>Nome</label>
+            <input class="sch-input" value="{{ reserva.nome or '' }}" readonly>
+          </div>
+          <div class="sch-field">
+            <label>Entrada</label>
+            <input class="sch-input" value="{{ reserva.entrada.strftime('%d/%m/%Y') if reserva.entrada else '' }}" readonly>
+          </div>
+          <div class="sch-field">
+            <label>Saída</label>
+            <input class="sch-input" value="{{ reserva.saida.strftime('%d/%m/%Y') if reserva.saida else '' }}" readonly>
+          </div>
+        </div>
+      </div>
+
+      <div class="sch-divider"></div>
+      <div class="sch-section" style="margin-top: 16px;">
+        <h2 class="sch-section-title">HISTÓRICO</h2>
+
+        {% if logs %}
+          <div class="sch-table-wrap">
+            <table class="sch-table sch-table-compact">
+              <thead>
+                <tr>
+                  <th>Data/Hora</th>
+                  <th>Etapa</th>
+                  <th>Ação</th>
+                  <th>Usuário</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for log in logs %}
+                <tr>
+                  <td>{{ log.created_at.strftime('%d/%m/%Y %H:%M:%S') if log.created_at else '' }}</td>
+                  <td>{{ (log.etapa or '')|upper }}</td>
+                  <td>{{ (log.acao or '')|upper }}</td>
+                  <td>{{ (users_by_id.get(log.user_id) if (users_by_id and log.user_id) else None) or log.username or (('ID ' ~ log.user_id) if log.user_id else '-') }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% else %}
+          <div class="sch-alert sch-alert-info">
+            Nenhum registro encontrado para esta reserva. (Reservas antigas podem não ter histórico.)
+          </div>
+        {% endif %}
+      </div>
+    {% elif reserva_id %}
+      <div class="sch-divider" style="margin-top: 16px;"></div>
+      <div class="sch-alert sch-alert-error">Reserva não encontrada.</div>
+    {% endif %}
+
+    {% if reserva_id %}
+      <div class="sch-form-actions" style="margin-top: 16px;">
+        <a href="{{ url_for('recepcao.consultar_etapas') }}" class="sch-btn sch-btn-secondary">Limpar</a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

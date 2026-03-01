@@ -1,0 +1,155 @@
+{% extends "layouts/sch_base.html" %}
+
+{% block content %}
+<section class="sch-card">
+    <header class="sch-card-header">
+        <h1 class="sch-card-title">EDITAR RESERVA</h1>
+    </header>
+    <div class="sch-card-content">
+        <form class="sch-form" method="post">
+            {{ form.hidden_tag() }}
+
+            <div class="sch-section">
+                <h2 class="sch-section-title">INFORMAÇÕES DA RESERVA</h2>
+                <div class="sch-grid sch-grid-4">
+                    <div class="sch-field">
+                        <label for="entrada">Entrada:</label>
+                        {{ form.entrada(class="sch-input") }}
+                    </div>
+                    <div class="sch-field">
+                        <label for="saida">Saída:</label>
+                        {{ form.saida(class="sch-input") }}
+                    </div>
+                    <div class="sch-field">
+                        <label>Qtde de Hóspedes:</label>
+                        <input type="text" class="sch-input" value="{{ reserva.qtde_hosp }}" readonly>
+                    </div>
+                    <div class="sch-field">
+                        <label>Motivo da Viagem:</label>
+                        <input type="text" class="sch-input" value="{{ reserva.motivo_viagem }}" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sch-divider"></div>
+
+            <div class="sch-section">
+                <h2 class="sch-section-title">DADOS DO HÓSPEDE PRINCIPAL</h2>
+                <div class="sch-grid sch-grid-2">
+                    <div class="sch-field">
+                        <label>Nome Completo:</label>
+                        <input type="text" class="sch-input" value="{{ reserva.nome }}" readonly>
+                    </div>
+                    <div class="sch-field">
+                        <label>E-mail:</label>
+                        <input type="text" class="sch-input" value="{{ reserva.email }}" readonly>
+                    </div>
+                    <div class="sch-field">
+                        <label>CPF:</label>
+                        <input type="text" class="sch-input" value="{{ reserva.cpf }}" readonly>
+                    </div>
+                    <div class="sch-field">
+                        <label>Telefone:</label>
+                        <input type="text" class="sch-input" value="{{ reserva.telefone }}" readonly>
+                    </div>
+                </div>
+
+                <div class="sch-grid sch-grid-4">
+                    <div class="sch-field">
+                        <label>Status:</label>
+                        <input type="text" class="sch-input" value="{{ reserva.status }}" readonly>
+                    </div>
+                    <div class="sch-field">
+                        <label>Graduação:</label>
+                        <input type="text" class="sch-input" value="{{ reserva.graduacao }}" readonly>
+                    </div>
+                    <div class="sch-field">
+                        <label>Tipo:</label>
+                        <input type="text" class="sch-input" value="{{ reserva.tipo }}" readonly>
+                    </div>
+                    <div class="sch-field">
+                        <label>Sexo:</label>
+                        <input type="text" class="sch-input" value="{{ reserva.sexo }}" readonly>
+                    </div>
+                </div>
+            </div>
+
+            {% if acompanhantes %}
+            <div class="sch-divider"></div>
+            <div class="sch-section">
+                <h2 class="sch-section-title">DADOS DOS ACOMPANHANTES</h2>
+                <div class="sch-table-wrap">
+                    <table class="sch-table sch-table-compact">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Idade</th>
+                                <th>Grau de Parentesco</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for acompanhante in acompanhantes %}
+                            <tr>
+                                <td class="name">{{ acompanhante.nome }}</td>
+                                <td>{{ acompanhante.idade }}</td>
+                                <td>{{ acompanhante.parentesco }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="sch-divider"></div>
+
+            <div class="sch-section">
+                <h2 class="sch-section-title">OUTRAS INFORMAÇÕES</h2>
+                <div class="sch-grid sch-grid-3">
+                    <div class="sch-field">
+                        <label>Cidade de Origem:</label>
+                        <input type="text" class="sch-input" value="{{ reserva.cidade }}" readonly>
+                    </div>
+                    <div class="sch-field">
+                        <label>UF:</label>
+                        <input type="text" class="sch-input" value="{{ reserva.uf }}" readonly>
+                    </div>
+                    <div class="sch-field">
+                        <label>Necessidades Especiais?</label>
+                        <input type="text" class="sch-input" value="{{ reserva.especial or 'Não' }}" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sch-divider"></div>
+
+            <div class="sch-section">
+                <h2 class="sch-section-title">STATUS E ALOCAÇÃO</h2>
+                <div class="sch-grid sch-grid-3">
+                    <div class="sch-field">
+                        <label for="status_reserva">Status da Reserva:</label>
+                        {{ form.status_reserva(class="sch-input") }}
+                    </div>
+                    <div class="sch-field">
+                        <label for="mhex">MHEx:</label>
+                        {{ form.mhex(class="sch-input") }}
+                    </div>
+                    <div class="sch-field">
+                        <label for="uh">UH:</label>
+                        {{ form.uh(class="sch-input") }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="sch-divider"></div>
+
+            <div class="sch-form-actions">
+                <a href="{{ next_url or url_for('recepcao.consultar_reservas') }}" class="sch-btn sch-btn-secondary">Cancelar</a>
+                <button class="sch-btn" type="submit">Salvar</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<script src="{{ url_for('static', filename='js/availability.js') }}"></script>
+{% endblock %}

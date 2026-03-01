@@ -1,0 +1,571 @@
+{% extends "layouts/sch_base.html" %}
+
+{% block content %}
+<section class="sch-card">
+  <header class="sch-card-header">
+    <h1 class="sch-card-title">NOVA RESERVA</h1>
+  </header>
+
+  <div class="sch-card-content">
+    <form method="post" class="sch-form">
+      {{ form.csrf_token }}
+      {{ form.id }}
+
+      <div class="sch-section">
+        <h2 class="sch-section-title">BUSCAR HÓSPEDE</h2>
+        <div class="sch-grid sch-grid-2">
+          <div class="sch-field">
+            <label for="cpf">CPF:</label>
+            <div class="sch-actions-inline sch-actions-inline-nowrap">
+              {{ form.cpf(class="sch-input", id="cpf") }}
+              <button class="sch-btn sch-btn-secondary" type="button" id="btnBuscarCpf">Buscar</button>
+            </div>
+            <div class="sch-field-help" id="cpfHelp"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sch-divider sch-divider-space"></div>
+
+      <div class="sch-section">
+        <h2 class="sch-section-title">INFORMAÇÕES DA RESERVA</h2>
+        <div class="sch-grid sch-grid-4">
+          <div class="sch-field">
+            <label for="entrada">Entrada:</label>
+            {{ form.entrada(class="sch-input", id="entrada") }}
+          </div>
+          <div class="sch-field">
+            <label for="saida">Saída:</label>
+            {{ form.saida(class="sch-input", id="saida") }}
+          </div>
+          <div class="sch-field">
+            <label for="diarias">Diárias:</label>
+            {{ form.diarias(class="sch-input", id="diarias") }}
+          </div>
+          <div class="sch-field">
+            <label for="id_qtde_hosp">Qtde de Hóspedes:</label>
+            {{ form.qtde_hosp(class="sch-input", id="id_qtde_hosp") }}
+          </div>
+        </div>
+
+        <div class="sch-grid sch-grid-4">
+          <div class="sch-field" style="display:none;">
+            {{ form.qtde_quartos(class="sch-input", id="inputQtde_quartos") }}
+          </div>
+          <div class="sch-field">
+            <label for="motivo_viagem">Motivo da Viagem:</label>
+            {{ form.motivo_viagem(class="sch-input", id="motivo_viagem") }}
+          </div>
+          <div class="sch-field">
+            <label for="inputEspecial">Especial:</label>
+            {{ form.especial(class="sch-input", id="inputEspecial") }}
+          </div>
+          <div class="sch-field">
+            <label for="inputMhex">Hotel:</label>
+            {% if mhex_locked %}
+              <input type="text" class="sch-input" value="{{ mhex_locked }}" readonly>
+              <input type="hidden" id="inputMhex" name="mhex" value="{{ mhex_locked }}">
+            {% else %}
+              {{ form.mhex(class="sch-input", id="inputMhex") }}
+            {% endif %}
+          </div>
+          <div class="sch-field">
+            <label for="inputUH">UH:</label>
+            {{ form.uh(class="sch-input", id="inputUH") }}
+          </div>
+        </div>
+      </div>
+
+      <div class="sch-divider sch-divider-space"></div>
+
+      <div class="sch-section">
+        <h2 class="sch-section-title">DADOS DO HÓSPEDE PRINCIPAL</h2>
+        <div class="sch-grid sch-grid-3">
+          <div class="sch-field">
+            <label for="nome">Nome Completo:</label>
+            {{ form.nome(class="sch-input", id="nome") }}
+          </div>
+          <div class="sch-field">
+            <label for="cpf_hospede">CPF:</label>
+            <input type="text" class="sch-input" id="cpf_hospede" maxlength="14"
+                   placeholder="000.000.000-00">
+          </div>
+          <div class="sch-field">
+            <label for="email">E-mail:</label>
+            {{ form.email(class="sch-input", id="email") }}
+          </div>
+        </div>
+
+        <div class="sch-grid sch-grid-3">
+          <div class="sch-field">
+            <label for="telefone">Telefone:</label>
+            {{ form.telefone(class="sch-input", id="telefone") }}
+          </div>
+          <div class="sch-field">
+            <label for="inputStatus">Status:</label>
+            {{ form.status(class="sch-input", id="inputStatus") }}
+          </div>
+        </div>
+
+        <div class="sch-grid sch-grid-4">
+          <div class="sch-field">
+            <label for="inputGraduacao">Graduação:</label>
+            {{ form.graduacao(class="sch-input", id="inputGraduacao") }}
+          </div>
+          <div class="sch-field hidden" id="fieldQuartel">
+            <label for="inputQuartel">Quartel:</label>
+            {{ form.quartel(class="sch-input", id="inputQuartel") }}
+          </div>
+          <div class="sch-field hidden" id="fieldFuncao">
+            <label for="inputFuncao">Função:</label>
+            {{ form.funcao(class="sch-input", id="inputFuncao") }}
+          </div>
+          <div class="sch-field">
+            <label for="inputTipo">Tipo:</label>
+            {{ form.tipo(class="sch-input", id="inputTipo") }}
+          </div>
+          <div class="sch-field">
+            <label for="inputSexo">Sexo:</label>
+            {{ form.sexo(class="sch-input", id="inputSexo") }}
+          </div>
+          <div class="sch-field">
+            <label for="inputCidade">Cidade:</label>
+            {{ form.cidade(class="sch-input", id="inputCidade") }}
+          </div>
+          <div class="sch-field">
+            <label for="inputUF">UF:</label>
+            {{ form.uf(class="sch-input", id="inputUF") }}
+          </div>
+        </div>
+      </div>
+
+      <div id="linha" class="hidden sch-divider"></div>
+      <div id="singular" class="hidden">
+        <h2 class="sch-section-title">INFORMAÇÃO DO ACOMPANHANTE</h2>
+      </div>
+      <div id="plural" class="hidden">
+        <h2 class="sch-section-title">INFORMAÇÕES DOS ACOMPANHANTES</h2>
+      </div>
+
+      <div id="acompanhante1" class="hidden">
+        <div class="sch-grid sch-grid-4">
+          <div class="sch-field">
+            <label for="inputNome_acomp1">Nome Completo:</label>
+            {{ form.nome_acomp1(class="sch-input", id="inputNome_acomp1") }}
+          </div>
+          <div class="sch-field">
+            <label for="inputVinculo_acomp1">Vínculo Familiar:</label>
+            {{ form.vinculo_acomp1(class="sch-input", id="inputVinculo_acomp1") }}
+          </div>
+          <div class="sch-field">
+            <label for="inputIdade_acomp1">Idade:</label>
+            {{ form.idade_acomp1(class="sch-input", id="inputIdade_acomp1") }}
+          </div>
+          <div class="sch-field">
+            <label for="inputSexo_acomp1">Sexo:</label>
+            {{ form.sexo_acomp1(class="sch-input", id="inputSexo_acomp1") }}
+          </div>
+        </div>
+      </div>
+
+      <div id="acompanhante2" class="hidden">
+        <div class="sch-grid sch-grid-4">
+          <div class="sch-field">
+            <label for="inputNome_acomp2">Nome Completo:</label>
+            {{ form.nome_acomp2(class="sch-input", id="inputNome_acomp2") }}
+          </div>
+          <div class="sch-field">
+            <label for="inputVinculo_acomp2">Vínculo Familiar:</label>
+            {{ form.vinculo_acomp2(class="sch-input", id="inputVinculo_acomp2") }}
+          </div>
+          <div class="sch-field">
+            <label for="inputIdade_acomp2">Idade:</label>
+            {{ form.idade_acomp2(class="sch-input", id="inputIdade_acomp2") }}
+          </div>
+          <div class="sch-field">
+            <label for="inputSexo_acomp2">Sexo:</label>
+            {{ form.sexo_acomp2(class="sch-input", id="inputSexo_acomp2") }}
+          </div>
+        </div>
+      </div>
+
+      <div id="acompanhante3" class="hidden">
+        <div class="sch-grid sch-grid-4">
+          <div class="sch-field">
+            <label for="inputNome_acomp3">Nome Completo:</label>
+            {{ form.nome_acomp3(class="sch-input", id="inputNome_acomp3") }}
+          </div>
+          <div class="sch-field">
+            <label for="inputVinculo_acomp3">Vínculo Familiar:</label>
+            {{ form.vinculo_acomp3(class="sch-input", id="inputVinculo_acomp3") }}
+          </div>
+          <div class="sch-field">
+            <label for="inputIdade_acomp3">Idade:</label>
+            {{ form.idade_acomp3(class="sch-input", id="inputIdade_acomp3") }}
+          </div>
+          <div class="sch-field">
+            <label for="inputSexo_acomp3">Sexo:</label>
+            {{ form.sexo_acomp3(class="sch-input", id="inputSexo_acomp3") }}
+          </div>
+        </div>
+      </div>
+
+      <div id="acompanhante4" class="hidden">
+        <div class="sch-grid sch-grid-4">
+          <div class="sch-field">
+            <label for="inputNome_acomp4">Nome Completo:</label>
+            {{ form.nome_acomp4(class="sch-input", id="inputNome_acomp4") }}
+          </div>
+          <div class="sch-field">
+            <label for="inputVinculo_acomp4">Vínculo Familiar:</label>
+            {{ form.vinculo_acomp4(class="sch-input", id="inputVinculo_acomp4") }}
+          </div>
+          <div class="sch-field">
+            <label for="inputIdade_acomp4">Idade:</label>
+            {{ form.idade_acomp4(class="sch-input", id="inputIdade_acomp4") }}
+          </div>
+          <div class="sch-field">
+            <label for="inputSexo_acomp4">Sexo:</label>
+            {{ form.sexo_acomp4(class="sch-input", id="inputSexo_acomp4") }}
+          </div>
+        </div>
+      </div>
+
+      <div id="acompanhante5" class="hidden">
+        <div class="sch-grid sch-grid-4">
+          <div class="sch-field">
+            <label for="inputNome_acomp5">Nome Completo:</label>
+            {{ form.nome_acomp5(class="sch-input", id="inputNome_acomp5") }}
+          </div>
+          <div class="sch-field">
+            <label for="inputVinculo_acomp5">Vínculo Familiar:</label>
+            {{ form.vinculo_acomp5(class="sch-input", id="inputVinculo_acomp5") }}
+          </div>
+          <div class="sch-field">
+            <label for="inputIdade_acomp5">Idade:</label>
+            {{ form.idade_acomp5(class="sch-input", id="inputIdade_acomp5") }}
+          </div>
+          <div class="sch-field">
+            <label for="inputSexo_acomp5">Sexo:</label>
+            {{ form.sexo_acomp5(class="sch-input", id="inputSexo_acomp5") }}
+          </div>
+        </div>
+      </div>
+
+      <div class="sch-section">
+        <div class="sch-field">
+          <label for="observacao">Observação:</label>
+          {{ form.observacao(class="sch-input", id="observacao") }}
+        </div>
+      </div>
+
+      <div class="sch-form-actions">
+        <a href="{{ url_for('recepcao.ocupacao_hoje') }}" class="sch-btn sch-btn-secondary">Cancelar</a>
+        <button class="sch-btn" type="submit">Salvar</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<script>
+  function toggleCamposMilitares() {
+    var graduacaoEl = document.getElementById('inputGraduacao');
+    var fieldQuartel = document.getElementById('fieldQuartel');
+    var fieldFuncao = document.getElementById('fieldFuncao');
+    if (!graduacaoEl || !fieldQuartel || !fieldFuncao) return;
+
+    var grad = (graduacaoEl.value || '').trim().toUpperCase();
+    var exigeCampos = ['GEN', 'CEL', 'TC', 'MAJ'].indexOf(grad) >= 0;
+
+    fieldQuartel.className = exigeCampos ? 'sch-field visible' : 'sch-field hidden';
+    fieldFuncao.className = exigeCampos ? 'sch-field visible' : 'sch-field hidden';
+    var quartelEl = document.getElementById('inputQuartel');
+    var funcaoEl = document.getElementById('inputFuncao');
+    if (quartelEl) quartelEl.required = exigeCampos;
+    if (funcaoEl) funcaoEl.required = exigeCampos;
+
+    if (!exigeCampos) {
+      if (quartelEl) quartelEl.value = '';
+      if (funcaoEl) funcaoEl.value = '';
+    }
+  }
+
+  function toggleAcompanhanteDivs() {
+    var qtdeHospInput = document.getElementById('id_qtde_hosp');
+    if (!qtdeHospInput) return;
+    var qtdeHosp = parseInt(qtdeHospInput.value, 10) - 1;
+
+    for (var i = 1; i <= 5; i++) {
+      var div = document.getElementById('acompanhante' + i);
+      if (div) {
+        div.className = i <= qtdeHosp ? 'visible' : 'hidden';
+      }
+    }
+
+    if ((qtdeHosp + 1 >= 3)) {
+      document.getElementById('singular').className = 'hidden';
+      document.getElementById('plural').className = 'visible';
+      document.getElementById('linha').className = 'visible sch-divider';
+    } else if (qtdeHosp + 1 === 2) {
+      document.getElementById('singular').className = 'visible';
+      document.getElementById('plural').className = 'hidden';
+      document.getElementById('linha').className = 'visible sch-divider';
+    } else {
+      document.getElementById('singular').className = 'hidden';
+      document.getElementById('plural').className = 'hidden';
+      document.getElementById('linha').className = 'hidden sch-divider';
+    }
+  }
+
+  function calcularDiarias() {
+    var entrada = document.getElementById('entrada');
+    var saida = document.getElementById('saida');
+    var diarias = document.getElementById('diarias');
+    if (!entrada || !saida || !diarias) return;
+    if (!entrada.value || !saida.value) {
+      diarias.value = '';
+      return;
+    }
+    var partsEntrada = entrada.value.split('-');
+    var partsSaida = saida.value.split('-');
+    if (partsEntrada.length !== 3 || partsSaida.length !== 3) {
+      diarias.value = '';
+      return;
+    }
+    var utcEntrada = Date.UTC(partsEntrada[0], partsEntrada[1] - 1, partsEntrada[2]);
+    var utcSaida = Date.UTC(partsSaida[0], partsSaida[1] - 1, partsSaida[2]);
+    var diff = (utcSaida - utcEntrada) / (1000 * 60 * 60 * 24);
+    diarias.value = diff >= 0 ? Math.floor(diff) : '';
+  }
+
+  function formatCPF(value) {
+    var v = value.replace(/\D/g, '').slice(0, 11);
+    v = v.replace(/(\d{3})(\d)/, '$1.$2');
+    v = v.replace(/(\d{3})(\d)/, '$1.$2');
+    v = v.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+    return v;
+  }
+
+  function formatTelefone(value) {
+    var v = value.replace(/\D/g, '').slice(0, 11);
+    if (v.length <= 10) {
+      v = v.replace(/(\d{2})(\d)/, '($1)$2');
+      v = v.replace(/(\d{4})(\d)/, '$1-$2');
+    } else {
+      v = v.replace(/(\d{2})(\d)/, '($1)$2');
+      v = v.replace(/(\d{5})(\d)/, '$1-$2');
+    }
+    return v;
+  }
+
+  function normalizeCPF(value) {
+    return (value || '').replace(/\D/g, '');
+  }
+
+  function preencherHospede(data) {
+    if (!data) return;
+    var fields = {
+      nome: 'nome',
+      email: 'email',
+      telefone: 'telefone',
+      graduacao: 'inputGraduacao',
+      quartel: 'inputQuartel',
+      funcao: 'inputFuncao',
+      status: 'inputStatus',
+      tipo: 'inputTipo',
+      sexo: 'inputSexo',
+      cidade: 'inputCidade',
+      uf: 'inputUF',
+      cpf: 'cpf'
+    };
+
+    Object.keys(fields).forEach(function (key) {
+      var el = document.getElementById(fields[key]);
+      if (!el) return;
+      var value = data[key] || '';
+      if (key === 'cpf') {
+        value = formatCPF(value);
+        // Também preencher o campo CPF nos dados do hóspede
+        var cpfHospede = document.getElementById('cpf_hospede');
+        if (cpfHospede) cpfHospede.value = value;
+      }
+      if (key === 'telefone') {
+        value = formatTelefone(value);
+      }
+      el.value = value;
+    });
+    toggleCamposMilitares();
+  }
+
+  async function buscarPorCpf() {
+    var cpfInput = document.getElementById('cpf');
+    var help = document.getElementById('cpfHelp');
+    if (!cpfInput) return;
+    var cpfDigits = normalizeCPF(cpfInput.value);
+    if (cpfDigits.length !== 11) {
+      if (help) help.textContent = 'Informe um CPF válido para busca.';
+      return;
+    }
+    if (help) help.textContent = 'Buscando...';
+
+    try {
+      var resp = await fetch(`/api/hospede?cpf=${cpfDigits}`);
+      var data = await resp.json();
+      if (data.found) {
+        preencherHospede(data.data);
+        if (help) help.textContent = 'Cadastro encontrado. Dados preenchidos.';
+      } else {
+        if (help) help.textContent = 'CPF não encontrado no histórico.';
+      }
+    } catch (err) {
+      if (help) help.textContent = 'Erro ao consultar CPF.';
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var qtdeHospInput = document.getElementById('id_qtde_hosp');
+    var graduacaoEl = document.getElementById('inputGraduacao');
+    if (qtdeHospInput) {
+      qtdeHospInput.addEventListener('change', toggleAcompanhanteDivs);
+      toggleAcompanhanteDivs();
+    }
+    if (graduacaoEl) {
+      graduacaoEl.addEventListener('change', toggleCamposMilitares);
+      toggleCamposMilitares();
+    }
+
+    var entrada = document.getElementById('entrada');
+    var saida = document.getElementById('saida');
+    if (entrada && saida) {
+      entrada.addEventListener('change', calcularDiarias);
+      saida.addEventListener('change', calcularDiarias);
+      entrada.addEventListener('input', calcularDiarias);
+      saida.addEventListener('input', calcularDiarias);
+      calcularDiarias();
+    }
+
+    var cpf = document.getElementById('cpf');
+    var cpfHospede = document.getElementById('cpf_hospede');
+
+    // Sincronizar valor inicial: cpf (busca) -> cpf_hospede (dados)
+    if (cpf && cpfHospede) {
+      var initialCpf = formatCPF(cpf.value || '');
+      cpf.value = initialCpf;
+      cpfHospede.value = initialCpf;
+
+      // Quando digitar no campo de busca, atualiza o campo de dados
+      cpf.addEventListener('input', function () {
+        cpf.value = formatCPF(cpf.value);
+        cpfHospede.value = cpf.value;
+      });
+      cpf.addEventListener('blur', function () {
+        cpf.value = formatCPF(cpf.value);
+        cpfHospede.value = cpf.value;
+      });
+
+      // Quando digitar no campo de dados (hóspede novo), atualiza o campo de busca/hidden
+      cpfHospede.addEventListener('input', function () {
+        cpfHospede.value = formatCPF(cpfHospede.value);
+        cpf.value = cpfHospede.value;
+      });
+      cpfHospede.addEventListener('blur', function () {
+        cpfHospede.value = formatCPF(cpfHospede.value);
+        cpf.value = cpfHospede.value;
+      });
+    } else if (cpf) {
+      cpf.value = formatCPF(cpf.value || '');
+      cpf.addEventListener('input', function () {
+        cpf.value = formatCPF(cpf.value);
+      });
+      cpf.addEventListener('blur', function () {
+        cpf.value = formatCPF(cpf.value);
+      });
+    }
+
+    var telefone = document.getElementById('telefone');
+    if (telefone) {
+      telefone.value = formatTelefone(telefone.value || '');
+      telefone.addEventListener('input', function () {
+        telefone.value = formatTelefone(telefone.value);
+      });
+      telefone.addEventListener('blur', function () {
+        telefone.value = formatTelefone(telefone.value);
+      });
+    }
+
+    var btnBuscarCpf = document.getElementById('btnBuscarCpf');
+    if (btnBuscarCpf) {
+      btnBuscarCpf.addEventListener('click', buscarPorCpf);
+    }
+
+    var mhex = document.getElementById('inputMhex');
+    var uh = document.getElementById('inputUH');
+
+    function resetUHs(message) {
+      if (!uh) return;
+      uh.innerHTML = '';
+      var opt = document.createElement('option');
+      opt.value = '';
+      opt.textContent = message || '---';
+      uh.appendChild(opt);
+    }
+
+    async function carregarUHsDisponiveis() {
+      if (!mhex || !uh) return;
+      var entrada = document.getElementById('entrada');
+      var saida = document.getElementById('saida');
+      if (!entrada || !saida || !entrada.value || !saida.value) {
+        resetUHs('Selecione entrada e saída');
+        return;
+      }
+
+      resetUHs('Carregando...');
+      try {
+        var params = new URLSearchParams({
+          mhex: mhex.value || '',
+          entrada: entrada.value,
+          saida: saida.value
+        });
+        var resp = await fetch(`/api/available-uhs/?${params.toString()}`);
+        var data = await resp.json();
+        var list = data.available_uhs || [];
+        uh.innerHTML = '';
+
+        var emptyOpt = document.createElement('option');
+        emptyOpt.value = '';
+        emptyOpt.textContent = '---';
+        uh.appendChild(emptyOpt);
+
+        if (!list.length) {
+          var opt = document.createElement('option');
+          opt.value = '';
+          opt.textContent = 'Nenhuma UH disponível';
+          uh.appendChild(opt);
+          return;
+        }
+
+        list.forEach(function (item) {
+          var value = item[0];
+          var label = item[1] || item[0];
+          var opt = document.createElement('option');
+          opt.value = value;
+          opt.textContent = label;
+          uh.appendChild(opt);
+        });
+      } catch (err) {
+        resetUHs('Erro ao carregar UHs');
+      }
+    }
+
+    if (mhex) {
+      mhex.addEventListener('change', carregarUHsDisponiveis);
+    }
+    if (entrada && saida) {
+      entrada.addEventListener('change', carregarUHsDisponiveis);
+      saida.addEventListener('change', carregarUHsDisponiveis);
+    }
+
+    carregarUHsDisponiveis();
+  });
+</script>
+{% endblock %}

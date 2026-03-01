@@ -1,0 +1,54 @@
+{% extends "layouts/sch_base.html" %}
+
+{% block content %}
+<section class="sch-card">
+  <header class="sch-card-header">
+    <h1 class="sch-card-title">CONSULTAR PRODUTOS</h1>
+  </header>
+
+  <div class="sch-card-content">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="sch-alerts">
+          {% for category, message in messages %}
+            <div class="sch-alert sch-alert-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% if produtos %}
+      <div class="sch-table-wrap">
+        <table class="sch-table">
+          <thead>
+            <tr>
+              <th>Produto</th>
+              <th>Valor</th>
+              <th>Gerenciar</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for produto in produtos %}
+            <tr>
+              <td class="name">{{ produto.nome|upper }}</td>
+              <td>R$ {{ '%.2f' % produto.valor }}</td>
+              <td>
+                <div class="sch-actions-inline">
+                  <a href="{{ url_for('produtos.editar_produto', produto_id=produto.id) }}" class="sch-btn">Editar</a>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="sch-empty">Não existem produtos cadastrados.</div>
+    {% endif %}
+
+    <div class="sch-form-actions sch-form-actions-spaced">
+      <a href="{{ url_for('produtos.cadastrar_produto') }}" class="sch-btn">Cadastrar novo Produto</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

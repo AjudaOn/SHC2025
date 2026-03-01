@@ -1,0 +1,36 @@
+{% extends "layouts/sch_base.html" %}
+
+{% block content %}
+<section class="sch-card">
+  <header class="sch-card-header">
+    <h1 class="sch-card-title">ALTERAR SENHA</h1>
+  </header>
+
+  <div class="sch-card-content">
+    <form method="post" class="sch-form">
+      {{ form.csrf_token }}
+      <div class="sch-grid sch-grid-2">
+        <div class="sch-field">
+          <label for="current_password">Senha atual:</label>
+          {{ form.current_password(class="sch-input", id="current_password") }}
+        </div>
+      </div>
+      <div class="sch-grid sch-grid-2">
+        <div class="sch-field">
+          <label for="new_password">Nova senha:</label>
+          {{ form.new_password(class="sch-input", id="new_password") }}
+        </div>
+        <div class="sch-field">
+          <label for="confirm_password">Confirmar nova senha:</label>
+          {{ form.confirm_password(class="sch-input", id="confirm_password") }}
+        </div>
+      </div>
+
+      <div class="sch-form-actions">
+        <a href="{{ url_for('recepcao.consultar_reservas') }}" class="sch-btn sch-btn-secondary">Cancelar</a>
+        <button class="sch-btn" type="submit">Salvar</button>
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock %}

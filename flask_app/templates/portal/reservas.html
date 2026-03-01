@@ -1,0 +1,60 @@
+{% extends "layouts/sch_base.html" %}
+
+{% block content %}
+<section class="sch-card">
+    <header class="sch-card-header">
+        <h1 class="sch-card-title">RESERVAS PENDENTES</h1>
+    </header>
+
+    <div class="sch-card-content">
+        {% if consultar %}
+        <div class="sch-table-wrap">
+            <table class="sch-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Entrada</th>
+                        <th>Saída</th>
+                        <th>Nome Completo</th>
+                        <th>Graduação</th>
+                        <th>Qtde Hosp</th>
+                        <th>Qtde Quartos</th>
+                        <th>Especial?</th>
+                        <th>Gerenciar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reserva in consultar %}
+                    <tr>
+                        <td>{{ reserva.id }}</td>
+                        <td>{{ reserva.entrada.strftime('%d/%m/%Y') if reserva.entrada else '' }}</td>
+                        <td>{{ reserva.saida.strftime('%d/%m/%Y') if reserva.saida else '' }}</td>
+                        <td class="name">{{ reserva.nome|upper }}</td>
+                        <td>{{ reserva.graduacao }}</td>
+                        <td>{{ reserva.qtde_hosp }}</td>
+                        <td>{{ reserva.qtde_quartos }}</td>
+                        <td>{{ reserva.especial or "Não" }}</td>
+                        <td>
+                        <a href="{{ url_for('recepcao.editar_reservas', id=reserva.id, next=request.full_path) }}" class="sch-btn">
+                                Editar
+                        </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="sch-actions-footer">
+            <form method="post" action="{{ url_for('recepcao.expirar_reservas_manual') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="sch-btn sch-btn-danger">Expirar reservas</button>
+            </form>
+        </div>
+        {% else %}
+        <div class="sch-empty">
+            Não existem reservas pendentes.
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

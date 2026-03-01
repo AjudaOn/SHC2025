@@ -1,0 +1,475 @@
+{% extends "layouts/sch_base.html" %}
+
+{% block content %}
+<section class="sch-card">
+    <header class="sch-card-header">
+        <h1 class="sch-card-title">CHECK-OUT</h1>
+    </header>
+    <div class="sch-card-content">
+        <form class="sch-form" method="post">
+            {{ form.hidden_tag() }}
+
+            <div class="sch-section">
+                <h2 class="sch-section-title">HÓSPEDE PRINCIPAL</h2>
+                <div class="sch-grid sch-grid-4">
+                    <div class="sch-info-card">
+                        <div class="sch-info-title">Nome</div>
+                        <div class="sch-info-body sch-info-center">
+                            <strong>{{ reserva.nome|upper }}</strong>
+                        </div>
+                    </div>
+                    <div class="sch-info-card">
+                        <div class="sch-info-title">CPF</div>
+                        <div class="sch-info-body sch-info-center">
+                            <strong>{{ cpf_formatado }}</strong>
+                        </div>
+                    </div>
+                    <div class="sch-info-card">
+                        <div class="sch-info-title">Graduação</div>
+                        <div class="sch-info-body sch-info-center">
+                            <strong>{{ reserva.graduacao }}</strong>
+                        </div>
+                    </div>
+                    <div class="sch-info-card">
+                        <div class="sch-info-title">Telefone</div>
+                        <div class="sch-info-body sch-info-center">
+                            <strong>{{ telefone_formatado }}</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sch-divider"></div>
+
+            <div class="sch-section">
+                <h2 class="sch-section-title">PERMANÊNCIA</h2>
+                <div class="sch-grid sch-grid-6">
+                    <div class="sch-info-card">
+                        <div class="sch-info-title">Entrada</div>
+                        <div class="sch-info-body sch-info-center">
+                            <strong>{{ reserva.entrada.strftime('%d/%m/%Y') if reserva.entrada else '' }}</strong>
+                        </div>
+                    </div>
+                    <div class="sch-info-card">
+                        <div class="sch-info-title">Saída</div>
+                        <div class="sch-info-body sch-info-center">
+                            <strong>{{ reserva.saida.strftime('%d/%m/%Y') if reserva.saida else '' }}</strong>
+                        </div>
+                    </div>
+                    <div class="sch-info-card">
+                        <div class="sch-info-title">Diárias</div>
+                        <div class="sch-info-body sch-info-center">
+                            <strong>{{ reserva.diarias }}</strong>
+                        </div>
+                    </div>
+                    <div class="sch-info-card">
+                        <div class="sch-info-title">Hóspedes</div>
+                        <div class="sch-info-body sch-info-center">
+                            <strong>{{ reserva.qtde_hosp }}</strong>
+                        </div>
+                    </div>
+                    <div class="sch-info-card">
+                        <div class="sch-info-title">MHEx</div>
+                        <div class="sch-info-body sch-info-center">
+                            <strong>{{ reserva.mhex }}</strong>
+                        </div>
+                    </div>
+                    <div class="sch-info-card">
+                        <div class="sch-info-title">UH</div>
+                        <div class="sch-info-body sch-info-center">
+                            <strong>{{ reserva.uh }}</strong>
+                        </div>
+                    </div>
+                </div>
+                <div class="sch-field sch-pets-block">
+                    <label class="sch-checkbox sch-pets-label" for="pets_toggle">
+                        <input type="checkbox" id="pets_toggle">
+                        Com PETs
+                    </label>
+                    <div id="pets_qtde_wrap" class="hidden sch-pets-qtde-inline">
+                        <span class="sch-inline-hint">Quantidade de Pets:</span>
+                        {{ form.qtde_pet(class="sch-input sch-input-sm sch-input-mini", id="qtde_pet") }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="sch-divider"></div>
+
+            <div class="sch-section">
+                <h2 class="sch-section-title">VALORES DA DIÁRIA</h2>
+                <div class="sch-table-wrap" data-preco-pet="{{ preco_pet|default(0) }}">
+                    <table class="sch-table sch-table-compact">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Idade</th>
+                                <th>Vínculo</th>
+                                <th>Valor</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="name">{{ reserva.nome|upper }}</td>
+                                <td>--</td>
+                                <td>--</td>
+                                <td>R$ {{ "%.2f"|format(reserva.valor_hosp or 0) }}</td>
+                            </tr>
+                            {% for i in range(1, 6) %}
+                                {% set nome = reserva|attr('nome_acomp' ~ i) %}
+                                {% if nome %}
+                                <tr>
+                                    <td class="name">{{ nome|upper }}</td>
+                                    <td>{{ reserva|attr('idade_acomp' ~ i) }}</td>
+                                    <td>{{ reserva|attr('vinculo_acomp' ~ i) }}</td>
+                                    <td>R$ {{ "%.2f"|format(reserva|attr('valor_acomp' ~ i) or 0) }}</td>
+                                </tr>
+                                {% endif %}
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr class="sch-total-row">
+                                <td colspan="3">VALOR DA DIÁRIA TOTAL</td>
+                                <td id="valor_diaria_total">R$ {{ "%.2f"|format(reserva.valor_dia or 0) }}</td>
+                            </tr>
+                            <tr class="sch-total-row-alt">
+                                <td colspan="3">SUBTOTAL (Diárias x {{ reserva.diarias }})</td>
+                                <td id="subtotal_diarias">R$ {{ "%.2f"|format(reserva.subtotal or 0) }}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+            <div class="sch-divider"></div>
+
+            <div class="sch-section">
+                <h2 class="sch-section-title">CONSUMAÇÃO E EXTRAS</h2>
+                <div class="sch-grid sch-grid-2">
+                    <div class="sch-info-card" data-precos='{"agua": {{ preco_agua|default(0) }}, "refri": {{ preco_refri|default(0) }}, "cerveja": {{ preco_cerveja|default(0) }}, "pet": {{ preco_pet|default(0) }}}'>
+                        <div class="sch-info-title">Consumo</div>
+                        <div class="sch-info-body">
+                            <table class="sch-mini-table" data-consumo="true">
+                                <thead>
+                                    <tr>
+                                        <th>Qtde</th>
+                                        <th>Produto</th>
+                                        <th>Valor</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="sch-qty">
+                                                <button type="button" class="sch-qty-btn" data-target="qtde_agua" data-step="-1">-</button>
+                                                <span class="sch-qty-value" id="qtde_agua_display">0</span>
+                                                <button type="button" class="sch-qty-btn" data-target="qtde_agua" data-step="1">+</button>
+                                            </div>
+                                            {{ form.qtde_agua(class="sch-input sch-input-sm sch-qty-input", id="qtde_agua") }}
+                                        </td>
+                                        <td>Água</td>
+                                        <td id="total_agua">R$ {{ "%.2f"|format(reserva.total_agua or 0) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="sch-qty">
+                                                <button type="button" class="sch-qty-btn" data-target="qtde_refri" data-step="-1">-</button>
+                                                <span class="sch-qty-value" id="qtde_refri_display">0</span>
+                                                <button type="button" class="sch-qty-btn" data-target="qtde_refri" data-step="1">+</button>
+                                            </div>
+                                            {{ form.qtde_refri(class="sch-input sch-input-sm sch-qty-input", id="qtde_refri") }}
+                                        </td>
+                                        <td>Refrigerante</td>
+                                        <td id="total_refri">R$ {{ "%.2f"|format(reserva.total_refri or 0) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="sch-qty">
+                                                <button type="button" class="sch-qty-btn" data-target="qtde_cerveja" data-step="-1">-</button>
+                                                <span class="sch-qty-value" id="qtde_cerveja_display">0</span>
+                                                <button type="button" class="sch-qty-btn" data-target="qtde_cerveja" data-step="1">+</button>
+                                            </div>
+                                            {{ form.qtde_cerveja(class="sch-input sch-input-sm sch-qty-input", id="qtde_cerveja") }}
+                                        </td>
+                                        <td>Cerveja</td>
+                                        <td id="total_cerveja">R$ {{ "%.2f"|format(reserva.total_cerveja or 0) }}</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="2">Total Consumo</td>
+                                        <td id="total_consumo">R$ {{ "%.2f"|format(reserva.total_consumacao or 0) }}</td>
+                                    </tr>
+                                    <tr id="pets_consumo_row" class="hidden sch-mini-row">
+                                        <td>
+                                            <div class="sch-qty">
+                                                <span class="sch-qty-value sch-qty-plain" id="qtde_pet_display">0</span>
+                                            </div>
+                                        </td>
+                                        <td>Pet(s)</td>
+                                        <td id="total_pets">R$ {{ "%.2f"|format(reserva.total_pet or 0) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Total Pets</td>
+                                        <td id="total_pets_footer">R$ {{ "%.2f"|format(reserva.total_pet or 0) }}</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="sch-info-card sch-info-highlight">
+                        <div class="sch-info-title">Valor Total</div>
+                        <div class="sch-info-body sch-info-center">
+                            <strong id="valor_total_geral">R$ 0,00</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sch-divider"></div>
+
+            <div class="sch-section">
+                <h2 class="sch-section-title">DADOS DO PAGANTE E PAGAMENTO</h2>
+                <div class="sch-field" data-principal-nome="{{ reserva.nome or '' }}" data-principal-cpf="{{ reserva.cpf or '' }}">
+                    <label class="sch-label">Quem vai pagar?</label>
+                    <div class="sch-inline-toggle">
+                        <label class="sch-checkbox">
+                            <input type="radio" name="pagante_tipo" value="principal" required {% if form.pagante_tipo.data == 'principal' %}checked{% endif %}>
+                            Hóspede principal
+                        </label>
+                        <label class="sch-checkbox">
+                            <input type="radio" name="pagante_tipo" value="outro" required {% if form.pagante_tipo.data == 'outro' %}checked{% endif %}>
+                            Outro pagante
+                        </label>
+                    </div>
+                </div>
+                <div class="sch-grid sch-grid-2" id="pagante_info" style="display: none;">
+                    <div class="sch-field">
+                        <label for="nome_pagante">Nome completo:</label>
+                        {{ form.nome_pagante(class="sch-input", id="nome_pagante") }}
+                    </div>
+                    <div class="sch-field">
+                        <label for="cpf_pagante">CPF:</label>
+                        {{ form.cpf_pagante(class="sch-input", id="cpf_pagante") }}
+                    </div>
+                </div>
+                <div class="sch-grid sch-grid-2 sch-field-gap">
+                    <div class="sch-field">
+                        <label for="forma_pagamento">Forma de Pagamento:</label>
+                        {{ form.forma_pagamento(class="sch-input", id="forma_pagamento") }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="sch-divider"></div>
+
+            <div class="sch-form-actions">
+                <a href="{{ next_url or url_for('recepcao.ocupacao_hoje') }}" class="sch-btn sch-btn-secondary">Cancelar</a>
+                <button class="sch-btn" type="submit">Finalizar</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var radios = document.querySelectorAll('input[name="pagante_tipo"]');
+        var info = document.getElementById('pagante_info');
+        var paganteContainer = document.querySelector('.sch-section [data-principal-nome]');
+        if (!radios.length || !info) return;
+        var principalNome = paganteContainer ? paganteContainer.getAttribute('data-principal-nome') : '';
+        var principalCpf = paganteContainer ? paganteContainer.getAttribute('data-principal-cpf') : '';
+        var nomePagante = document.getElementById('nome_pagante');
+        var cpfPagante = document.getElementById('cpf_pagante');
+        function getSelected() {
+            var selected = document.querySelector('input[name="pagante_tipo"]:checked');
+            return selected ? selected.value : '';
+        }
+        function toggle() {
+            var selected = getSelected();
+            info.style.display = selected ? 'grid' : 'none';
+            if (nomePagante) nomePagante.required = selected === 'outro';
+            if (cpfPagante) cpfPagante.required = selected === 'outro';
+
+            if (selected === 'principal') {
+                if (nomePagante) nomePagante.value = (principalNome || '').toUpperCase();
+                if (cpfPagante) cpfPagante.value = formatCPF(principalCpf || '');
+            }
+            if (selected === 'outro') {
+                if (nomePagante) nomePagante.value = '';
+                if (cpfPagante) cpfPagante.value = '';
+            }
+            if (!selected) {
+                if (nomePagante) nomePagante.value = '';
+                if (cpfPagante) cpfPagante.value = '';
+            }
+        }
+        radios.forEach(function (radio) {
+            radio.addEventListener('change', toggle);
+        });
+        toggle();
+
+        function formatCPF(value) {
+            var v = value.replace(/\D/g, '').slice(0, 11);
+            v = v.replace(/(\d{3})(\d)/, '$1.$2');
+            v = v.replace(/(\d{3})(\d)/, '$1.$2');
+            v = v.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            return v;
+        }
+
+        function formatTelefone(value) {
+            var v = value.replace(/\D/g, '').slice(0, 11);
+            if (v.length <= 10) {
+                v = v.replace(/(\d{2})(\d)/, '($1)$2');
+                v = v.replace(/(\d{4})(\d)/, '$1-$2');
+            } else {
+                v = v.replace(/(\d{2})(\d)/, '($1)$2');
+                v = v.replace(/(\d{5})(\d)/, '$1-$2');
+            }
+            return v;
+        }
+
+        var cpfPagante = document.getElementById('cpf_pagante');
+        if (cpfPagante) {
+            cpfPagante.value = formatCPF(cpfPagante.value || '');
+            cpfPagante.addEventListener('input', function () {
+                cpfPagante.value = formatCPF(cpfPagante.value);
+            });
+        }
+
+        var diariaWrap = document.querySelector('.sch-table-wrap[data-preco-pet]');
+        var precoPet = diariaWrap ? parseFloat(diariaWrap.getAttribute('data-preco-pet') || '0') : 0;
+        var qtdePet = document.getElementById('qtde_pet');
+        var petsToggle = document.getElementById('pets_toggle');
+        var petsWrap = document.getElementById('pets_qtde_wrap');
+        var petsConsumoRow = document.getElementById('pets_consumo_row');
+        var petsDisplay = document.getElementById('qtde_pet_display');
+        var totalPets = document.getElementById('total_pets');
+        var totalPetsFooter = document.getElementById('total_pets_footer');
+
+        function money(value) {
+            return 'R$ ' + value.toFixed(2).replace('.', ',');
+        }
+
+        function parseMoney(text) {
+            var cleaned = (text || '').replace(/[^\d.,]/g, '');
+            if (!cleaned) return 0;
+            if (cleaned.indexOf(',') !== -1 && cleaned.indexOf('.') !== -1) {
+                cleaned = cleaned.replace(/\./g, '').replace(',', '.');
+            } else if (cleaned.indexOf(',') !== -1) {
+                cleaned = cleaned.replace(',', '.');
+            }
+            return parseFloat(cleaned) || 0;
+        }
+
+        function updateTotalGeral() {
+            var totalGeralEl = document.getElementById('valor_total_geral');
+            var subtotalEl = document.getElementById('subtotal_diarias');
+            if (!totalGeralEl || !subtotalEl) return;
+            var subtotalAtual = parseMoney(subtotalEl.textContent);
+            var totalConsumoEl = document.getElementById('total_consumo');
+            var totalPetsEl = document.getElementById('total_pets_footer');
+            var consumoAtual = totalConsumoEl ? parseMoney(totalConsumoEl.textContent) : 0;
+            var petsAtual = totalPetsEl ? parseMoney(totalPetsEl.textContent) : 0;
+            totalGeralEl.textContent = money(subtotalAtual + consumoAtual + petsAtual);
+        }
+
+        function calcularPets() {
+            var qPet = parseInt((qtdePet && qtdePet.value) || 0, 10) || 0;
+            var total = qPet * precoPet;
+            if (petsDisplay) petsDisplay.textContent = String(qPet);
+            if (totalPets) totalPets.textContent = money(total);
+            if (totalPetsFooter) totalPetsFooter.textContent = money(total);
+            updateTotalGeral();
+        }
+
+        function togglePets() {
+            var enabled = petsToggle && petsToggle.checked;
+            if (petsWrap) petsWrap.classList.toggle('hidden', !enabled);
+            if (petsConsumoRow) petsConsumoRow.classList.toggle('hidden', !enabled);
+            if (!enabled && qtdePet) qtdePet.value = '';
+            if (qtdePet) qtdePet.required = !!enabled;
+            calcularPets();
+        }
+
+        if (qtdePet) {
+            qtdePet.addEventListener('input', calcularPets);
+            qtdePet.addEventListener('change', calcularPets);
+        }
+        if (petsToggle) {
+            petsToggle.addEventListener('change', togglePets);
+            togglePets();
+        } else {
+            calcularPets();
+        }
+
+        var consumoCard = document.querySelector('.sch-info-card[data-precos]');
+        if (consumoCard) {
+            var precos = JSON.parse(consumoCard.getAttribute('data-precos'));
+            var qtdeAgua = document.getElementById('qtde_agua');
+            var qtdeRefri = document.getElementById('qtde_refri');
+            var qtdeCerveja = document.getElementById('qtde_cerveja');
+            var totalAgua = document.getElementById('total_agua');
+            var totalRefri = document.getElementById('total_refri');
+            var totalCerveja = document.getElementById('total_cerveja');
+            var totalConsumo = document.getElementById('total_consumo');
+
+            function calcularConsumo() {
+                var qAgua = parseInt((qtdeAgua && qtdeAgua.value) || 0, 10) || 0;
+                var qRefri = parseInt((qtdeRefri && qtdeRefri.value) || 0, 10) || 0;
+                var qCerveja = parseInt((qtdeCerveja && qtdeCerveja.value) || 0, 10) || 0;
+                var vAgua = qAgua * (precos.agua || 0);
+                var vRefri = qRefri * (precos.refri || 0);
+                var vCerveja = qCerveja * (precos.cerveja || 0);
+                var vTotal = vAgua + vRefri + vCerveja;
+
+                if (totalAgua) totalAgua.textContent = money(vAgua);
+                if (totalRefri) totalRefri.textContent = money(vRefri);
+                if (totalCerveja) totalCerveja.textContent = money(vCerveja);
+                if (totalConsumo) totalConsumo.textContent = money(vTotal);
+                updateTotalGeral();
+            }
+
+            function syncDisplay() {
+                var dAgua = document.getElementById('qtde_agua_display');
+                var dRefri = document.getElementById('qtde_refri_display');
+                var dCerveja = document.getElementById('qtde_cerveja_display');
+                if (dAgua && qtdeAgua) dAgua.textContent = qtdeAgua.value || '0';
+                if (dRefri && qtdeRefri) dRefri.textContent = qtdeRefri.value || '0';
+                if (dCerveja && qtdeCerveja) dCerveja.textContent = qtdeCerveja.value || '0';
+            }
+
+            document.querySelectorAll('.sch-qty-btn').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    var targetId = btn.getAttribute('data-target');
+                    var step = parseInt(btn.getAttribute('data-step') || '0', 10);
+                    var input = document.getElementById(targetId);
+                    if (!input) return;
+                    var current = parseInt(input.value || '0', 10) || 0;
+                    var next = Math.max(current + step, 0);
+                    input.value = String(next);
+                    syncDisplay();
+                    calcularConsumo();
+                });
+            });
+
+            [qtdeAgua, qtdeRefri, qtdeCerveja].forEach(function (el) {
+                if (el) {
+                    el.addEventListener('input', function () {
+                        syncDisplay();
+                        calcularConsumo();
+                    });
+                    el.addEventListener('change', function () {
+                        syncDisplay();
+                        calcularConsumo();
+                    });
+                }
+            });
+            syncDisplay();
+            calcularConsumo();
+        }
+
+        updateTotalGeral();
+
+    });
+</script>
+{% endblock %}

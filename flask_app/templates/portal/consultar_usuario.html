@@ -1,0 +1,137 @@
+{% extends "layouts/sch_base.html" %}
+
+{% block content %}
+<section class="sch-card">
+  <header class="sch-card-header">
+    <h1 class="sch-card-title">CONSULTAR USUÁRIOS</h1>
+  </header>
+
+  <div class="sch-card-content">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="sch-alerts">
+          {% for category, message in messages %}
+            <div class="sch-alert sch-alert-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+        {% for category, message in messages %}
+          {% if category == 'reset' %}
+            <div id="reset-message" data-message="{{ message }}"></div>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    {% if usuarios %}
+      <div class="sch-table-wrap">
+        <table class="sch-table">
+          <thead>
+            <tr>
+              <th>Usuário (CPF)</th>
+              <th>Nome</th>
+              <th>Perfil</th>
+              <th>Status</th>
+              <th>Gerenciar</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for usuario in usuarios %}
+            <tr>
+              <td>{{ usuario.username }}</td>
+              <td class="name">{{ usuario.first_name|upper }}</td>
+              <td>{{ 'Admin' if usuario.is_superuser or usuario.is_staff else 'Usuário' }}</td>
+              <td>{{ 'Ativo' if usuario.is_active else 'Inativo' }}</td>
+              <td>
+                <div class="sch-actions-inline">
+                  <a href="{{ url_for('usuarios.editar_usuario', user_id=usuario.id) }}" class="sch-btn">Editar</a>
+                  <button type="button" class="sch-btn sch-btn-secondary js-reset-pass" data-reset-url="{{ url_for('usuarios.resetar_senha_usuario', user_id=usuario.id) }}" data-user-name="{{ usuario.first_name|upper }}">Resetar Senha</button>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="sch-empty">Não existem usuários cadastrados.</div>
+    {% endif %}
+
+    <div class="sch-form-actions sch-form-actions-spaced">
+      <a href="{{ url_for('usuarios.cadastrar_usuario') }}" class="sch-btn">Cadastrar novo Usuário</a>
+    </div>
+  </div>
+</section>
+
+<div class="sch-modal" id="reset-modal" aria-hidden="true">
+  <div class="sch-modal-backdrop"></div>
+  <div class="sch-modal-panel" role="dialog" aria-modal="true" aria-labelledby="reset-modal-title">
+    <h2 class="sch-modal-title" id="reset-modal-title">Resetar Senha</h2>
+    <p class="sch-modal-text" id="reset-modal-text"></p>
+    <div class="sch-modal-actions">
+      <button type="button" class="sch-btn sch-btn-secondary" id="reset-cancel">Não</button>
+      <button type="button" class="sch-btn" id="reset-confirm">Sim</button>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  (function () {
+    var resetNode = document.getElementById('reset-message');
+    if (resetNode) {
+      var msg = resetNode.getAttribute('data-message');
+      if (msg) {
+        alert(msg);
+      }
+    }
+
+    var resetButtons = document.querySelectorAll('.js-reset-pass');
+    var modal = document.getElementById('reset-modal');
+    var modalText = document.getElementById('reset-modal-text');
+    var cancelBtn = document.getElementById('reset-cancel');
+    var confirmBtn = document.getElementById('reset-confirm');
+    var pendingUrl = '';
+
+    function closeModal() {
+      if (!modal) return;
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+      pendingUrl = '';
+    }
+
+    resetButtons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var url = btn.getAttribute('data-reset-url');
+        if (!url || !modal || !modalText) return;
+        var userName = btn.getAttribute('data-user-name') || 'USUÁRIO';
+        modalText.innerHTML = 'Deseja resetar a senha do usuário ' + userName + '?<br><br>Observação: a senha inicial será o CPF sem pontuação.';
+        pendingUrl = url;
+        modal.classList.add('is-open');
+        modal.setAttribute('aria-hidden', 'false');
+      });
+    });
+
+    if (cancelBtn) {
+      cancelBtn.addEventListener('click', closeModal);
+    }
+    if (confirmBtn) {
+      confirmBtn.addEventListener('click', function () {
+        if (pendingUrl) {
+          window.location.href = pendingUrl;
+        } else {
+          closeModal();
+        }
+      });
+    }
+
+    if (modal) {
+      modal.addEventListener('click', function (event) {
+        if (event.target && event.target.classList.contains('sch-modal-backdrop')) {
+          closeModal();
+        }
+      });
+    }
+  })();
+</script>
+{% endblock %}

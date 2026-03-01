@@ -1,0 +1,174 @@
+{% extends "layouts/sch_base.html" %}
+
+{% block content %}
+<section class="sch-card">
+  <header class="sch-card-header">
+    <h1 class="sch-card-title">EDITAR RESERVAS</h1>
+  </header>
+
+  <div class="sch-card-content">
+    <form class="sch-form" method="get">
+      <div class="sch-section">
+        <h2 class="sch-section-title">BUSCAR RESERVA</h2>
+        <div class="sch-grid sch-grid-4">
+          <div class="sch-field">
+            <label for="id">ID da Reserva:</label>
+            <input type="number" class="sch-input" name="id" id="id" value="{{ reserva_id }}" />
+          </div>
+          <div class="sch-field">
+            <label for="cpf">CPF do Hóspede:</label>
+            <input type="text" class="sch-input" name="cpf" id="cpf" value="{{ cpf }}" placeholder="000.000.000-00" />
+          </div>
+	          <div class="sch-field">
+	            <label for="nome">Nome do Hóspede:</label>
+	            <input type="text" class="sch-input" name="nome" id="nome" value="{{ nome }}" placeholder="Digite parte do nome" />
+	          </div>
+	          <div class="sch-field">
+	            <label>&nbsp;</label>
+	            <button type="submit" class="sch-btn">Consultar</button>
+	          </div>
+        </div>
+      </div>
+    </form>
+
+    <div class="sch-divider"></div>
+
+    {% if primary_reserva %}
+      <div class="sch-divider sch-divider-space"></div>
+      <h2 class="sch-section-title">RESERVA SELECIONADA</h2>
+      <div class="sch-table-wrap">
+        <table class="sch-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Entrada</th>
+              <th>Saída</th>
+              <th>Nome Completo</th>
+              <th>CPF</th>
+              <th>Graduação</th>
+              <th>Status</th>
+              <th>Gerenciar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{ primary_reserva.id }}</td>
+              <td>{{ primary_reserva.entrada.strftime('%d/%m/%Y') if primary_reserva.entrada else '' }}</td>
+              <td>{{ primary_reserva.saida.strftime('%d/%m/%Y') if primary_reserva.saida else '' }}</td>
+              <td class="name">{{ primary_reserva.nome|upper }}</td>
+              <td>{{ format_cpf_display(primary_reserva.cpf) }}</td>
+              <td>{{ primary_reserva.graduacao }}</td>
+              <td>{{ primary_reserva.status_reserva }}</td>
+              <td>
+                <a href="{{ url_for('recepcao.editar_reservas_admin', id=primary_reserva.id) }}" class="sch-btn">Editar</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      {% if outras_reservas %}
+      <div class="sch-divider sch-divider-space"></div>
+      <h2 class="sch-section-title">OUTRAS RESERVAS DO CPF</h2>
+      <div class="sch-table-wrap">
+        <table class="sch-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Entrada</th>
+              <th>Saída</th>
+              <th>Nome Completo</th>
+              <th>CPF</th>
+              <th>Graduação</th>
+              <th>Status</th>
+              <th>Gerenciar</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for reserva in outras_reservas %}
+            <tr>
+              <td>{{ reserva.id }}</td>
+              <td>{{ reserva.entrada.strftime('%d/%m/%Y') if reserva.entrada else '' }}</td>
+              <td>{{ reserva.saida.strftime('%d/%m/%Y') if reserva.saida else '' }}</td>
+              <td class="name">{{ reserva.nome|upper }}</td>
+              <td>{{ format_cpf_display(reserva.cpf) }}</td>
+              <td>{{ reserva.graduacao }}</td>
+              <td>{{ reserva.status_reserva }}</td>
+              <td>
+                <a href="{{ url_for('recepcao.editar_reservas_admin', id=reserva.id) }}" class="sch-btn">Editar</a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% endif %}
+    {% elif consultar %}
+      <div class="sch-table-wrap">
+        <table class="sch-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Entrada</th>
+              <th>Saída</th>
+              <th>Nome Completo</th>
+              <th>CPF</th>
+              <th>Graduação</th>
+              <th>Status</th>
+              <th>Gerenciar</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for reserva in consultar %}
+            <tr>
+              <td>{{ reserva.id }}</td>
+              <td>{{ reserva.entrada.strftime('%d/%m/%Y') if reserva.entrada else '' }}</td>
+              <td>{{ reserva.saida.strftime('%d/%m/%Y') if reserva.saida else '' }}</td>
+              <td class="name">{{ reserva.nome|upper }}</td>
+              <td>{{ format_cpf_display(reserva.cpf) }}</td>
+              <td>{{ reserva.graduacao }}</td>
+              <td>{{ reserva.status_reserva }}</td>
+              <td>
+                <a href="{{ url_for('recepcao.editar_reservas_admin', id=reserva.id) }}" class="sch-btn">Editar</a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="sch-empty" style="margin-top: 16px;">
+        {% if pesquisou %}
+          Nenhuma reserva encontrada.
+        {% else %}
+          Preecha um dos campos e aperte Consultar
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  function formatCPF(value) {
+    var digits = (value || '').replace(/\D/g, '');
+    if (digits.length > 11) digits = digits.slice(0, 11);
+    if (digits.length <= 3) return digits;
+    if (digits.length <= 6) return digits.replace(/(\d{3})(\d+)/, '$1.$2');
+    if (digits.length <= 9) return digits.replace(/(\d{3})(\d{3})(\d+)/, '$1.$2.$3');
+    return digits.replace(/(\d{3})(\d{3})(\d{3})(\d+)/, '$1.$2.$3-$4');
+  }
+
+  var cpfInput = document.getElementById('cpf');
+  if (cpfInput) {
+    cpfInput.value = formatCPF(cpfInput.value || '');
+    cpfInput.addEventListener('input', function () {
+      cpfInput.value = formatCPF(cpfInput.value);
+    });
+    cpfInput.addEventListener('blur', function () {
+      cpfInput.value = formatCPF(cpfInput.value);
+    });
+  }
+</script>
+{% endblock %}

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}SCH - Reservas{% endblock %}</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      href="{{ url_for('static', filename='img/favicon.ico') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/sch-layout.css') }}"
+    />
+    {% block extra_css %}{% endblock %}
+  </head>
+
+  <body>
+    <div class="sch-shell">
+      <header class="sch-header">
+        <div class="sch-header-inner">
+          <div class="sch-header-brand">
+            <div class="sch-logo">
+              <span>SCH</span>
+              <span class="sch-logo-divider"></span>
+            </div>
+            <div>
+              <div class="sch-brand-sub">Sistema de</div>
+              <div class="sch-brand-sub">Controle de Hóspedes</div>
+            </div>
+          </div>
+
+          <div class="sch-header-title">
+            Hotel de Trânsito do Exército - Ponta Porã / MS
+          </div>
+
+          <div class="sch-header-actions">
+            <div class="sch-dropdown">
+              <button class="sch-icon-btn" type="button" aria-label="Configurações" id="settingsToggle">
+              <svg
+                class="icon"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path
+                  d="M12 2a2.5 2.5 0 0 1 2.5 2.5v.5a7.5 7.5 0 0 1 2.27.94l.36-.35a2.5 2.5 0 1 1 3.53 3.54l-.35.35c.4.7.7 1.47.88 2.27h.52a2.5 2.5 0 1 1 0 5h-.52a7.5 7.5 0 0 1-.88 2.27l.35.35a2.5 2.5 0 1 1-3.53 3.54l-.36-.35a7.5 7.5 0 0 1-2.27.94v.5a2.5 2.5 0 1 1-5 0v-.5a7.5 7.5 0 0 1-2.27-.94l-.36.35a2.5 2.5 0 1 1-3.53-3.54l.35-.35A7.5 7.5 0 0 1 3.5 14.5H3a2.5 2.5 0 1 1 0-5h.5a7.5 7.5 0 0 1 .88-2.27l-.35-.35a2.5 2.5 0 1 1 3.53-3.54l.36.35A7.5 7.5 0 0 1 9.5 5v-.5A2.5 2.5 0 0 1 12 2Z"
+                />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+              </button>
+              <div class="sch-dropdown-menu" id="settingsMenu">
+                <a class="sch-dropdown-item" href="{{ url_for('auth.alterar_senha') }}">Alterar senha</a>
+                <a class="sch-dropdown-item" href="{{ url_for('auth.logout') }}">Sair do sistema</a>
+              </div>
+            </div>
+
+            {% set user_first = current_user.first_name if current_user and current_user.first_name else "Usuário" %}
+            {% set user_last = current_user.last_name if current_user and current_user.last_name else "" %}
+            {% set user_initials = (user_first[:1] if user_first else "U") ~ (user_last[:1] if user_last else "") %}
+            <div class="sch-user">
+              <div class="sch-avatar">{{ user_initials|upper }}</div>
+              <div class="sch-user-meta">
+                <div class="sch-user-name">{{ user_first|upper }}</div>
+                <div class="sch-user-org">{{ user_last|upper }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="sch-body">
+        <aside class="sch-sidebar">
+          <div class="sch-sidebar-logo">
+            <div class="logo-box">
+              <img src="{{ url_for('static', filename='img/Logo_11RCMEC.png') }}" alt="11º RCMEC" class="sch-sidebar-logo-img">
+            </div>
+          </div>
+
+          <nav class="sch-nav" aria-label="Menu principal">
+            {% set endpoint = request.endpoint %}
+            {% set is_admin = current_user.is_authenticated and (current_user.is_superuser or current_user.is_staff) %}
+            {% if is_admin %}
+            <div class="sch-nav-item sch-nav-main">RESERVA</div>
+            <a class="sch-nav-sub {{ 'active' if endpoint == 'recepcao.consultar_reservas' }}" href="{{ url_for('recepcao.consultar_reservas') }}">Analisar</a>
+            {% endif %}
+
+            {% if is_admin %}
+            <div class="sch-nav-item sch-nav-main">RECEPÇÃO - HTM 01</div>
+            <a class="sch-nav-sub {{ 'active' if endpoint == 'recepcao.ocupacao_hoje' }}" href="{{ url_for('recepcao.ocupacao_hoje') }}">Ocupação - Hoje</a>
+            <a class="sch-nav-sub {{ 'active' if endpoint == 'recepcao.ocupacao_semanal' }}" href="{{ url_for('recepcao.ocupacao_semanal') }}">Ocupação - Semanal</a>
+            <a class="sch-nav-sub {{ 'active' if endpoint == 'recepcao.ocupacao_mensal' }}" href="{{ url_for('recepcao.ocupacao_mensal') }}">Ocupação - Mensal</a>
+
+            <div class="sch-nav-item sch-nav-main">RECEPÇÃO - HTM 02</div>
+            <a class="sch-nav-sub {{ 'active' if endpoint == 'recepcao.ocupacao_hoje_htm02' }}" href="{{ url_for('recepcao.ocupacao_hoje_htm02') }}">Ocupação - Hoje</a>
+            <a class="sch-nav-sub {{ 'active' if endpoint == 'recepcao.ocupacao_semanal_htm02' }}" href="{{ url_for('recepcao.ocupacao_semanal_htm02') }}">Ocupação - Semanal</a>
+            <a class="sch-nav-sub {{ 'active' if endpoint == 'recepcao.ocupacao_mensal_htm02' }}" href="{{ url_for('recepcao.ocupacao_mensal_htm02') }}">Ocupação - Mensal</a>
+            {% else %}
+            <div class="sch-nav-item sch-nav-main">RECEPÇÃO - HTM 01</div>
+            <a class="sch-nav-sub {{ 'active' if endpoint == 'recepcao.ocupacao_hoje_geral' }}" href="{{ url_for('recepcao.ocupacao_hoje_geral') }}">Ocupação - Hoje</a>
+            <a class="sch-nav-sub {{ 'active' if endpoint == 'recepcao.ocupacao_semanal' }}" href="{{ url_for('recepcao.ocupacao_semanal') }}">Ocupação - Semanal</a>
+
+            <div class="sch-nav-item sch-nav-main">RECEPÇÃO - HTM 02</div>
+            <a class="sch-nav-sub {{ 'active' if endpoint == 'recepcao.ocupacao_hoje_geral_htm02' }}" href="{{ url_for('recepcao.ocupacao_hoje_geral_htm02') }}">Ocupação - Hoje</a>
+            <a class="sch-nav-sub {{ 'active' if endpoint == 'recepcao.ocupacao_semanal_htm02' }}" href="{{ url_for('recepcao.ocupacao_semanal_htm02') }}">Ocupação - Semanal</a>
+            {% endif %}
+
+            {% if is_admin %}
+            <div class="sch-nav-item sch-nav-main">RELATÓRIOS</div>
+            <div class="sch-nav-group">Pagamentos</div>
+            <a class="sch-nav-sub {{ 'active' if endpoint == 'relatorios.relatorio_pagamento_dinheiro' }}" href="{{ url_for('relatorios.relatorio_pagamento_dinheiro') }}">Em Dinheiro</a>
+            <a class="sch-nav-sub {{ 'active' if endpoint == 'relatorios.relatorio_pagamento_pix' }}" href="{{ url_for('relatorios.relatorio_pagamento_pix') }}">Em Pix</a>
+            <div class="sch-nav-group">Ocupação</div>
+            <a class="sch-nav-sub {{ 'active' if endpoint == 'relatorios.relatorio_ocupacao_financeiro' }}" href="{{ url_for('relatorios.relatorio_ocupacao_financeiro') }}">Quartos - Financeiro</a>
+            <div class="sch-nav-group">Censo</div>
+            <a class="sch-nav-sub {{ 'active' if endpoint == 'relatorios.relatorio_hospedes_valores' }}" href="{{ url_for('relatorios.relatorio_hospedes_valores') }}">Hóspedes e Valores</a>
+            <a class="sch-nav-sub {{ 'active' if endpoint == 'relatorios.relatorio_uhs_ocupadas' }}" href="{{ url_for('relatorios.relatorio_uhs_ocupadas') }}">UHs Ocupadas</a>
+
+            <div class="sch-nav-item sch-nav-main">CONFIGURAÇÃO</div>
+            <a class="sch-nav-sub {{ 'active' if endpoint in ['usuarios.consultar_usuarios', 'usuarios.cadastrar_usuario', 'usuarios.editar_usuario', 'usuarios.resetar_senha_usuario'] }}" href="{{ url_for('usuarios.consultar_usuarios') }}">Consultar Usuário</a>
+            <a class="sch-nav-sub {{ 'active' if endpoint in ['produtos.consultar_produtos', 'produtos.cadastrar_produto', 'produtos.editar_produto'] }}" href="{{ url_for('produtos.consultar_produtos') }}">Consultar Produto</a>
+            <a class="sch-nav-sub {{ 'active' if endpoint == 'recepcao.consultar_etapas' }}" href="{{ url_for('recepcao.consultar_etapas') }}">Consultar Etapas</a>
+            <a class="sch-nav-sub {{ 'active' if endpoint == 'recepcao.consultar_expiradas' }}" href="{{ url_for('recepcao.consultar_expiradas') }}">Consultar Expirada</a>
+            <a class="sch-nav-sub {{ 'active' if endpoint == 'recepcao.consultar_editar_reservas' }}" href="{{ url_for('recepcao.consultar_editar_reservas') }}">Editar reservas</a>
+            {% endif %}
+          </nav>
+
+          <div class="sch-sidebar-footer">
+            <a class="sch-nav-item" href="{{ url_for('auth.logout') }}">
+              <span class="sch-nav-label">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 2v4" />
+                  <path d="M12 18v4" />
+                  <path d="M4.93 4.93l2.83 2.83" />
+                  <path d="M16.24 16.24l2.83 2.83" />
+                  <path d="M2 12h4" />
+                  <path d="M18 12h4" />
+                  <path d="M4.93 19.07l2.83-2.83" />
+                  <path d="M16.24 7.76l2.83-2.83" />
+                </svg>
+                Sair
+              </span>
+            </a>
+          </div>
+        </aside>
+
+        <main class="sch-main">
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              <div class="sch-alerts">
+                {% for category, message in messages %}
+                  <div class="sch-alert sch-alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+              </div>
+            {% endif %}
+          {% endwith %}
+          {% block content %}{% endblock %}
+        </main>
+      </div>
+
+      <footer class="sch-footer">
+        <div class="sch-footer-inner">© 2026 Sistema de Controle de Hóspedes</div>
+      </footer>
+    </div>
+
+    <script>
+      (function () {
+        var toggle = document.getElementById('settingsToggle');
+        var menu = document.getElementById('settingsMenu');
+        if (!toggle || !menu) return;
+        toggle.addEventListener('click', function (e) {
+          e.stopPropagation();
+          menu.classList.toggle('is-open');
+        });
+        document.addEventListener('click', function () {
+          menu.classList.remove('is-open');
+        });
+      })();
+    </script>
+    {% block extra_js %}{% endblock %}
+  </body>
+</html>

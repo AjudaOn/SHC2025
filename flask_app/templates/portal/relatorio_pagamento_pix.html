@@ -1,0 +1,139 @@
+{% extends "layouts/sch_base.html" %}
+
+{% block content %}
+<section class="sch-card">
+  <header class="sch-card-header">
+    <h1 class="sch-card-title">RELATÓRIO - PAGAMENTO EM PIX</h1>
+  </header>
+
+  <div class="sch-card-content">
+    <form class="sch-form" method="get">
+      <div class="sch-section">
+        <h2 class="sch-section-title">FILTRO</h2>
+        <div class="sch-grid sch-grid-4">
+          <div class="sch-field">
+            <label for="mes_relatorio">Mês:</label>
+            <select name="mes_relatorio" id="mes_relatorio" class="sch-input">
+              <option value="">Selecione</option>
+              {% for mes_val, mes_label in meses %}
+              <option value="{{ mes_val }}" {% if mes_relatorio == mes_val %}selected{% endif %}>{{ mes_label }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="sch-field">
+            <label for="ano_relatorio">Ano:</label>
+            <select name="ano_relatorio" id="ano_relatorio" class="sch-input">
+              <option value="">Selecione</option>
+              {% for ano_val in anos %}
+              <option value="{{ ano_val }}" {% if ano_relatorio == ano_val %}selected{% endif %}>{{ ano_val }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="sch-field">
+            <label>&nbsp;</label>
+            <button class="sch-btn" type="submit">Gerar Relatório</button>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div class="sch-divider sch-divider-space"></div>
+
+    {% if consultar_htm1 or consultar_htm2 %}
+      {% if consultar_htm1 %}
+      <h2 class="sch-section-title">HTM 01</h2>
+      <div class="sch-table-wrap">
+        <table class="sch-table">
+          <thead>
+            <tr>
+              <th>Data de Saída</th>
+              <th>PST/GRAD</th>
+              <th>Hóspede</th>
+              <th>CPF</th>
+              <th>Nr Acomp</th>
+              <th>UH</th>
+              <th>Dias</th>
+              <th>Total (R$)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for reserva in consultar_htm1 %}
+            <tr>
+              <td>{{ reserva.saida.strftime('%d/%m/%Y') if reserva.saida else '' }}</td>
+              <td>
+                {% if reserva.status not in ["MILITAR DA ATIVA", "MILITAR DA RESERVA"] %}
+                  CIVIL
+                {% else %}
+                  {{ reserva.graduacao }}
+                {% endif %}
+              </td>
+              <td class="name">{{ (reserva.nome_pagante or reserva.nome)|upper }}</td>
+              <td>{{ reserva.cpf_pagante or reserva.cpf }}</td>
+              <td>{{ reserva.qtde_acomp or 0 }}</td>
+              <td>{{ reserva.uh }}</td>
+              <td>{{ reserva.diarias or 0 }}</td>
+              <td>R$ {{ "%.2f"|format(reserva.valor_total or 0) }}</td>
+            </tr>
+            {% endfor %}
+            <tr class="sch-total-row">
+              <td colspan="7">TOTAL - HTM 01</td>
+              <td>R$ {{ "%.2f"|format(total_htm1) }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      {% endif %}
+
+      {% if consultar_htm2 %}
+      <h2 class="sch-section-title" style="margin-top: 20px;">HTM 02</h2>
+      <div class="sch-table-wrap">
+        <table class="sch-table">
+          <thead>
+            <tr>
+              <th>Data de Saída</th>
+              <th>PST/GRAD</th>
+              <th>Hóspede</th>
+              <th>CPF</th>
+              <th>Nr Acomp</th>
+              <th>UH</th>
+              <th>Dias</th>
+              <th>Total (R$)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for reserva in consultar_htm2 %}
+            <tr>
+              <td>{{ reserva.saida.strftime('%d/%m/%Y') if reserva.saida else '' }}</td>
+              <td>
+                {% if reserva.status not in ["MILITAR DA ATIVA", "MILITAR DA RESERVA"] %}
+                  CIVIL
+                {% else %}
+                  {{ reserva.graduacao }}
+                {% endif %}
+              </td>
+              <td class="name">{{ (reserva.nome_pagante or reserva.nome)|upper }}</td>
+              <td>{{ reserva.cpf_pagante or reserva.cpf }}</td>
+              <td>{{ reserva.qtde_acomp or 0 }}</td>
+              <td>{{ reserva.uh }}</td>
+              <td>{{ reserva.diarias or 0 }}</td>
+              <td>R$ {{ "%.2f"|format(reserva.valor_total or 0) }}</td>
+            </tr>
+            {% endfor %}
+            <tr class="sch-total-row">
+              <td colspan="7">TOTAL - HTM 02</td>
+              <td>R$ {{ "%.2f"|format(total_htm2) }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      {% endif %}
+
+      <div class="sch-form-actions sch-form-actions-spaced">
+        <a class="sch-btn" href="{{ url_for('relatorios.gerar_relatorio_excel', forma_pagamento='pix', mes_relatorio=mes_relatorio, ano_relatorio=ano_relatorio) }}">Baixar Excel</a>
+      </div>
+    {% else %}
+      <div class="sch-empty">Selecione o mês e o ano para visualizar o relatório.</div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
